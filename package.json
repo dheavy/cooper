@@ -1,0 +1,14 @@
+{
+  "name": "mypleasure-cooper",
+  "version": "1.0.0",
+  "description": "Front-end web app for MyPleasure.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://dheavy@bitbucket.org/dheavy/cooper.git"
+  },
+  "author": "Davy Peter Braun <hello@davybraun.com>",
+}
