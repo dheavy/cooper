@@ -5,7 +5,7 @@ var path = require('path'),
     app = express(),
     compiler = webpack(config);
 
-app.user(require('webpack-dev-middleware')(compiler, {
+app.use(require('webpack-dev-middleware')(compiler, {
   // noInfo: true,
   stats: {
     colors: true
