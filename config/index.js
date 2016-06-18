@@ -20,5 +20,10 @@ module.exports = {
     env: require('./dev.env'),
     port: 8080,
     proxyTable: {}
+  },
+  vue: {
+    loaders: {
+      scss: 'style!css!sass'
+    }
   }
 }
