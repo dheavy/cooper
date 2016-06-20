@@ -54,8 +54,10 @@ export default {
       auth.login(this, credentials, '/my')
     },
     parseError (err) {
-      if (err.status !== 200) {
+      if (+err.status === 404) {
         this.error = 'Incorrect username or password.'
+      } else {
+        this.error = 'Oops... something went wrong, please try again.'
       }
     }
   },

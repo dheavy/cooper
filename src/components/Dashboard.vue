@@ -1,6 +1,12 @@
 <template>
   <navigation :auth="true"></navigation>
-  <member :username="username" :date-joined="dateJoined"></member>
+  <member
+    :username="username"
+    :date-joined="dateJoined"
+    :followers="followers"
+    :following="following"
+  >
+  </member>
 </template>
 
 <script>
@@ -18,9 +24,13 @@ export default {
   },
 
   data () {
+    const user = store.getUser()
+
     return {
-      username: store.getUser().username,
-      dateJoined: moment(store.getUser().dateJoined).format('LL')
+      username: user.username,
+      dateJoined: moment(user.dateJoined).format('LL'),
+      followers: user.followers.length,
+      following: user.following.length
     }
   },
 
