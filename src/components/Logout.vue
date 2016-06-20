@@ -1,11 +1,11 @@
 <script>
 import {router} from '../main'
-import store from '../store'
+import auth from '../services/auth'
 
 export default {
   route: {
     activate () {
-      store.clear()
+      auth.logout()
       router.go({path: '/'})
     }
   }

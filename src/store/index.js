@@ -20,7 +20,6 @@ const store = new Vue({
         dateJoined: date_joined,
         followers, following
       }
-      console.log({followers, following})
       localStorage.setItem('user', JSON.stringify(this.state.user))
     },
 

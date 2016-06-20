@@ -4,8 +4,17 @@
       &#9776;
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-      <a class="navbar-brand" href="#">MyPleasu.re</a>
+      <a class="navbar-brand" href="/">MyPleasu.re</a>
       <ul v-if="auth" class="nav navbar-nav">
+        <li class="nav-item" name="collections">
+          <a class="nav-link" v-link="{name: 'collections', params: {uid: userId}}">Collections</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" v-link="{path: '/my/blocked'}">Blocked Content</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{path: '/logout'}">Log Out</a>
         </li>
@@ -28,6 +37,6 @@
 <script>
 export default {
   name: 'Navigation',
-  props: ['auth']
+  props: ['auth', 'userId']
 }
 </script>

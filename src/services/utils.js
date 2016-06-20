@@ -6,3 +6,20 @@ export const requestBody = payload => {
   body = body.substring(0, body.length - 1)
   return body
 }
+
+export const headers = (token = null) => {
+  const headers = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
+    }
+  }
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  console.log(headers)
+
+  return headers
+}

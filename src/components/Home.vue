@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import navigation from './navigation'
+import navigation from './Navigation'
 import auth from '../services/auth'
 import {router} from '../main'
 

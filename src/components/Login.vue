@@ -1,5 +1,5 @@
 <template>
-  <navigation :auth="false"></navigation>
+  <navigation :auth="false" :user-id="null"></navigation>
   <div class="col-sm-4 col-sm-offset-4">
     <h2>Log In</h2>
     <div class="alert alert-danger" v-if="error">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import navigation from './navigation'
+import navigation from './Navigation'
 import auth from '../services/auth'
 import {router} from '../main'
 import store from '../store'

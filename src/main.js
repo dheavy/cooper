@@ -5,8 +5,9 @@ import Home from './components/Home'
 import Login from './components/Login'
 import VueResource from 'vue-resource'
 import Logout from './components/Logout'
-import Dashboard from './components/Dashboard'
 import Register from './components/Register'
+import Dashboard from './components/Dashboard'
+import Collections from './components/Collections'
 import PasswordReset from './components/PasswordReset'
 
 Vue.use(VueResource)
@@ -30,8 +31,21 @@ router.map({
     component: Register
   },
   '/my': {
-    component: Dashboard
+    component: Dashboard,
+    subRoutes: {
+      '/collections': {
+        name: 'collections',
+        component: Collections
+      }
+    }
   },
+  /* '/users/:uid': {
+    subRoutes: {
+      '/collections': {
+
+      }
+    }
+  }, */
   '/password/reset': {
     component: PasswordReset
   }
