@@ -19,7 +19,5 @@ export const headers = (token = null) => {
     headers['Authorization'] = `Bearer ${token}`
   }
 
-  console.log(headers)
-
   return headers
 }

@@ -23,7 +23,6 @@
 <script>
 import navigation from './Navigation'
 import auth from '../services/auth'
-import {router} from '../main'
 import store from '../store'
 
 export default {
@@ -58,14 +57,6 @@ export default {
         this.error = 'Incorrect username or password.'
       } else {
         this.error = 'Oops... something went wrong, please try again.'
-      }
-    }
-  },
-
-  route: {
-    activate () {
-      if (auth.isAuthenticated()) {
-        router.go({path: '/my'})
       }
     }
   }

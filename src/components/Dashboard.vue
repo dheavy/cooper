@@ -16,7 +16,6 @@
 <script>
 import collections from './Collections'
 import navigation from './Navigation'
-import auth from '../services/auth'
 import member from './Member'
 import store from '../store'
 import moment from 'moment'
@@ -37,12 +36,6 @@ export default {
       dateJoined: moment(user.dateJoined).format('LL'),
       followers: user.followers.length,
       following: user.following.length
-    }
-  },
-
-  route: {
-    canActivate () {
-      return auth.isAuthenticated()
     }
   }
 }

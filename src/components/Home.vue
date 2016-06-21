@@ -9,22 +9,12 @@
 
 <script>
 import navigation from './Navigation'
-import auth from '../services/auth'
-import {router} from '../main'
 
 export default {
   name: 'Home',
 
   components: {
     navigation
-  },
-
-  route: {
-    activate () {
-      if (auth.isAuthenticated()) {
-        router.go({path: '/my'})
-      }
-    }
   }
 }
 </script>
