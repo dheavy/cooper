@@ -10,7 +10,7 @@ export default {
   login (context, credentials, redirect) {
     context.$http
       .post(LOGIN_URL, requestBody(credentials), headers())
-      .then((res) => {
+      .then(res => {
         store.setToken(res.data.token)
         store.setUser(res.data.user)
         Vue.http.options.headers['Authorization'] = `Bearer: ${store.getToken()}`
@@ -23,6 +23,6 @@ export default {
 
   logout () {
     store.clear()
-    Vue.http.options.headers['Authorization'] = null
+    delete Vue.http.options.headers['Authorization']
   }
 }
