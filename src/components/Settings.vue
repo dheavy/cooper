@@ -3,6 +3,29 @@
     <div class="row">
       <div class="col-sm-4">
         <h4>Edit email</h4>
+        <validator name="editEmailValidation">
+          <form novalidate>
+            <div class="alert alert-success" v-if="successEditEmail">{{{successEditEmail}}}</div>
+            <div class="alert alert-danger" v-if="errorEditEmail">{{{errorEditEmail}}}</div>
+            <div class="alert alert-danger" v-if="editEmailSubmitted && ($editEmailValidation.email.email)">Please enter a valid email address.</div>
+
+            <div class="form-group" v-bind:class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                v-model="editEmail.email"
+                v-validate:password="{email: true}"
+                v-on:keyup="resetEditEmailValidation()"
+                v-bind:class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
+              >
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary" v-on:click.prevent="submitEditEmail()">Edit email</button>
+            </div>
+          </form>
+        </validator>
       </div>
 
       <div class="col-sm-4">
@@ -64,7 +87,7 @@
 </template>
 
 <script>
-import {USERS_URL, PASSWORD_EDIT_URL} from '../constants/api'
+import {USERS_URL, EMAIL_EDIT_URL, PASSWORD_EDIT_URL} from '../constants/api'
 import {requestBody, headers} from '../services/utils'
 import forbidden from '../mixins/forbidden'
 import validator from 'vue-validator'
@@ -89,6 +112,9 @@ export default {
         password: '',
         passwordConfirm: ''
       },
+      editEmail: {
+        email: ''
+      },
       editPasswordSubmitted: null,
       classHasSuccess: 'has-success',
       classHasWarning: 'has-warning',
@@ -99,7 +125,8 @@ export default {
       errorDeactivate: '',
       errorEditEmail: '',
       errorEditPassword: '',
-      successEditPassword: ''
+      successEditPassword: '',
+      successEditEmail: ''
     }
   },
 
@@ -107,6 +134,39 @@ export default {
     resetEditPasswordValidation () {
       this.editPasswordSubmitted = false
       this.$resetValidation()
+    },
+
+    resetEditEmailValidation () {
+      this.editEmailSubmitted = false
+      this.$resetValidation()
+    },
+
+    submitEditEmail () {
+      this.successEditEmail = ''
+      this.errorEditEmail = ''
+
+      const id = this.store.getUser().id
+
+      if (this.$editEmailValidation.valid || this.editEmail.email === '') {
+        this.$http
+          .post(`${EMAIL_EDIT_URL}`, requestBody({
+            user_id: id,
+            email: this.editEmail.email
+          }), headers(this.store.token))
+          .then(res => {
+            this.successEditEmail = 'Email successfully modified!'
+          })
+          .catch(err => {
+            this.logoutIfForbidden(err.status)
+            if (err.data && err.data.error) {
+              _.each(err.data.error, msg => {
+                this.errorEditEmail += `${_.capitalize(msg)}<br>`
+              })
+            } else {
+              this.errorEditEmail = 'Oops... something went wront on our end. Please try again.'
+            }
+          })
+      }
     },
 
     submitEditPassword () {
@@ -128,9 +188,13 @@ export default {
           })
           .catch(err => {
             this.logoutIfForbidden(err.status)
-            _.each(err.data.error, msg => {
-              this.errorEditPassword += `${_.capitalize(msg)}<br>`
-            })
+            if (err.data && err.data.error) {
+              _.each(err.data.error, msg => {
+                this.errorEditPassword += `${_.capitalize(msg)}<br>`
+              })
+            } else {
+              this.errorEditPassword = 'Oops... something went wront on our end. Please try again.'
+            }
           })
       }
     },
@@ -160,6 +224,11 @@ export default {
       return this.$editPasswordValidation.passwordConfirm &&
              this.$editPasswordValidation.passwordConfirm.valid &&
              this.editPassword.password === this.editPassword.passwordConfirm
+    },
+
+    isEmailValid () {
+      if (this.editEmail.email.length === 0) return null
+      return this.$editEmailValidation.valid
     }
   }
 }
