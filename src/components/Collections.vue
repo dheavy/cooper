@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {API_URL} from '../constants/api'
+import {USERS_URL} from '../constants/api'
 import store from '../store'
 
 export default {
@@ -23,11 +23,8 @@ export default {
     }
   },
 
-  props: [
-    'id'
-  ],
-
   route: {
+    // Leave a small delay to display message during data acquisition.
     data ({next}) {
       setTimeout(() => {
         next()
@@ -40,11 +37,11 @@ export default {
   },
 
   methods: {
-    fetchCollections: (context) => {
+    fetchCollections: context => {
       const id = context.id ? context.id : context.store.getUser().id
       context.$http
-        .get(`${API_URL}users/${id}/collections`)
-        .then((res) => {
+        .get(`${USERS_URL}/${id}/collections`)
+        .then(res => {
           console.log(res)
         })
         .catch(err => {
@@ -55,9 +52,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-section {
-  margin-top: 2em;
-}
-</style>

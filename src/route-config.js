@@ -3,6 +3,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import Register from './components/Register'
+import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
 import Collections from './components/Collections'
 import PasswordReset from './components/PasswordReset'
@@ -32,6 +33,10 @@ const routeConfig = router => {
         '/collections': {
           name: 'collections',
           component: Collections
+        },
+        '/settings': {
+          name: 'settings',
+          component: Settings
         }
       }
     },

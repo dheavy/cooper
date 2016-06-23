@@ -1,6 +1,6 @@
 <script>
-import {router} from '../main'
 import auth from '../services/auth'
+import {router} from '../main'
 
 export default {
   route: {

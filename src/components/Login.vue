@@ -86,7 +86,7 @@ export default {
     },
 
     parseError (err) {
-      if (+err.status === 404) {
+      if (+err.status === 404 || +err.status === 400) {
         this.error = 'Incorrect username or password.'
       } else {
         this.error = 'Oops... something went wrong, please try again.'
