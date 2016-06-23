@@ -8,6 +8,9 @@ import VueValidator from 'vue-validator'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(VueValidator)
+Vue.validator('email', function (val) {
+  return /\S+@\S+\.\S+/.test(val)
+})
 
 export const router = new VueRouter({
   history: true,
