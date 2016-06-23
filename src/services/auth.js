@@ -13,7 +13,6 @@ export default {
       .then(res => {
         store.setToken(res.data.token)
         store.setUser(res.data.user)
-        Vue.http.options.headers['Authorization'] = `Bearer ${store.getToken()}`
         redirect ? router.go(redirect) : void (0)
       })
       .catch(err => {
