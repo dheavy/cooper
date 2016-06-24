@@ -10,7 +10,8 @@ module.exports = {
     'html'
   ],
   globals: {
-    'localStorage': true
+    'localStorage': true,
+    'FB': true
   },
   // add your custom rules here
   'rules': {

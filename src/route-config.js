@@ -26,6 +26,9 @@ const routeConfig = router => {
       component: Register,
       redirectIfAuth: true
     },
+    '/register/facebook': {
+      component: Register
+    },
     '/my': {
       component: Dashboard,
       auth: true,

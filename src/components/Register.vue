@@ -1,67 +1,84 @@
 <template>
   <navigation :auth="false" :user-id="null"></navigation>
-  <validator name="registerValidation">
-    <form novalidate class="col-sm-4 col-sm-offset-4">
-      <h2>Register</h2>
+  <facebook-auth></facebook-auth>
 
-      <div class="alert alert-danger" v-if="error">{{{error}}}</div>
+  <div v-if="loading">
+    <h2>Signing in via Facebook... </h2>
+  </div>
+  <div v-else>
+    <validator name="registerValidation">
+      <form novalidate class="col-sm-4 col-sm-offset-4">
+        <h2>Register</h2>
 
-      <div class="form-group" v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classHasSuccess : classHasDanger) : '']">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          v-model="credentials.username"
-          v-validate:username="{required: true, minlength: 3}"
-          v-on:keyup="checkUsername | debounce 250"
-          v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
-        >
-      </div>
+        <div class="alert alert-danger" v-if="error">{{{error}}}</div>
 
-      <div class="form-group" v-bind:class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
-        <input
-          type="email"
-          class="form-control"
-          placeholder="Email"
-          v-model="credentials.email"
-          v-validate:email="{email: true}"
-          v-bind:class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
-        >
-      </div>
+        <div class="form-group" v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classHasSuccess : classHasDanger) : '']">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            v-model="credentials.username"
+            v-validate:username="{required: true, minlength: 3}"
+            v-on:keyup="checkUsername | debounce 250"
+            v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
+          >
+        </div>
 
-      <div class="form-group" v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="credentials.password"
-          v-validate:password="{required: true, minlength: 6}"
-          v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
-        >
-      </div>
+        <div class="form-group" v-bind:class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            v-model="credentials.email"
+            v-validate:email="{email: true}"
+            v-bind:class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
+          >
+        </div>
 
-      <div class="form-group" v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Confirm password"
-          v-model="credentials.confirmPassword"
-          v-validate:confirm-password="{required: true, minlength: 6}"
-          v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
-        >
-      </div>
+        <div class="form-group" v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            v-model="credentials.password"
+            v-validate:password="{required: true, minlength: 6}"
+            v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
+          >
+        </div>
 
-      <div class="form-group">
-        <button class="btn btn-primary" v-on:click.prevent="submit()">Log In</button>
-      </div>
-    </form>
-  </validator>
+        <div class="form-group" v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Confirm password"
+            v-model="credentials.confirmPassword"
+            v-validate:confirm-password="{required: true, minlength: 6}"
+            v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
+          >
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary" v-on:click.prevent="submit()">Log In</button>
+        </div>
+
+        <div class="form-group">
+          <span class="small">
+            <a v-link="{path: '/login'}">Log in</a> or
+            <a href="#" v-on:click.prevent="fbAuthInit()">register via Facebook</a>
+          </span>
+        </div>
+      </form>
+    </validator>
+  </div>
 </template>
 
 <script>
 import registration from '../services/registration'
+import facebookAuth from './FacebookAuth'
 import navigation from './Navigation'
 import validator from 'vue-validator'
+import {router} from '../main'
+import store from '../store'
 import _ from 'lodash'
 
 export default {
@@ -69,6 +86,8 @@ export default {
 
   data () {
     return {
+      store,
+      loading: false,
       credentials: {
         username: '',
         email: '',
@@ -88,7 +107,7 @@ export default {
   },
 
   components: {
-    navigation, validator
+    navigation, validator, facebookAuth
   },
 
   methods: {
@@ -98,6 +117,18 @@ export default {
       } else {
         this.usernameAvailable = null
       }
+    },
+
+    fbAuthInit () {
+      return facebookAuth.auth()
+    },
+
+    fbAuthContinue (token) {
+      return facebookAuth.auth(token)
+    },
+
+    fbCheckUser (payload) {
+      return facebookAuth.checkUser(payload)
     },
 
     submit () {
@@ -141,6 +172,44 @@ export default {
     isEmailValid () {
       if (this.credentials.email.length === 0) return null
       return this.$registerValidation.email && this.$registerValidation.email.valid
+    }
+  },
+
+  route: {
+    data () {
+      try {
+        if (window.location.hash.indexOf('access_token=') > -1) {
+          this.loading = true
+
+          const split = window.location.hash.split('=')
+          const token = split.splice(1).join('=')
+          this.fbAuthContinue(token)
+            .then(res => {
+              this.fbCheckUser({
+                'fb_access_token': token,
+                'fb_id': res.data.id,
+                'fb_name': res.data.name,
+                'fb_email': res.data.email || ''
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  this.store.setToken(res.data.token)
+                  this.store.setUser(res.data.user)
+                  router.go({path: '/my'})
+                }
+              })
+              .catch(err => {
+                throw err
+              })
+            })
+            .catch(err => {
+              throw err
+            })
+        }
+      } catch (err) {
+        this.error = 'Oops... there was an error. Please try again.'
+        this.loading = false
+      }
     }
   }
 }
