@@ -47,12 +47,15 @@
 import navigation from './Navigation'
 import validator from 'vue-validator'
 import auth from '../services/auth'
+import {router} from '../main'
+import store from '../store'
 
 export default {
   name: 'Login',
 
   data () {
     return {
+      store,
       credentials: {
         username: '',
         password: ''
@@ -70,6 +73,12 @@ export default {
     resetValidation () {
       this.submitted = false
       this.$resetValidation()
+    },
+
+    fbLoginUser ({token, user}) {
+      store.setToken(token)
+      store.setUser(user)
+      router.go({path: '/my'})
     },
 
     submit () {

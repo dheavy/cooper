@@ -1,16 +1,24 @@
-import {CHECK_USERNAME_URL, REGISTER_URL} from '../constants/api'
+import {CHECK_USERNAME_URL, REGISTER_URL, FACEBOOK_REGISTER_URL} from '../constants/api'
 import {requestBody, headers} from './utils'
 import auth from './auth'
 
 export default {
-  checkUsername (context, username) {
+  checkUsername (context, username, fb = false) {
     context.$http
       .get(`${CHECK_USERNAME_URL}/${username}`)
-      .then(data => {
-        if (data.status === 200) {
-          context.usernameAvailable = true
+      .then(res => {
+        if (res.status === 200) {
+          if (fb) {
+            context.fbUsernameAvailable = true
+          } else {
+            context.usernameAvailable = true
+          }
         } else {
-          context.usernameAvailable = false
+          if (fb) {
+            context.fbUsernameAvailable = false
+          } else {
+            context.usernameAvailable = false
+          }
         }
       })
       .catch(err => {
@@ -23,8 +31,19 @@ export default {
       .post(REGISTER_URL, requestBody({
         username, email, password, confirm_password: confirmPassword
       }), headers())
-      .then(data => {
+      .then(res => {
         auth.login(context, {username, password}, '/my')
+      })
+      .catch(err => {
+        context.parseError(err)
+      })
+  },
+
+  registerViaFacebook (context, payload) {
+    context.$http
+      .post(FACEBOOK_REGISTER_URL, requestBody(payload), headers())
+      .then(res => {
+        auth.loginViaTokenAndUser(res.data.token, res.data.user, '/my')
       })
       .catch(err => {
         context.parseError(err)

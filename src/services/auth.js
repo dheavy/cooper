@@ -11,13 +11,17 @@ export default {
     context.$http
       .post(LOGIN_URL, requestBody(credentials), headers())
       .then(res => {
-        store.setToken(res.data.token)
-        store.setUser(res.data.user)
-        redirect ? router.go(redirect) : void (0)
+        this.loginViaTokenAndUser(res.data.token, res.data.user, '/my')
       })
       .catch(err => {
         context.parseError(err)
       })
+  },
+
+  loginViaTokenAndUser (token, user, redirect) {
+    store.setToken(token)
+    store.setUser(user)
+    redirect ? router.go(redirect) : void (0)
   },
 
   logout () {

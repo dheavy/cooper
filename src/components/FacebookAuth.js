@@ -22,21 +22,6 @@ var facebookAuth = new Vue({
 
     checkUser (payload) {
       return this.$http.post(FACEBOOK_URL, requestBody(payload), headers())
-    },
-
-    statusChangeHandler (res) {
-      switch (res.status) {
-        case 'connected':
-          return this.auth(res.authResponse.accessToken)
-
-        case 'not_authorized':
-          this.error = 'Please authorize MyPleasu.re on your Facebook account.'
-          return
-
-        default:
-          this.error = 'Please log into Facebook.'
-          return
-      }
     }
   }
 })
