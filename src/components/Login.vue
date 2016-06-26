@@ -41,9 +41,16 @@
       </div>
     </form>
   </validator>
+  <div class="form-group col-sm-4 col-sm-offset-4">
+    <hr/>
+    <button class="btn btn-secondary" v-on:click.prevent="fbAuth">
+      Sign in with Facebook
+    </button>
+  </div>
 </template>
 
 <script>
+import facebookAuth from './FacebookAuth'
 import navigation from './Navigation'
 import validator from 'vue-validator'
 import auth from '../services/auth'
@@ -70,6 +77,10 @@ export default {
   },
 
   methods: {
+    fbAuth () {
+      return facebookAuth.auth()
+    },
+
     resetValidation () {
       this.submitted = false
       this.$resetValidation()

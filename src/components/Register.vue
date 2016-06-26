@@ -190,7 +190,6 @@ export default {
       })
 
       registration.checkUsername(this, this.credentialsFb.username, true)
-      // registration.registerViaFacebook(this, this.credentialsFb)
     },
 
     submit () {
