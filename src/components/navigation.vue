@@ -13,10 +13,10 @@
           <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/my/blocked'}">Blocked Content</a>
+          <a class="nav-link" v-link="{path: '/my/blocked'}">Stuff I blocked</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/logout'}">Log Out</a>
+          <a class="nav-link" v-link="{path: '/logout'}">Log out</a>
         </li>
       </ul>
       <ul v-else class="nav navbar-nav">
