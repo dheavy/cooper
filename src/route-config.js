@@ -44,13 +44,10 @@ const routeConfig = router => {
         }
       }
     },
-    /* '/users/:uid': {
-      subRoutes: {
-        '/collections': {
-
-        }
-      }
-    }, */
+    '/users/:uid': {
+      auth: true,
+      component: Dashboard
+    },
     '/password/reset': {
       component: PasswordReset,
       auth: true

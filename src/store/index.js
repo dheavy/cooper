@@ -27,6 +27,12 @@ const store = new Vue({
       return this.state.user || JSON.parse(localStorage.getItem('user'))
     },
 
+    updateUser (newUser) {
+      const oldUser = this.state.user
+      const user = Object.assign({}, oldUser, newUser)
+      this.setUser(user)
+    },
+
     setToken (token) {
       this.state.token = token
       localStorage.setItem('token', token)
