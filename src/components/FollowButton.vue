@@ -23,6 +23,7 @@ export default {
 
   methods: {
     canFollow (me, other) {
+      if (me.id === other.id) return null
       return me.id !== other.id && me.following.indexOf(other.id) === -1
     },
 

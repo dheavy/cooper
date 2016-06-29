@@ -23,6 +23,7 @@ export default {
 
   methods: {
     canBlock (me, other) {
+      if (me.id === other.id) return null
       return me.id !== other.id && me.blocking.indexOf(other.id) === -1
     },
 
