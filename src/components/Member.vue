@@ -6,7 +6,7 @@
         <small>member since {{dateJoined}}</small>
       </div>
       <div class="col-sm-4">
-        <p>{{following}} followed</p>
+        <p>{{followed}} followed</p>
       </div>
       <div class="col-sm-4">
         <p>{{followers}} followers</p>
@@ -21,7 +21,7 @@ const member = {
   props: [
     'username',
     'dateJoined',
-    'following',
+    'followed',
     'followers'
   ]
 }

@@ -2,6 +2,7 @@ import auth from './services/auth'
 import Home from './components/Home'
 import Login from './components/Login'
 import Logout from './components/Logout'
+import Blocked from './components/Blocked'
 import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
@@ -37,6 +38,10 @@ const routeConfig = router => {
         '/collections': {
           name: 'collections',
           component: Collections
+        },
+        '/blocked': {
+          name: 'blocked',
+          component: Blocked
         },
         '/settings': {
           name: 'settings',

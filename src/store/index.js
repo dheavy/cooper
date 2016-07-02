@@ -13,12 +13,12 @@ const store = new Vue({
   },
 
   methods: {
-    setUser ({id, username, email, last_login, date_joined, followers, following, blocking}) {
+    setUser ({id, username, email, last_login, date_joined, followers, followed, blocking}) {
       this.state.user = {
         id, username, email,
         lastLogin: last_login,
         dateJoined: date_joined,
-        followers, following,
+        followers, followed,
         blocking
       }
       localStorage.setItem('user', JSON.stringify(this.state.user))

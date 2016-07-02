@@ -10,24 +10,24 @@
     <div class="alert alert-danger" v-if="error">{{error}}</div>
     <div v-else>
       <member
-        :username="otherUser.username"
+        :username="shownUser.username"
         :date-joined="dateJoined"
-        :followers="otherUser.followers.length"
-        :following="otherUser.following.length"
+        :followers="shownUser.followers.length"
+        :followed="shownUser.followed.length"
       >
       </member>
 
       <follow-button
         css-classes="btn btn-primary"
         :store.sync="store"
-        :other-user="otherUser"
+        :other-user="shownUser"
       >
       </follow-button>
 
       <block-button
         css-classes="btn btn-primary"
         :store.sync="store"
-        :other-user="otherUser"
+        :other-user="shownUser"
       >
       </block-button>
     </div>
@@ -57,7 +57,7 @@ export default {
     return {
       store,
       loading: true,
-      otherUser: null,
+      shownUser: null,
       error: null,
       user: store.getUser()
     }
@@ -65,7 +65,7 @@ export default {
 
   computed: {
     dateJoined () {
-      return moment(this.otherUser.dateJoined).format('LL')
+      return moment(this.shownUser.dateJoined).format('LL')
     }
   },
 
@@ -81,7 +81,7 @@ export default {
           .get(`${USERS_URL}/${id}`)
           .then(res => {
             this.loading = false
-            this.otherUser = res.data.payload
+            this.shownUser = res.data.payload
           })
           .catch(err => {
             console.log(err)
@@ -90,7 +90,7 @@ export default {
           })
       } else {
         // Own user's page.
-        this.otherUser = this.store.getUser()
+        this.shownUser = this.store.getUser()
         this.loading = false
       }
     }
