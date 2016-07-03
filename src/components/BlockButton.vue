@@ -24,7 +24,7 @@ export default {
   methods: {
     canBlock (me, other) {
       if (me.id === other.id) return null
-      return me.id !== other.id && me.blocking.indexOf(other.id) === -1
+      return me.id !== other.id && me.blocked.indexOf(other.id) === -1
     },
 
     toggleBlock () {
@@ -37,7 +37,7 @@ export default {
       this.$http
         .post(`${USERS_URL}/${other.id}/block`)
         .then(res => {
-          me.blocking.push(other.id)
+          me.blocked.push(other.id)
           this.store.updateUser(me)
           this.canBlockOther = false
         })
@@ -50,7 +50,7 @@ export default {
       this.$http
         .post(`${USERS_URL}/${other.id}/unblock`)
         .then(res => {
-          me.blocking.splice(me.blocking.indexOf(other.id), 1)
+          me.blocked.splice(me.blocked.indexOf(other.id), 1)
           this.store.updateUser(me)
           this.canBlockOther = true
         })
