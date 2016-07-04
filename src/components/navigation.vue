@@ -13,7 +13,7 @@
           <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/my/blocked'}">Stuff I blocked</a>
+          <a class="nav-link" v-link="{path: '/my/blocked'}">Blocked</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{path: '/logout'}">Log out</a>

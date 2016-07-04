@@ -24,7 +24,7 @@ export default {
   methods: {
     canFollow (me, other) {
       if (me.id === other.id) return null
-      return me.id !== other.id && me.followed.indexOf(other.id) === -1
+      return me.id !== other.id && me.following.indexOf(other.id) === -1
     },
 
     toggleFollow () {
@@ -37,7 +37,7 @@ export default {
       this.$http
         .post(`${USERS_URL}/${other.id}/follow`)
         .then(res => {
-          me.followed.push(other.id)
+          me.following.push(other.id)
           this.store.updateUser(me)
           other.followers.push(me.id)
           this.canFollowOther = false
@@ -51,7 +51,7 @@ export default {
       this.$http
         .post(`${USERS_URL}/${other.id}/unfollow`)
         .then(res => {
-          me.followed.splice(me.followed.indexOf(me.id), 1)
+          me.following.splice(me.following.indexOf(me.id), 1)
           this.store.updateUser(me)
           other.followers.splice(other.followers.indexOf(me.id), 1)
           this.canFollowOther = true

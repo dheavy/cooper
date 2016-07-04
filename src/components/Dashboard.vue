@@ -13,19 +13,19 @@
         :username="shownUser.username"
         :date-joined="dateJoined"
         :followers="shownUser.followers.length"
-        :followed="shownUser.followed.length"
+        :following="shownUser.following.length"
       >
       </member>
 
       <follow-button
-        css-classes="btn btn-primary"
+        css-classes="btn btn-secondary"
         :store.sync="store"
         :other-user="shownUser"
       >
       </follow-button>
 
       <block-button
-        css-classes="btn btn-primary"
+        css-classes="btn btn-secondary"
         :store.sync="store"
         :other-user="shownUser"
       >
