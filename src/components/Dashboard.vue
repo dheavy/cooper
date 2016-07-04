@@ -14,6 +14,7 @@
         :date-joined="dateJoined"
         :followers="shownUser.followers.length"
         :following="shownUser.following.length"
+        :can-create-collection="canCreateCollection"
       >
       </member>
 
@@ -66,6 +67,10 @@ export default {
   computed: {
     dateJoined () {
       return moment(this.shownUser.dateJoined).format('LL')
+    },
+
+    canCreateCollection () {
+      return this.shownUser.id === this.user.id && this.$route.path.indexOf('/my/create') === -1
     }
   },
 

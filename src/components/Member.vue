@@ -13,20 +13,35 @@
       </div>
     </header>
   </section>
+  <button
+    class="btn btn-primary"
+    v-on:click.prevent="createNewCollectionHandler"
+    v-if="canCreateCollection"
+  >
+    Create a new collection
+  </button>
 </template>
 
 <script>
-const member = {
+import {router} from '../main'
+
+export default {
   name: 'Member',
+
   props: [
     'username',
     'dateJoined',
     'following',
-    'followers'
-  ]
-}
+    'followers',
+    'canCreateCollection'
+  ],
 
-export default member
+  methods: {
+    createNewCollectionHandler () {
+      router.go({path: '/my/create/collection'})
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
