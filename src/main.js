@@ -5,6 +5,8 @@ import VueResource from 'vue-resource'
 import routeConfig from './route-config'
 import VueValidator from 'vue-validator'
 
+require('./services/filters')
+
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(VueValidator)

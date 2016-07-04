@@ -11,7 +11,7 @@
     <div v-else>
       <member
         :username="shownUser.username"
-        :date-joined="dateJoined"
+        :date-joined="shownUser.dateJoined | date"
         :followers="shownUser.followers.length"
         :following="shownUser.following.length"
         :can-create-collection="canCreateCollection"
@@ -44,7 +44,6 @@ import collections from './Collections'
 import navigation from './Navigation'
 import member from './Member'
 import store from '../store'
-import moment from 'moment'
 import Vue from 'vue'
 
 export default {
@@ -65,10 +64,6 @@ export default {
   },
 
   computed: {
-    dateJoined () {
-      return moment(this.shownUser.dateJoined).format('LL')
-    },
-
     canCreateCollection () {
       return this.shownUser.id === this.user.id && this.$route.path.indexOf('/my/create') === -1
     }
