@@ -37,6 +37,7 @@
 <script>
 export default {
   name: 'Navigation',
+
   props: ['auth', 'userId']
 }
 </script>

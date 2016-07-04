@@ -38,7 +38,7 @@ export default {
 
   methods: {
     createNewCollectionHandler () {
-      router.go({path: '/my/create/collection'})
+      router.go({name: 'create-collection'})
     }
   }
 }

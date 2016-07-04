@@ -8,7 +8,7 @@ import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
 import Collections from './components/Collections'
 import PasswordReset from './components/PasswordReset'
-import CreateEditDestroyCollection from './components/CreateEditDestroyCollection'
+import CreateCollection from './components/CreateCollection'
 
 const routeConfig = router => {
   router.map({
@@ -48,9 +48,9 @@ const routeConfig = router => {
           name: 'settings',
           component: Settings
         },
-        '/create/collection': {
+        '/collections/create': {
           name: 'create-collection',
-          component: CreateEditDestroyCollection
+          component: CreateCollection
         }
       }
     },
