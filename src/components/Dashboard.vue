@@ -66,7 +66,7 @@ export default {
   computed: {
     canCreateCollection () {
       return this.shownUser.id === this.user.id &&
-             this.$route.path.indexOf('/create') === -1
+             this.$route.path === '/my' || this.$route.path === '/my/collections'
     }
   },
 

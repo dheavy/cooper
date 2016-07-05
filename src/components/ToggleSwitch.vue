@@ -1,6 +1,6 @@
 <template>
   <div class="switch">
-    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+    <input id="cmn-toggle-4" name="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
     <label for="cmn-toggle-4"></label>
   </div>
 </template>

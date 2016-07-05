@@ -152,7 +152,7 @@ export default {
           .post(`${EMAIL_EDIT_URL}`, requestBody({
             user_id: id,
             email: this.editEmail.email
-          }), headers(this.store.token))
+          }), headers(this.store.getToken()))
           .then(res => {
             this.successEditEmail = 'Email successfully modified!'
           })
@@ -182,7 +182,7 @@ export default {
             password: this.editPassword.password,
             current_password: this.editPassword.currentPassword,
             confirm_password: this.editPassword.passwordConfirm
-          }), headers(this.store.token))
+          }), headers(this.store.getToken()))
           .then(res => {
             this.successEditPassword = 'Password successfully changed!'
           })
@@ -202,7 +202,7 @@ export default {
     deactivate: () => {
       const id = this.store.getUser().id
       this.$http
-        .delete(`${USERS_URL}/${id}`, headers(this.store.token))
+        .delete(`${USERS_URL}/${id}`, headers(this.store.getToken()))
         .then(res => {
           router.go({path: '/logout'})
         })
