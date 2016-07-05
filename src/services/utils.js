@@ -7,7 +7,7 @@ export const requestBody = payload => {
   return body
 }
 
-export const headers = (token = null) => {
+export const headers = token => {
   const headers = {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -16,7 +16,7 @@ export const headers = (token = null) => {
   }
 
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`
+    headers.headers['Authorization'] = `Bearer ${token}`
   }
 
   return headers
