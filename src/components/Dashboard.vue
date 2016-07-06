@@ -32,7 +32,10 @@
       >
       </block-button>
 
-      <collections :user-id="shownUser.id"></collections>
+      <collections
+        :user-id="shownUser.id"
+        v-show="isFrontpage"
+      ></collections>
     </div>
   </div>
   <router-view></router-view>
@@ -61,6 +64,7 @@ export default {
       loading: true,
       shownUser: null,
       error: null,
+      isFrontpage: false,
       user: store.getUser()
     }
   },
@@ -74,6 +78,8 @@ export default {
 
   route: {
     data () {
+      this.isFrontpage = this.$route.path === '/my'
+
       if (this.$route.path.indexOf('/users') > -1 && this.$route.params.uid) {
         const id = this.$route.params.uid
         this.error = ''

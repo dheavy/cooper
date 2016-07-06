@@ -15,6 +15,7 @@
 import collectionRack from './CollectionRack'
 import {USERS_URL} from '../constants/api'
 import store from '../store'
+import Vue from 'vue'
 
 export default {
   name: 'Collections',
@@ -41,6 +42,8 @@ export default {
 
   methods: {
     fetchCollections () {
+      Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
+
       this.$http
         .get(`${USERS_URL}/${this.userId}/collections`)
         .then(res => {
