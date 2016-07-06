@@ -1,8 +1,8 @@
 <template>
   <section class="collection">
     <article v-for="n in 10 | orderBy 'created_at' -1">
-      <div class="{{$index === 0 ? 'cover' : 'thumb'}} {{collection.videos[$index] ? '' : 'empty'}} thumb-{{n}}">
-        <div v-if="collection.videos.length === 0 && $index === 0">
+      <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] ? '' : 'empty'}}">
+        <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
           <p>There's nothing here... yet.<br>
           <a href="#">Add a video</a></p>
         </div>
@@ -170,6 +170,14 @@ export default {
   .thumb-8,
   .thumb-9 {
     display: none;
+  }
+
+  .thumb-more {
+    margin-top: -85px;
+    width: 90px;
+    height: 75px;
+    position: relative;
+    margin-left: calc(100% - 100px);
   }
 }
 </style>
