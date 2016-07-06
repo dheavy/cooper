@@ -19,6 +19,8 @@ import store from '../store'
 export default {
   name: 'Collections',
 
+  props: ['userId'],
+
   components: {
     collectionRack
   },
@@ -32,19 +34,15 @@ export default {
     }
   },
 
-  route: {
-    // Leave a small delay to display message during data acquisition.
-    data () {
-      this.loading = true
-      this.fetchCollections()
-    }
+  ready () {
+    this.loading = true
+    this.fetchCollections()
   },
 
   methods: {
     fetchCollections () {
-      const id = this.id ? this.id : this.store.getUser().id
       this.$http
-        .get(`${USERS_URL}/${id}/collections`)
+        .get(`${USERS_URL}/${this.userId}/collections`)
         .then(res => {
           console.log(res)
           this.loading = false

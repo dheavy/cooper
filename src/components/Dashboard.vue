@@ -31,6 +31,8 @@
         :other-user="shownUser"
       >
       </block-button>
+
+      <collections :user-id="shownUser.id"></collections>
     </div>
   </div>
   <router-view></router-view>
@@ -39,8 +41,8 @@
 <script>
 import {USERS_URL} from '../constants/api'
 import followButton from './FollowButton'
+import collections from './collections'
 import blockButton from './BlockButton'
-import collections from './Collections'
 import navigation from './Navigation'
 import member from './Member'
 import store from '../store'
