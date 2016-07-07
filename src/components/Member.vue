@@ -6,10 +6,10 @@
         <small>member since {{dateJoined}}</small>
       </div>
       <div class="col-sm-4">
-        <p>{{following}} followed</p>
+        <p><a v-link="{path: '/my/followed'}">{{following}} followed</a></p>
       </div>
       <div class="col-sm-4">
-        <p>{{followers}} followers</p>
+        <p><a v-link="{path: '/my/followers'}">{{followers}} followers</a></p>
       </div>
     </header>
   </section>

@@ -1,9 +1,9 @@
 <template>
   <section class="blocked row">
-    <div v-if="$loadingRouteData">Loading</div>
+    <div v-if="usersLoading">Loading</div>
 
-    <div class="row">
-      <div v-else class="col-sm-6">
+    <div v-else class="row">
+      <div class="col-sm-6">
         <div class="alert alert-danger" v-if="errorUsers">{{errorUsers}}</div>
         <table v-else class="table">
           <thead>

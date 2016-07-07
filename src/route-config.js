@@ -2,11 +2,11 @@ import auth from './services/auth'
 import Home from './components/Home'
 import Login from './components/Login'
 import Logout from './components/Logout'
+import Follow from './components/Follow'
 import Blocked from './components/Blocked'
 import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
-import Collections from './components/Collections'
 import PasswordReset from './components/PasswordReset'
 import CreateCollection from './components/CreateCollection'
 
@@ -36,9 +36,13 @@ const routeConfig = router => {
       component: Dashboard,
       auth: true,
       subRoutes: {
-        '/collections': {
-          name: 'collections',
-          component: Collections
+        '/followed': {
+          name: 'followed',
+          component: Follow
+        },
+        '/followers': {
+          name: 'followed',
+          component: Follow
         },
         '/blocked': {
           name: 'blocked',
@@ -56,6 +60,7 @@ const routeConfig = router => {
     },
     '/users/:uid': {
       auth: true,
+      name: 'users',
       component: Dashboard
     },
     '/password/reset': {
