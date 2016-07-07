@@ -34,7 +34,8 @@
 
       <collections
         :user-id="shownUser.id"
-        v-show="isFrontpage"
+        :are-my-own="shownUser.id === store.getUser().id"
+        v-show="isMyFrontpage || isMemberPage"
       ></collections>
     </div>
   </div>
@@ -64,23 +65,28 @@ export default {
       loading: true,
       shownUser: null,
       error: null,
-      isFrontpage: false,
+      isMyFrontpage: false,
+      isMemberPage: false,
       user: store.getUser()
     }
   },
 
   computed: {
-    canCreateCollection () {
-      return this.shownUser.id === this.user.id &&
-             this.$route.path === '/my' || this.$route.path === '/my/collections'
+    canCreateCollection: {
+      cache: false,
+      get () {
+        return this.shownUser.id === this.user.id &&
+               this.$route.path === '/my' || this.$route.path === '/my/collections'
+      }
     }
   },
 
   route: {
     data () {
-      this.isFrontpage = this.$route.path === '/my'
+      this.isMyFrontpage = this.$route.path === '/my'
+      this.isMemberPage = /\/users\/\d/.test(this.$route.path)
 
-      if (this.$route.path.indexOf('/users') > -1 && this.$route.params.uid) {
+      if (this.isMemberPage && this.$route.params.uid) {
         const id = this.$route.params.uid
         this.error = ''
 
