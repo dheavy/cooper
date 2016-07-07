@@ -13,13 +13,16 @@
 import {USERS_URL, COLLECTIONS_URL} from '../constants/api'
 
 export default {
-  data () {
-    return {
-      canBlockOther: this.canBlock(this.store.getUser(), this.otherUser, this.collection)
+  props: ['cssClasses', 'otherUser', 'collection', 'store'],
+
+  computed: {
+    canBlockOther: {
+      cache: false,
+      get () {
+        return this.canBlock(this.store.getUser(), this.otherUser, this.collection)
+      }
     }
   },
-
-  props: ['cssClasses', 'otherUser', 'collection', 'store'],
 
   methods: {
     canBlock (me, other, collection) {
