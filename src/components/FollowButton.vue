@@ -13,13 +13,16 @@
 import {USERS_URL} from '../constants/api'
 
 export default {
-  data () {
-    return {
-      canFollowOther: this.canFollow(this.store.getUser(), this.otherUser)
+  props: ['cssClasses', 'otherUser', 'store'],
+
+  computed: {
+    canFollowOther: {
+      cache: false,
+      get () {
+        return this.canFollow(this.store.getUser(), this.otherUser)
+      }
     }
   },
-
-  props: ['cssClasses', 'otherUser', 'store'],
 
   methods: {
     canFollow (me, other) {
@@ -40,7 +43,6 @@ export default {
           me.following.push(other.id)
           this.store.updateUser(me)
           other.followers.push(me.id)
-          this.canFollowOther = false
         })
         .catch(err => {
           console.log(err)
@@ -54,7 +56,6 @@ export default {
           me.following.splice(me.following.indexOf(me.id), 1)
           this.store.updateUser(me)
           other.followers.splice(other.followers.indexOf(me.id), 1)
-          this.canFollowOther = true
         })
         .catch(err => {
           console.log(err)
