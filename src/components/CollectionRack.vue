@@ -4,7 +4,7 @@
       <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
           <p>There's nothing here... yet.<br>
-          <a href="#">Add a video</a></p>
+          <a v-if="areMyOwn" href="#">Add a video</a></p>
         </div>
         <a href="#"><img v-if="collection.videos[$index]" v-bind:src="collection.videos[$index].poster" width="auto" height="100%"></a>
       </div>
@@ -17,9 +17,9 @@
 
 <script>
 export default {
-  name: 'Collection',
+  name: 'CollectionRack',
 
-  props: ['collection']
+  props: ['collection', 'areMyOwn']
 }
 </script>
 
