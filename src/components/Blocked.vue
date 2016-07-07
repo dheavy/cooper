@@ -12,7 +12,7 @@
           </thead>
           <tbody>
             <tr v-for="blockedUser in blockedUsers">
-              <td>{{blockedUser.username}}</td>
+              <td><a v-link="{name: 'users', params: {uid: blockedUser.id}}">{{blockedUser.username}}</a></td>
               <td>
                 <block-button css-classes="btn btn-sm btn-secondary" :store.sync="store" :other-user="blockedUser"></block-button>
               </td>
@@ -69,6 +69,7 @@ export default {
 
   route: {
     data () {
+      console.log('tototo')
       Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
 
       this.usersLoading = true
