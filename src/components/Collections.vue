@@ -7,6 +7,7 @@
       v-if="collections"
       v-for="collection in collections | orderBy 'created_at' -1"
       :collection="collection"
+      :are-my-own="areMyOwn"
     ></collection-rack>
   </section>
 </template>
@@ -20,7 +21,7 @@ import Vue from 'vue'
 export default {
   name: 'Collections',
 
-  props: ['userId'],
+  props: ['userId', 'areMyOwn'],
 
   components: {
     collectionRack
@@ -38,6 +39,11 @@ export default {
   ready () {
     this.loading = true
     this.fetchCollections()
+
+    // Force rendering of collections if currently shown user is changed.
+    this.$watch('areMyOwn', (val, oldVal) => {
+      this.fetchCollections()
+    })
   },
 
   methods: {
