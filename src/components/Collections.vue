@@ -7,6 +7,7 @@
       v-if="collections"
       v-for="collection in collections | orderBy 'created_at' -1"
       :collection="collection"
+      :other-collections="getOtherCollectionThanThis(collection)"
       :are-my-own="areMyOwn"
     ></collection-rack>
   </section>
@@ -47,6 +48,12 @@ export default {
   },
 
   methods: {
+    getOtherCollectionThanThis (collection) {
+      const collections = [...this.collections]
+      collections.splice(collections.indexOf(collection), 1)
+      return collections
+    },
+
     fetchCollections () {
       Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
 
@@ -70,5 +77,6 @@ export default {
 <style lang="scss" scroped>
 .collections {
   margin-top: 2em;
+  overflow: hidden;
 }
 </style>

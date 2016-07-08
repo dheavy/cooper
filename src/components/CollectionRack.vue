@@ -1,5 +1,14 @@
 <template>
   <section class="collection clearfix">
+    <section v-if="isDeleteMode" class="delete-collection">
+      <delete-collection
+        :collection-to-delete="collection"
+        :other-collections="otherCollections"
+        :on-cancel="cancelDeletion"
+        :on-finalize="finalizeDeletion"
+      ></delete-collection>
+    </section>
+
     <div class="tools" v-if="areMyOwn">
       <button v-on:click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
       <button v-on:click="toggleEditMode">*</button>
@@ -33,16 +42,22 @@
 </template>
 
 <script>
-import {COLLECTIONS_URL} from '../constants/api'
 import {requestBody, headers} from '../services/utils'
+import deleteCollection from './DeleteCollection'
+import {COLLECTIONS_URL} from '../constants/api'
 
 export default {
   name: 'CollectionRack',
 
-  props: ['collection', 'areMyOwn'],
+  props: ['collection', 'areMyOwn', 'otherCollections'],
+
+  components: {
+    deleteCollection
+  },
 
   data () {
     return {
+      isDeleteMode: false,
       isEditMode: false
     }
   },
@@ -87,6 +102,14 @@ export default {
     },
 
     setDeletion () {
+      this.isDeleteMode = true
+    },
+
+    cancelDeletion () {
+      this.isDeleteMode = false
+    },
+
+    finalizeDeletion () {
 
     }
   }
@@ -94,6 +117,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.delete-collection {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  margin-top: 20px;
+  margin-left: 40px;
+}
+
 .tools {
   float: left;
   margin-top: 35px;
@@ -122,6 +154,7 @@ export default {
   height: 230px;
   margin-bottom: 10px;
   border-bottom: 1px solid #CCCCCC;
+  overflow: hidden;
 }
 
 .cover {
