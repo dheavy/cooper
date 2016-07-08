@@ -2,12 +2,19 @@
   <section class="collection clearfix">
     <div class="tools" v-if="areMyOwn">
       <button v-on:click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
-      <button v-on:click="setEditMode">*</button>
+      <button v-on:click="toggleEditMode">*</button>
       <button v-on:click="setDeletion">!</button>
     </div>
     <div class="tools" v-else>
       <button class="">A</button>
       <button class="">B</button>
+    </div>
+
+    <div class="name">
+      <span class="display {{isEditMode ? 'hidden-xs-up' : ''}}">{{collection.name}}</span>
+      <span class="edit {{isEditMode ? '' : 'hidden-xs-up'}}">
+        <input type="text" value="{{collection.name}}" v-on:keyup.enter="editName">
+      </span>
     </div>
 
     <article class="rack" v-for="n in 10 | orderBy 'created_at' -1">
@@ -34,6 +41,12 @@ export default {
 
   props: ['collection', 'areMyOwn'],
 
+  data () {
+    return {
+      isEditMode: false
+    }
+  },
+
   methods: {
     toggleVisibility () {
       const currentVisibility = this.collection.is_private
@@ -50,8 +63,27 @@ export default {
         })
     },
 
-    setEditMode () {
+    toggleEditMode () {
+      this.isEditMode = !this.isEditMode
+    },
 
+    editName (e) {
+      if (this.isEditMode) {
+        const newName = e.srcElement.value.trim() !== '' ? e.srcElement.value.trim() : 'Untitled'
+        this.collection.name = newName
+        this.isEditMode = false
+
+        this.$http
+          .patch(`${COLLECTIONS_URL}/${this.collection.id}`, requestBody({
+            name: newName
+          }), headers())
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
 
     setDeletion () {
@@ -64,6 +96,7 @@ export default {
 <style lang="scss" scoped>
 .tools {
   float: left;
+  margin-top: 35px;
 
   button {
     width: 50px;
@@ -73,13 +106,20 @@ export default {
   }
 }
 
+.name {
+  position: relative;
+  display: block;
+  margin-left: 60px;
+  margin-bottom: 10px;
+}
+
 .rack {
   float: left;
 }
 
 .collection {
   width: 100%;
-  height: 200px;
+  height: 230px;
   margin-bottom: 10px;
   border-bottom: 1px solid #CCCCCC;
 }
