@@ -1,10 +1,15 @@
 <template>
   <section class="collection clearfix">
-    <div class="tools">
+    <div class="tools" v-if="areMyOwn">
+      <button v-on:click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
+      <button v-on:click="setEditMode">*</button>
+      <button v-on:click="setDeletion">!</button>
+    </div>
+    <div class="tools" v-else>
       <button class="">A</button>
       <button class="">B</button>
-      <button class="">C</button>
     </div>
+
     <article class="rack" v-for="n in 10 | orderBy 'created_at' -1">
       <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
@@ -21,10 +26,38 @@
 </template>
 
 <script>
+import {COLLECTIONS_URL} from '../constants/api'
+import {requestBody, headers} from '../services/utils'
+
 export default {
   name: 'CollectionRack',
 
-  props: ['collection', 'areMyOwn']
+  props: ['collection', 'areMyOwn'],
+
+  methods: {
+    toggleVisibility () {
+      const currentVisibility = this.collection.is_private
+
+      this.$http
+        .patch(`${COLLECTIONS_URL}/${this.collection.id}`, requestBody({
+          is_private: !currentVisibility
+        }), headers())
+        .then(res => {
+          this.collection.is_private = res.data.is_private
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+    setEditMode () {
+
+    },
+
+    setDeletion () {
+
+    }
+  }
 }
 </script>
 
@@ -36,6 +69,7 @@ export default {
     width: 50px;
     height: 50px;
     display: block;
+    margin-bottom: 10px;
   }
 }
 
