@@ -1,6 +1,9 @@
 <template>
+  <div v-if="error" class="alert alert-danger">{{error}}</div>
+
   <section class="collection clearfix">
-    <section v-if="isDeleteMode" class="delete-collection">
+
+    <section v-if="isDeleteMode" v-el:deletor class="delete-collection">
       <delete-collection
         :collection-to-delete="collection"
         :other-collections="otherCollections"
@@ -58,7 +61,8 @@ export default {
   data () {
     return {
       isDeleteMode: false,
-      isEditMode: false
+      isEditMode: false,
+      error: null
     }
   },
 
@@ -109,8 +113,24 @@ export default {
       this.isDeleteMode = false
     },
 
-    finalizeDeletion () {
+    finalizeDeletion (cid, vm, reqBody) {
+      this.error = null
 
+      this.$http
+        .delete(`${COLLECTIONS_URL}/${cid}`, reqBody, headers())
+        .then(res => {
+          console.log(res)
+          if (res.status === 204) {
+            vm.$destroy(true)
+            this.$els.deletor.remove()
+          } else {
+            this.error = 'Oops... there was an error. Please try again.'
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.error = 'Oops... there was an error. Please try again.'
+        })
     }
   }
 }
