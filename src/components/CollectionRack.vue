@@ -1,6 +1,11 @@
 <template>
-  <section class="collection">
-    <article v-for="n in 10 | orderBy 'created_at' -1">
+  <section class="collection clearfix">
+    <div class="tools">
+      <button class="">A</button>
+      <button class="">B</button>
+      <button class="">C</button>
+    </div>
+    <article class="rack" v-for="n in 10 | orderBy 'created_at' -1">
       <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
           <p>There's nothing here... yet.<br>
@@ -24,6 +29,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tools {
+  float: left;
+
+  button {
+    width: 50px;
+    height: 50px;
+    display: block;
+  }
+}
+
+.rack {
+  float: left;
+}
+
 .collection {
   width: 100%;
   height: 200px;
@@ -33,7 +52,8 @@ export default {
 
 .cover {
   overflow: hidden;
-  width: 360px;
+  width: 300px;
+  margin-left: 10px;
   height: 180px;
   float: left;
   background-color: black;
@@ -76,7 +96,7 @@ export default {
 
 @media screen and (max-width: 1200px) {
   .cover {
-    width: 200px;
+    width: 280px;
   }
 
   .thumb {
@@ -91,8 +111,6 @@ export default {
   .thumb-5,
   .thumb-6,
   .thumb-7,
-  .thumb-8,
-  .thumb-9,
   .thumb-more {
     display: block;
   }
@@ -100,7 +118,7 @@ export default {
 
 @media screen and (max-width: 990px) {
   .cover {
-    width: 264px;
+    width: 204px;
   }
 
   .thumb-0,
@@ -158,6 +176,10 @@ export default {
       width: 100%;
       height: auto;
     }
+  }
+
+  .rack {
+    width: calc(100% - 60px);
   }
 
   .thumb-1,
