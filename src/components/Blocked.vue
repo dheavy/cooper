@@ -69,7 +69,6 @@ export default {
 
   route: {
     data () {
-      console.log('tototo')
       Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
 
       this.usersLoading = true
