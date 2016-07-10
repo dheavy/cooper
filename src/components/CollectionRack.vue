@@ -1,9 +1,9 @@
 <template>
   <div v-if="error" class="alert alert-danger">{{error}}</div>
 
-  <section class="collection clearfix">
+  <section class="collection clearfix" v-el:rack>
 
-    <section v-if="isDeleteMode" v-el:deletor class="delete-collection">
+    <section v-if="isDeleteMode" class="delete-collection">
       <delete-collection
         :collection-to-delete="collection"
         :other-collections="otherCollections"
@@ -48,6 +48,7 @@
 import {requestBody, headers} from '../services/utils'
 import deleteCollection from './DeleteCollection'
 import {COLLECTIONS_URL} from '../constants/api'
+import {find} from 'lodash/find'
 
 export default {
   name: 'CollectionRack',
@@ -119,10 +120,8 @@ export default {
       this.$http
         .delete(`${COLLECTIONS_URL}/${cid}`, reqBody, headers())
         .then(res => {
-          console.log(res)
-          if (res.status === 204) {
             vm.$destroy(true)
-            this.$els.deletor.remove()
+            this.$els.rack.remove()
           } else {
             this.error = 'Oops... there was an error. Please try again.'
           }
