@@ -14,7 +14,7 @@
             <tr v-for="user in usersList">
               <td><a v-link="{name: 'users', params: {uid: user.id}}">{{user.username}}</a></td>
               <td>
-                <follow-button css-classes="btn btn-sm btn-secondary" :store.sync="store" :other-user="user"></block-button>
+                <follow-button css-classes="btn btn-sm btn-secondary" :store="store" :other-user="user"></block-button>
               </td>
             </tr>
           </tbody>

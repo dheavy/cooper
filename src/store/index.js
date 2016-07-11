@@ -13,11 +13,12 @@ const store = new Vue({
   },
 
   methods: {
-    setUser ({id, username, email, last_login, date_joined, followers, following, blocking, collections_blocked}) {
+    setUser ({id, username, email, last_login, date_joined, followers, following, blocking, collections_followed, collections_blocked}) {
       this.state.user = {
         id, username, email,
         lastLogin: last_login,
         dateJoined: date_joined,
+        collectionsFollowed: collections_followed,
         collectionsBlocked: collections_blocked,
         followers, following,
         blocking
@@ -30,8 +31,14 @@ const store = new Vue({
     },
 
     updateUser (newUser) {
-      const oldUser = this.state.user
+      const oldUser = this.getUser()
       const user = Object.assign({}, oldUser, newUser)
+
+      // Rename properties to fit the setter's arguments.
+      user.collections_blocked = user.collectionsBlocked
+      user.collections_followed = user.collectionsFollowed
+      user.last_login = user.lastLogin
+      user.date_joined = user.dateJoined
       this.setUser(user)
     },
 

@@ -14,7 +14,7 @@
             <tr v-for="blockedUser in blockedUsers">
               <td><a v-link="{name: 'users', params: {uid: blockedUser.id}}">{{blockedUser.username}}</a></td>
               <td>
-                <block-button css-classes="btn btn-sm btn-secondary" :store.sync="store" :other-user="blockedUser"></block-button>
+                <block-button css-classes="btn btn-sm btn-secondary" :store="store" :other-user="blockedUser"></block-button>
               </td>
             </tr>
           </tbody>
@@ -32,7 +32,7 @@
             <tr v-for="blockedCollection in blockedCollections">
               <td>{{blockedCollection.collection.name}} (from {{blockedCollection.owner.username}})</td>
               <td>
-                <block-button css-classes="btn btn-sm btn-secondary" :store.sync="store" :collection="blockedCollection"></block-button>
+                <block-button css-classes="btn btn-sm btn-secondary" :store="store" :collection="blockedCollection"></block-button>
               </td>
             </tr>
           </tbody>

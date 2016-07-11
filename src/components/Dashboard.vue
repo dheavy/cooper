@@ -20,14 +20,14 @@
 
       <follow-button
         css-classes="btn btn-secondary"
-        :store.sync="store"
+        :store="store"
         :other-user="shownUser"
       >
       </follow-button>
 
       <block-button
         css-classes="btn btn-secondary"
-        :store.sync="store"
+        :store="store"
         :other-user="shownUser"
       >
       </block-button>

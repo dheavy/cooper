@@ -33,7 +33,7 @@ export default {
 
       if (collection) {
         if (me.id === collection.owner.id) return null
-        return me.id !== collection.owner.id && me.collectionsBlocked.indexOf(collection.collection.id) === -1
+        return me.id !== collection.owner.id && me.collectionsBlocked.indexOf(collection.id) === -1
       }
     },
 
@@ -59,9 +59,9 @@ export default {
 
       if (collection) {
         this.$http
-          .post(`${COLLECTIONS_URL}/${collection.collection.id}/block`)
+          .post(`${COLLECTIONS_URL}/${collection.id}/block`)
           .then(res => {
-            me.collectionsBlocked.push(collection.collection.id)
+            me.collectionsBlocked.push(collection.id)
             this.store.updateUser(me)
             this.canBlockOther = false
           })
@@ -87,9 +87,9 @@ export default {
 
       if (collection) {
         this.$http
-          .post(`${COLLECTIONS_URL}/${collection.collection.id}/unblock`)
+          .post(`${COLLECTIONS_URL}/${collection.id}/unblock`)
           .then(res => {
-            me.collectionsBlocked.splice(me.collectionsBlocked.indexOf(collection.collection.id), 1)
+            me.collectionsBlocked.splice(me.collectionsBlocked.indexOf(collection.id), 1)
             this.store.updateUser(me)
             this.canBlockOther = true
           })

@@ -18,8 +18,8 @@
       <button v-on:click="setDeletion">!</button>
     </div>
     <div class="tools" v-else>
-      <button class="">A</button>
-      <button class="">B</button>
+      <follow-button :store="store" :collection="collection"></follow-button>
+      <block-button :store="store" :collection="collection"></block-button>
     </div>
 
     <div class="name">
@@ -48,7 +48,9 @@
 import {requestBody, headers} from '../services/utils'
 import deleteCollection from './DeleteCollection'
 import {COLLECTIONS_URL} from '../constants/api'
-import {find} from 'lodash/find'
+import followButton from './FollowButton'
+import blockButton from './BlockButton'
+import store from '../store'
 
 export default {
   name: 'CollectionRack',
@@ -56,11 +58,12 @@ export default {
   props: ['collection', 'areMyOwn', 'otherCollections'],
 
   components: {
-    deleteCollection
+    deleteCollection, followButton, blockButton
   },
 
   data () {
     return {
+      store,
       isDeleteMode: false,
       isEditMode: false,
       error: null
@@ -120,11 +123,8 @@ export default {
       this.$http
         .delete(`${COLLECTIONS_URL}/${cid}`, reqBody, headers())
         .then(res => {
-            vm.$destroy(true)
-            this.$els.rack.remove()
-          } else {
-            this.error = 'Oops... there was an error. Please try again.'
-          }
+          vm.$destroy(true)
+          this.$els.rack.remove()
         })
         .catch(err => {
           console.log(err)
