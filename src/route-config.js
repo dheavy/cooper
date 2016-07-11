@@ -7,6 +7,7 @@ import Blocked from './components/Blocked'
 import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
+import CreateVideo from './components/CreateVideo'
 import PasswordReset from './components/PasswordReset'
 import CreateCollection from './components/CreateCollection'
 
@@ -55,6 +56,10 @@ const routeConfig = router => {
         '/collections/create': {
           name: 'create-collection',
           component: CreateCollection
+        },
+        '/videos/create': {
+          name: 'create-video',
+          component: CreateVideo
         }
       }
     },

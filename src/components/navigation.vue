@@ -7,6 +7,9 @@
       <a class="navbar-brand" href="/">MyPleasu.re</a>
       <ul v-if="auth" class="nav navbar-nav">
         <li class="nav-item">
+          <a class="nav-link" v-link="{path: '/my/videos/create'}">Add video</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
         </li>
         <li class="nav-item">

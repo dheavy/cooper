@@ -78,7 +78,6 @@ export default {
       this.$http
         .post(`${COLLECTIONS_URL}`, payload, headers(this.store.getToken()))
         .then(res => {
-          console.log(res)
           this.success = true
         })
         .catch(err => {

@@ -62,7 +62,7 @@ export default {
         .then(res => {
           console.log(res)
           this.loading = false
-          this.collections = res.data
+          this.collections = res.data.payload
         })
         .catch(err => {
           console.log(err)

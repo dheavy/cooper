@@ -7,7 +7,8 @@ const store = new Vue({
     return {
       state: {
         user: null,
-        token: null
+        token: null,
+        collections: null
       }
     }
   },
@@ -20,14 +21,22 @@ const store = new Vue({
         dateJoined: date_joined,
         collectionsFollowed: collections_followed,
         collectionsBlocked: collections_blocked,
-        followers, following,
-        blocking
+        followers, following, blocking
       }
       localStorage.setItem('user', JSON.stringify(this.state.user))
     },
 
+    setCollections (collections) {
+      this.state.collections = collections
+      localStorage.setItem('collections', JSON.stringify(this.state.collections))
+    },
+
     getUser () {
       return this.state.user || JSON.parse(localStorage.getItem('user'))
+    },
+
+    getCollections () {
+      return this.state.collections || JSON.parse(localStorage.getItem('collections'))
     },
 
     updateUser (newUser) {
@@ -40,6 +49,12 @@ const store = new Vue({
       user.last_login = user.lastLogin
       user.date_joined = user.dateJoined
       this.setUser(user)
+    },
+
+    updateCollections (newCollections) {
+      const oldCollections = this.getCollections()
+      const collections = Object.assign({}, oldCollections, newCollections)
+      this.setCollections(collections)
     },
 
     setToken (token) {
