@@ -146,3 +146,13 @@ export const unfollow = (type, id, token) => {
   const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
   return http(`${url}/${id}/unfollow`, postData({}, token))
 }
+
+export const block = (type, id, token) => {
+  const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
+  return http(`${url}/${id}/block`, postData({}, token))
+}
+
+export const unblock = (type, id, token) => {
+  const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
+  return http(`${url}/${id}/unblock`, postData({}, token))
+}

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {USERS_URL, COLLECTIONS_URL} from '../constants/api'
+import {block, unblock} from '../services/api'
 
 export default {
   props: ['cssClasses', 'otherUser', 'collection', 'store'],
@@ -45,8 +45,7 @@ export default {
 
     block (me, other, collection) {
       if (other) {
-        this.$http
-          .post(`${USERS_URL}/${other.id}/block`)
+        return block('user', other.id, this.store.getToken())
           .then(res => {
             me.blocking.push(other.id)
             this.store.updateUser(me)
@@ -58,8 +57,7 @@ export default {
       }
 
       if (collection) {
-        this.$http
-          .post(`${COLLECTIONS_URL}/${collection.id}/block`)
+        return block('collection', collection.id, this.store.getToken())
           .then(res => {
             me.collectionsBlocked.push(collection.id)
             this.store.updateUser(me)
@@ -73,8 +71,7 @@ export default {
 
     unblock (me, other, collection) {
       if (other) {
-        this.$http
-          .post(`${USERS_URL}/${other.id}/unblock`)
+        return unblock('user', other.id, this.store.getToken())
           .then(res => {
             me.blocking.splice(me.blocking.indexOf(other.id), 1)
             this.store.updateUser(me)
@@ -86,8 +83,7 @@ export default {
       }
 
       if (collection) {
-        this.$http
-          .post(`${COLLECTIONS_URL}/${collection.id}/unblock`)
+        return block('collection', collection.id, this.store.getToken())
           .then(res => {
             me.collectionsBlocked.splice(me.collectionsBlocked.indexOf(collection.id), 1)
             this.store.updateUser(me)
