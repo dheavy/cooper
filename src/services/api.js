@@ -4,8 +4,8 @@ import {
   CHECK_USERNAME_URL,
   FACEBOOK_URL,
   FACEBOOK_REGISTER_URL,
-  USERS_URL /* ,
-  COLLECTIONS_URL,
+  USERS_URL,
+  COLLECTIONS_URL /* ,
   PASSWORD_EDIT_URL,
   EMAIL_EDIT_URL,
   CURATION_ACQUIRE_URL*/
@@ -16,8 +16,9 @@ import {
   FACEBOOK_OAUTH_URL
 } from '../constants/config'
 
-import fetch from 'isomorphic-fetch'
 import {requestBody, headers} from './utils'
+import fetch from 'isomorphic-fetch'
+import {router} from '../main'
 import store from '../store'
 
 require('es6-promise').polyfill()
@@ -43,12 +44,28 @@ export const getData = (token = null) => {
   return data('GET', null, token)
 }
 
+export const checkStatus = res => {
+  if (+res.status >= 400) {
+    if (+res.status === 403) {
+      router.go({path: '/logout'})
+    }
+
+    throw res.error || new Error()
+  }
+
+  return res.json()
+}
+
+export const http = (...args) => {
+  return fetch(...args).then(checkStatus)
+}
+
 export const checkUsername = (username, fb = false) => {
-  return fetch(`${CHECK_USERNAME_URL}/${username}`, getData()).then(res => res.json())
+  return http(`${CHECK_USERNAME_URL}/${username}`, getData())
 }
 
 export const login = credentials => {
-  return fetch(LOGIN_URL, postData(credentials)).then(res => res.json())
+  return http(LOGIN_URL, postData(credentials))
 }
 
 export const fbAuth = token => {
@@ -57,31 +74,33 @@ export const fbAuth = token => {
     return Promise.resolve(true)
   }
 
-  return fetch(`${FACEBOOK_GRAPH_ME_URL}${token}`, getData())
-    .then(res => res.json())
+  return http(`${FACEBOOK_GRAPH_ME_URL}${token}`, getData())
 }
 
 export const fbCheckUser = payload => {
-  return fetch(FACEBOOK_URL, postData(payload)).then(res => res.json())
+  return http(FACEBOOK_URL, postData(payload))
 }
 
 export const register = ({username, email, password, confirmPassword}) => {
-  return fetch(REGISTER_URL, postData({
+  return http(REGISTER_URL, postData({
     username, email, password, confirm_password: confirmPassword
-  })).then(res => res.json())
+  }))
 }
 
 export const registerViaFb = payload => {
-  return fetch(FACEBOOK_REGISTER_URL, postData(payload)).then(res => res.json())
+  return http(FACEBOOK_REGISTER_URL, postData(payload))
 }
 
 export const fetchCollections = (userId, token, bustCache = false) => {
   const cached = store.getCollections()
 
   if (!cached || bustCache) {
-    return fetch(`${USERS_URL}/${userId}/collections`, getData(token))
-      .then(res => res.json())
+    return http(`${USERS_URL}/${userId}/collections`, getData(token))
   } else {
     return Promise.resolve({payload: cached})
   }
+}
+
+export const createCollection = (payload, token) => {
+  return http(COLLECTIONS_URL, postData(payload, token))
 }
