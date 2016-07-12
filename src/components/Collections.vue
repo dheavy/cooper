@@ -14,10 +14,9 @@
 </template>
 
 <script>
+import {fetchCollections} from '../services/api'
 import collectionRack from './CollectionRack'
-import {USERS_URL} from '../constants/api'
 import store from '../store'
-import Vue from 'vue'
 
 export default {
   name: 'Collections',
@@ -54,15 +53,11 @@ export default {
       return collections
     },
 
-    fetchCollections () {
-      Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
-
-      this.$http
-        .get(`${USERS_URL}/${this.userId}/collections`)
+    fetchCollections (bustCache = false) {
+      return fetchCollections(this.userId, this.store.getToken(), bustCache)
         .then(res => {
-          console.log(res)
           this.loading = false
-          this.collections = res.data.payload
+          this.collections = res.payload
         })
         .catch(err => {
           console.log(err)

@@ -3,8 +3,8 @@ import {
   REGISTER_URL,
   CHECK_USERNAME_URL,
   FACEBOOK_URL,
-  FACEBOOK_REGISTER_URL /* ,
-  USERS_URL,
+  FACEBOOK_REGISTER_URL,
+  USERS_URL /* ,
   COLLECTIONS_URL,
   PASSWORD_EDIT_URL,
   EMAIL_EDIT_URL,
@@ -18,6 +18,7 @@ import {
 
 import fetch from 'isomorphic-fetch'
 import {requestBody, headers} from './utils'
+import store from '../store'
 
 require('es6-promise').polyfill()
 
@@ -72,4 +73,15 @@ export const register = ({username, email, password, confirmPassword}) => {
 
 export const registerViaFb = payload => {
   return fetch(FACEBOOK_REGISTER_URL, postData(payload)).then(res => res.json())
+}
+
+export const fetchCollections = (userId, token, bustCache = false) => {
+  const cached = store.getCollections()
+
+  if (!cached || bustCache) {
+    return fetch(`${USERS_URL}/${userId}/collections`, getData(token))
+      .then(res => res.json())
+  } else {
+    return Promise.resolve({payload: cached})
+  }
 }
