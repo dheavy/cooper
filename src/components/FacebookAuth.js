@@ -3,7 +3,7 @@ import {requestBody, headers} from '../services/utils'
 import {FACEBOOK_URL} from '../constants/api'
 import Vue from 'vue'
 
-var facebookAuth = new Vue({
+const facebookAuth = new Vue({
   data () {
     return {
       error: ''

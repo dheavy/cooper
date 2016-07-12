@@ -104,12 +104,12 @@
 <script>
 import registration from '../services/registration'
 import facebookAuth from './FacebookAuth'
+import errors from '../services/errors'
 import navigation from './Navigation'
 import validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'
 import login from './Login'
-import _ from 'lodash'
 import Vue from 'vue'
 
 export default {
@@ -195,7 +195,12 @@ export default {
     submit () {
       this.error = ''
       if (this.$registerValidation.valid) {
-        registration.register(this, this.credentials)
+        registration
+          .register(this.credentials)
+          .catch(err => {
+            console.log(err.message)
+            this.parseError(err)
+          })
       }
     },
 
@@ -207,19 +212,11 @@ export default {
     },
 
     parseError (err) {
-      if (err) {
-        const parsed = typeof err.data.error === 'string'
-          ? JSON.parse(err.data.error.split("'").join('"'))
-          : err.data.error
-
-        if (parsed) {
-          for (const prop in parsed) {
-            this.error += `${_.capitalize(prop)}: ${parsed[prop][0]} <br>`
-          }
-        }
-        return
+      if (errors[err.message]) {
+        this.error = errors[err.message]
+      } else {
+        this.error = 'Oops... something went wrong, please try again.'
       }
-      this.error = 'Oops... something went wrong, please try again.'
     }
   },
 

@@ -9,14 +9,12 @@ export const requestBody = payload => {
 
 export const headers = token => {
   const headers = {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json'
-    }
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
   }
 
   if (token) {
-    headers.headers['Authorization'] = `Bearer ${token}`
+    headers['Authorization'] = `Bearer ${token}`
   }
 
   return headers

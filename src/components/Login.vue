@@ -100,7 +100,11 @@ export default {
           username: this.credentials.username,
           password: this.credentials.password
         }
-        auth.login(this, credentials, '/my')
+
+        auth
+          .login(credentials, '/my')
+          .catch(err => this.parseError(err))
+
         this.resetValidation()
       }
     },

@@ -1,5 +1,6 @@
-import {CHECK_USERNAME_URL, REGISTER_URL, FACEBOOK_REGISTER_URL} from '../constants/api'
+import {CHECK_USERNAME_URL, FACEBOOK_REGISTER_URL} from '../constants/api'
 import {requestBody, headers} from './utils'
+import {register} from './api'
 import auth from './auth'
 
 export default {
@@ -26,16 +27,16 @@ export default {
       })
   },
 
-  register (context, {username, email, password, confirmPassword}) {
-    context.$http
-      .post(REGISTER_URL, requestBody({
-        username, email, password, confirm_password: confirmPassword
-      }), headers())
+  register (payload) {
+    return register(payload)
       .then(res => {
-        auth.login(context, {username, password}, '/my')
+        if (res.status >= 300) {
+          throw new Error(JSON.parse(res.error.split("'").join('"')).code[0])
+        }
       })
-      .catch(err => {
-        context.parseError(err)
+      .then(res => {
+        auth.login({username: payload.username, password: payload.password}, '/my')
+            .catch(err => { throw err })
       })
   },
 
@@ -43,7 +44,9 @@ export default {
     context.$http
       .post(FACEBOOK_REGISTER_URL, requestBody(payload), headers())
       .then(res => {
-        auth.loginViaTokenAndUser(res.data.token, res.data.user, '/my')
+        auth
+          .loginViaTokenAndUser(res.data.token, res.data.user, '/my')
+          .catch(err => context.parseError(err))
       })
       .catch(err => {
         context.parseError(err)

@@ -1,20 +1,15 @@
-import {requestBody, headers} from './utils'
-import {LOGIN_URL} from '../constants/api'
 import {router} from '../main'
 import store from '../store'
+import {login} from './api'
 import Vue from 'vue'
 
 export default {
   isAuthenticated: () => !!(localStorage.getItem('token') && localStorage.getItem('user')),
 
-  login (context, credentials, redirect) {
-    context.$http
-      .post(LOGIN_URL, requestBody(credentials), headers())
+  login (credentials, redirect) {
+    return login(credentials)
       .then(res => {
-        this.loginViaTokenAndUser(res.data.token, res.data.user, '/my')
-      })
-      .catch(err => {
-        context.parseError(err)
+        this.loginViaTokenAndUser(res.token, res.user, '/my')
       })
   },
 
