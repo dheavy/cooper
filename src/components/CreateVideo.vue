@@ -83,7 +83,6 @@
 <script>
 import {USERS_URL, CURATION_ACQUIRE_URL} from '../constants/api'
 import {requestBody, headers} from '../services/utils'
-import forbidden from '../mixins/forbidden'
 import validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'

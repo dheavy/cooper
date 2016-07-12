@@ -102,5 +102,6 @@ export const fetchCollections = (userId, token, bustCache = false) => {
 }
 
 export const createCollection = (payload, token) => {
+  store.markCollectionsDirty(true)
   return http(COLLECTIONS_URL, postData(payload, token))
 }

@@ -9,6 +9,10 @@ const store = new Vue({
         user: null,
         token: null,
         collections: null
+      },
+      dirty: {
+        collections: null,
+        user: null
       }
     }
   },
@@ -24,6 +28,15 @@ const store = new Vue({
         followers, following, blocking
       }
       localStorage.setItem('user', JSON.stringify(this.state.user))
+    },
+
+    markCollectionsDirty (mark) {
+      this.dirty.collections = mark
+      mark ? localStorage.setItem('collections_dirty', true) : localStorage.removeItem('collections_dirty')
+    },
+
+    areCollectionsDirty () {
+      return this.dirty.collections !== null ? this.dirty.collections : !!localStorage.getItem('collections_dirty')
     },
 
     setCollections (collections) {
@@ -69,6 +82,8 @@ const store = new Vue({
     clear () {
       this.state.user = null
       this.state.token = null
+      this.dirty.collections = false
+      this.dirty.user = false
       localStorage.removeItem('user')
       localStorage.removeItem('token')
     }

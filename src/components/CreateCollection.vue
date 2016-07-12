@@ -45,9 +45,7 @@
 </template>
 
 <script>
-import {requestBody, headers} from '../services/utils'
-import {COLLECTIONS_URL} from '../constants/api'
-import forbidden from '../mixins/forbidden'
+import {createCollection} from '../services/api'
 import toggleSwitch from './ToggleSwitch'
 import {router} from '../main'
 import store from '../store'
@@ -59,7 +57,6 @@ export default {
 
   data () {
     return {
-      store,
       success: false,
       error: false
     }
@@ -69,12 +66,10 @@ export default {
     create () {
       const name = this.$els.name.value.trim() !== '' ? this.$els.name.value : 'Untitled'
       const makePrivate = this.$els.visibility.childNodes[1].checked
-      const payload = requestBody({name, 'is_private': makePrivate})
 
       this.resetForm()
 
-      this.$http
-        .post(`${COLLECTIONS_URL}`, payload, headers(this.store.getToken()))
+      return createCollection({name, 'is_private': makePrivate}, store.getToken())
         .then(res => {
           this.success = true
         })

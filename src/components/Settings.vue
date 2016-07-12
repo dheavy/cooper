@@ -89,7 +89,6 @@
 <script>
 import {USERS_URL, EMAIL_EDIT_URL, PASSWORD_EDIT_URL} from '../constants/api'
 import {requestBody, headers} from '../services/utils'
-import forbidden from '../mixins/forbidden'
 import validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'
@@ -203,6 +202,7 @@ export default {
           router.go({path: '/logout'})
         })
         .catch(err => {
+          console.log(err)
           this.errorDeactivate = 'Oops... There was an error on our end. Please try again.'
         })
     }

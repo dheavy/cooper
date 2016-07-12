@@ -29,7 +29,6 @@ export default {
 
   data () {
     return {
-      store,
       loading: false,
       error: '',
       collections: null
@@ -38,7 +37,7 @@ export default {
 
   ready () {
     this.loading = true
-    this.fetchCollections()
+    this.fetchCollections(store.areCollectionsDirty())
 
     // Force rendering of collections if currently shown user is changed.
     this.$watch('areMyOwn', (val, oldVal) => {
@@ -54,10 +53,14 @@ export default {
     },
 
     fetchCollections (bustCache = false) {
-      return fetchCollections(this.userId, this.store.getToken(), bustCache)
+      return fetchCollections(this.userId, store.getToken(), bustCache)
         .then(res => {
           this.loading = false
           this.collections = res.payload
+          if (bustCache) {
+            store.setCollections(this.collections)
+            store.markCollectionsDirty(false)
+          }
         })
         .catch(err => {
           console.log(err)
