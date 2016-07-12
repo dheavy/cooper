@@ -136,3 +136,13 @@ export const deactivate = (userId, token) => {
       }
     })
 }
+
+export const follow = (type, id, token) => {
+  const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
+  return http(`${url}/${id}/follow`, postData({}, token))
+}
+
+export const unfollow = (type, id, token) => {
+  const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
+  return http(`${url}/${id}/unfollow`, postData({}, token))
+}

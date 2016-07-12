@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {USERS_URL, COLLECTIONS_URL} from '../constants/api'
+import {follow, unfollow} from '../services/api'
 
 export default {
   props: ['cssClasses', 'otherUser', 'collection', 'store'],
@@ -45,8 +45,7 @@ export default {
 
     follow (me, other, collection) {
       if (other) {
-        this.$http
-          .post(`${USERS_URL}/${other.id}/follow`)
+        return follow('user', other.id, this.store.getToken())
           .then(res => {
             me.following.push(other.id)
             this.store.updateUser(me)
@@ -58,8 +57,7 @@ export default {
       }
 
       if (collection) {
-        this.$http
-          .post(`${COLLECTIONS_URL}/${collection.id}/follow`)
+        return follow('collection', collection.id, this.store.getToken())
           .then(res => {
             me.collectionsFollowed.push(collection.id)
             this.store.updateUser(me)
@@ -73,8 +71,7 @@ export default {
 
     unfollow (me, other, collection) {
       if (other) {
-        this.$http
-          .post(`${USERS_URL}/${other.id}/unfollow`)
+        return unfollow('user', other.id, this.store.getToken())
           .then(res => {
             me.following.splice(me.following.indexOf(me.id), 1)
             this.store.updateUser(me)
@@ -86,8 +83,7 @@ export default {
       }
 
       if (collection) {
-        this.$http
-          .post(`${COLLECTIONS_URL}/${collection.id}/unfollow`)
+        return unfollow('collection', collection.id, this.store.getToken())
           .then(res => {
             me.collectionsFollowed.splice(me.collectionsFollowed.indexOf(collection.id), 1)
             this.store.updateUser(me)
