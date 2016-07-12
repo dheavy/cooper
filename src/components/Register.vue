@@ -155,7 +155,25 @@ export default {
     checkUsername (forFacebookRegistration = false) {
       const username = forFacebookRegistration ? this.credentialsFb.username : this.credentials.username
       if (username.length > 2) {
-        registration.checkUsername(this, username, forFacebookRegistration)
+        registration.checkUsername(username, forFacebookRegistration)
+          .then(res => {
+            if (res.status === 200) {
+              if (forFacebookRegistration) {
+                this.fbUsernameAvailable = true
+              } else {
+                this.usernameAvailable = true
+              }
+            } else {
+              if (forFacebookRegistration) {
+                this.fbUsernameAvailable = false
+              } else {
+                this.usernameAvailable = false
+              }
+            }
+          })
+          .catch(err => {
+            this.parseError(err)
+          })
       } else {
         this.fbUsernameAvailable = null
         this.usernameAvailable = null
@@ -207,11 +225,16 @@ export default {
     submitFacebook () {
       this.error = ''
       if (this.$registerValidation.valid) {
-        registration.registerViaFacebook(this, this.credentialsFb)
+        registration
+          .registerViaFacebook(this.credentialsFb)
+          .catch(err => {
+            this.parseError(err)
+          })
       }
     },
 
     parseError (err) {
+      console.log(err)
       if (errors[err.message]) {
         this.error = errors[err.message]
       } else {
@@ -252,15 +275,15 @@ export default {
             .then(res => {
               this.fbCheckUser({
                 'fb_access_token': token,
-                'fb_id': res.data.id,
-                'fb_name': res.data.name,
-                'fb_email': res.data.email || ''
+                'fb_id': res.id,
+                'fb_name': res.name,
+                'fb_email': res.email || ''
               })
               .then(res => {
                 if (res.status === 200) {
-                  login.methods.fbLoginUser({token: res.data.token, user: res.data.user})
+                  login.methods.fbLoginUser({token: res.token, user: res.user})
                 } else {
-                  this.fbRegistrationLastStep(res.data)
+                  this.fbRegistrationLastStep(res)
                 }
               })
               .catch(err => {
