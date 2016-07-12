@@ -43,10 +43,9 @@
 </template>
 
 <script>
-import {USERS_URL, COLLECTIONS_URL} from '../constants/api'
+import {fetchBlockedUsers, fetchBlockedCollections} from '../services/api'
 import blockButton from './BlockButton'
 import store from '../store'
-import Vue from 'vue'
 
 export default {
   name: 'Blocked',
@@ -69,16 +68,13 @@ export default {
 
   route: {
     data () {
-      Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
-
       this.usersLoading = true
 
       // Blocked users
-      this.$http
-        .get(`${USERS_URL}/blocked`)
+      fetchBlockedUsers(this.store.getToken())
         .then(res => {
           this.usersLoading = false
-          this.blockedUsers = res.data.payload
+          this.blockedUsers = res.payload
         })
         .catch(err => {
           console.log(err)
@@ -87,11 +83,10 @@ export default {
         })
 
       // Blocked collections
-      this.$http
-        .get(`${COLLECTIONS_URL}/blocked`)
+      fetchBlockedCollections(this.store.getToken())
         .then(res => {
           this.collectionsLoading = false
-          this.blockedCollections = res.data.payload
+          this.blockedCollections = res.payload
         })
         .catch(err => {
           console.log(err)

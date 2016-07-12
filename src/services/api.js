@@ -156,3 +156,11 @@ export const unblock = (type, id, token) => {
   const url = type === 'user' ? USERS_URL : COLLECTIONS_URL
   return http(`${url}/${id}/unblock`, postData({}, token))
 }
+
+export const fetchBlockedUsers = token => {
+  return http(`${USERS_URL}/blocked`, getData(token))
+}
+
+export const fetchBlockedCollections = token => {
+  return http(`${COLLECTIONS_URL}/blocked`, getData(token))
+}
