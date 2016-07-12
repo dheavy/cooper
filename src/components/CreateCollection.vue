@@ -57,8 +57,6 @@ export default {
 
   components: [toggleSwitch],
 
-  mixins: [forbidden],
-
   data () {
     return {
       store,
@@ -83,7 +81,6 @@ export default {
         .catch(err => {
           console.log(err)
           this.error = true
-          this.logoutIfForbidden(err.status)
         })
     },
 

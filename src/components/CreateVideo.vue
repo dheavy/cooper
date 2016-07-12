@@ -91,8 +91,6 @@ import store from '../store'
 export default {
   name: 'CreateCollection',
 
-  mixins: [forbidden],
-
   components: {validator},
 
   validators: {
@@ -204,7 +202,6 @@ export default {
         .catch(err => {
           console.log(err)
           this.error = 'Oops... There was an error. Please refresh the page.'
-          this.logoutIfForbidden(err.status)
         })
     }
   }

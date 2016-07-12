@@ -98,8 +98,6 @@ import _ from 'lodash'
 export default {
   name: 'Settings',
 
-  mixins: [forbidden],
-
   components: {
     validator
   },
@@ -157,7 +155,6 @@ export default {
             this.successEditEmail = 'Email successfully modified!'
           })
           .catch(err => {
-            this.logoutIfForbidden(err.status)
             if (err.data && err.data.error) {
               _.each(err.data.error, msg => {
                 this.errorEditEmail += `${_.capitalize(msg)}<br>`
@@ -187,7 +184,6 @@ export default {
             this.successEditPassword = 'Password successfully changed!'
           })
           .catch(err => {
-            this.logoutIfForbidden(err.status)
             if (err.data && err.data.error) {
               _.each(err.data.error, msg => {
                 this.errorEditPassword += `${_.capitalize(msg)}<br>`
@@ -207,7 +203,6 @@ export default {
           router.go({path: '/logout'})
         })
         .catch(err => {
-          this.logoutIfForbidden(err.status)
           this.errorDeactivate = 'Oops... There was an error on our end. Please try again.'
         })
     }
