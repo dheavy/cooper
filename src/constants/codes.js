@@ -1,6 +1,7 @@
 export const EMAIL_IN_USE = 'email_in_use'
 export const EMAIL_INVALID = 'email_invalid'
 export const CONFIRM_PASSWORD_MISSING = 'confirm_password_missing'
+export const PASSWORD_INVALID = 'password_invalid'
 export const PASSWORD_MISMATCH = 'passwords_mismatch'
 export const AUTH_FORBIDDEN = 'auth_forbidden'
 export const INVALID_UID = 'invalid_uid'

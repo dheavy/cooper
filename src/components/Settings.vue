@@ -87,12 +87,11 @@
 </template>
 
 <script>
-import {USERS_URL, EMAIL_EDIT_URL, PASSWORD_EDIT_URL} from '../constants/api'
-import {requestBody, headers} from '../services/utils'
+import {editPassword, editEmail, deactivate} from '../services/api'
+import errors from '../services/errors'
 import validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'
-import _ from 'lodash'
 
 export default {
   name: 'Settings',
@@ -103,7 +102,6 @@ export default {
 
   data () {
     return {
-      store,
       editPassword: {
         currentPassword: '',
         password: '',
@@ -128,6 +126,18 @@ export default {
   },
 
   methods: {
+    resetForms () {
+      this.editPassword = {
+        currentPassword: '',
+        password: '',
+        passwordConfirm: ''
+      }
+
+      this.editEmail = {
+        email: ''
+      }
+    },
+
     resetEditPasswordValidation () {
       this.editPasswordSubmitted = false
       this.$resetValidation()
@@ -142,25 +152,20 @@ export default {
       this.successEditEmail = ''
       this.errorEditEmail = ''
 
-      const id = this.store.getUser().id
+      const id = store.getUser().id
 
       if (this.$editEmailValidation.valid || this.editEmail.email === '') {
-        this.$http
-          .post(`${EMAIL_EDIT_URL}`, requestBody({
-            user_id: id,
-            email: this.editEmail.email
-          }), headers(this.store.getToken()))
+        return editEmail({
+          user_id: id,
+          email: this.editEmail.email,
+          token: store.getToken()
+        })
           .then(res => {
             this.successEditEmail = 'Email successfully modified!'
+            this.resetForms()
           })
           .catch(err => {
-            if (err.data && err.data.error) {
-              _.each(err.data.error, msg => {
-                this.errorEditEmail += `${_.capitalize(msg)}<br>`
-              })
-            } else {
-              this.errorEditEmail = 'Oops... something went wront on our end. Please try again.'
-            }
+            this.parseEmailError(err)
           })
       }
     },
@@ -169,35 +174,30 @@ export default {
       this.successEditPassword = ''
       this.errorEditPassword = ''
 
-      const id = this.store.getUser().id
+      const id = store.getUser().id
 
       if (this.$editPasswordValidation.valid) {
-        this.$http
-          .post(`${PASSWORD_EDIT_URL}`, requestBody({
-            user_id: id,
-            password: this.editPassword.password,
-            current_password: this.editPassword.currentPassword,
-            confirm_password: this.editPassword.passwordConfirm
-          }), headers(this.store.getToken()))
+        return editPassword({
+          user_id: id,
+          password: this.editPassword.password,
+          current_password: this.editPassword.currentPassword,
+          confirm_password: this.editPassword.passwordConfirm,
+          token: store.getToken()
+        })
           .then(res => {
             this.successEditPassword = 'Password successfully changed!'
+            this.resetForms()
           })
           .catch(err => {
-            if (err.data && err.data.error) {
-              _.each(err.data.error, msg => {
-                this.errorEditPassword += `${_.capitalize(msg)}<br>`
-              })
-            } else {
-              this.errorEditPassword = 'Oops... something went wront on our end. Please try again.'
-            }
+            this.parsePasswordError(err)
           })
       }
     },
 
-    deactivate: () => {
-      const id = this.store.getUser().id
-      this.$http
-        .delete(`${USERS_URL}/${id}`, headers(this.store.getToken()))
+    deactivate () {
+      const id = store.getUser().id
+
+      return deactivate(id, store.getToken())
         .then(res => {
           router.go({path: '/logout'})
         })
@@ -205,6 +205,22 @@ export default {
           console.log(err)
           this.errorDeactivate = 'Oops... There was an error on our end. Please try again.'
         })
+    },
+
+    parseEmailError (err) {
+      if (err.message && errors[err.message]) {
+        this.errorEditEmail = errors[err.message]
+      } else {
+        this.errorEditEmail = 'Oops... there was an error. Please try again.'
+      }
+    },
+
+    parsePasswordError (err) {
+      if (err.message && errors[err.message]) {
+        this.errorEditPassword = errors[err.message]
+      } else {
+        this.errorEditPassword = 'Oops... there was an error. Please try again.'
+      }
     }
   },
 

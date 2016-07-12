@@ -69,7 +69,7 @@
               class="form-control"
               placeholder="Password"
               v-model="credentials.password"
-              v-validate:password="{required: true, minlength: 6}"
+              v-validate:password="{required: true, minlength: 8}"
               v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
             >
           </div>
@@ -80,7 +80,7 @@
               class="form-control"
               placeholder="Confirm password"
               v-model="credentials.confirmPassword"
-              v-validate:confirm-password="{required: true, minlength: 6}"
+              v-validate:confirm-password="{required: true, minlength: 8}"
               v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
             >
           </div>
@@ -142,7 +142,7 @@ export default {
       classFormControlDanger: 'form-control-danger',
       usernameAvailable: null,
       fbUsernameAvailable: null,
-      submitted: '',
+      submitted: false,
       error: ''
     }
   },

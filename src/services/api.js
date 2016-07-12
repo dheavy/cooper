@@ -5,9 +5,9 @@ import {
   FACEBOOK_URL,
   FACEBOOK_REGISTER_URL,
   USERS_URL,
-  COLLECTIONS_URL /* ,
+  COLLECTIONS_URL,
   PASSWORD_EDIT_URL,
-  EMAIL_EDIT_URL,
+  EMAIL_EDIT_URL /* ,
   CURATION_ACQUIRE_URL*/
 } from '../constants/api'
 
@@ -44,13 +44,19 @@ export const getData = (token = null) => {
   return data('GET', null, token)
 }
 
-export const checkStatus = res => {
-  if (+res.status >= 400) {
-    if (+res.status === 403) {
-      router.go({path: '/logout'})
-    }
+export const deleteData = token => {
+  return data('DELETE', null, token)
+}
 
-    throw res.error || new Error()
+export const checkStatus = res => {
+  if (+res.status === 403) {
+    return router.go({path: '/logout'})
+  }
+
+  if (+res.status >= 400) {
+    return res.json().then(res => {
+      throw new Error(res.error.code)
+    })
   }
 
   return res.json()
@@ -102,6 +108,31 @@ export const fetchCollections = (userId, token, bustCache = false) => {
 }
 
 export const createCollection = (payload, token) => {
+  // Mark collections for dirty checking and refreshment.
   store.markCollectionsDirty(true)
   return http(COLLECTIONS_URL, postData(payload, token))
+}
+
+export const editPassword = ({user_id, password, current_password, confirm_password, token}) => {
+  return http(PASSWORD_EDIT_URL, postData({user_id, password, current_password, confirm_password}, token))
+}
+
+export const editEmail = ({user_id, email, token}) => {
+  return http(EMAIL_EDIT_URL, postData({user_id, email}, token))
+    .then(res => {
+      // Update locally stored reference of user.
+      const user = store.getUser()
+      user.email = email
+      store.updateUser(user)
+      return res
+    })
+}
+
+export const deactivate = (userId, token) => {
+  return fetch(`${USERS_URL}/${userId}`, deleteData(token))
+    .then(res => {
+      if (res.status === 204) {
+        return true
+      }
+    })
 }

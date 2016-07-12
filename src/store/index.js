@@ -11,8 +11,7 @@ const store = new Vue({
         collections: null
       },
       dirty: {
-        collections: null,
-        user: null
+        collections: null
       }
     }
   },
@@ -82,10 +81,12 @@ const store = new Vue({
     clear () {
       this.state.user = null
       this.state.token = null
-      this.dirty.collections = false
-      this.dirty.user = false
+
+      this.markCollectionsDirty(false)
+
       localStorage.removeItem('user')
       localStorage.removeItem('token')
+      localStorage.removeItem('collections')
     }
   }
 })

@@ -3,6 +3,7 @@ import {
   EMAIL_INVALID,
   CONFIRM_PASSWORD_MISSING,
   PASSWORD_MISMATCH,
+  PASSWORD_INVALID,
   AUTH_FORBIDDEN,
   INVALID_UID,
   INVALID_TOKEN,
@@ -20,6 +21,7 @@ const messages = {}
 messages[EMAIL_IN_USE] = 'Email is already in use by another user.'
 messages[EMAIL_INVALID] = 'Email address is invalid.'
 messages[CONFIRM_PASSWORD_MISSING] = 'Password confirmation is missing.'
+messages[PASSWORD_INVALID] = 'Your password is invalid, please try again.'
 messages[PASSWORD_MISMATCH] = 'Passwords mismatch.'
 messages[AUTH_FORBIDDEN] = 'Authentication failed (forbidden).'
 messages[INVALID_UID] = 'The passed UID is invalid.'
