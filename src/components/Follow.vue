@@ -25,10 +25,9 @@
 </template>
 
 <script>
-import {USERS_URL} from '../constants/api'
+import {userToUserRelationships} from '../services/api'
 import followButton from './FollowButton'
 import store from '../store'
-import Vue from 'vue'
 
 export default {
   name: 'Follow',
@@ -49,19 +48,16 @@ export default {
 
   route: {
     data () {
-      Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
-
       this.loading = true
       this.error = false
 
-      this.relationship = this.$route.path.indexOf('followed') > -1 ? 'followed' : 'followers'
+      this.relationship = this.$route.path.indexOf('followers') > -1 || +store.getUser().id !== +this.$route.params.uid
+                          ? 'followers' : 'followed'
 
-      this.$http
-        .get(`${USERS_URL}/${this.relationship}`)
+      return userToUserRelationships(this.relationship, this.$route.params.uid, store.getToken())
         .then(res => {
-          console.log(res)
           this.loading = false
-          this.usersList = res.data.payload
+          this.usersList = res.payload
         })
         .catch(err => {
           console.log(err)

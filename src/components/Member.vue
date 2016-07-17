@@ -6,10 +6,10 @@
         <small>member since {{dateJoined}}</small>
       </div>
       <div class="col-sm-4">
-        <p><a v-link="{path: '/my/followed'}">{{following}} followed</a></p>
+        <p><a v-if="+id === currentUserId" v-link="{path: '/users/' + id + '/followed'}">{{following}} followed</a></p>
       </div>
       <div class="col-sm-4">
-        <p><a v-link="{path: '/my/followers'}">{{followers}} followers</a></p>
+        <p><a v-link="{path: '/users/' + id + '/followers'}">{{followers}} followers</a></p>
       </div>
     </header>
   </section>
@@ -29,6 +29,8 @@ export default {
   name: 'Member',
 
   props: [
+    'id',
+    'currentUserId',
     'username',
     'dateJoined',
     'following',

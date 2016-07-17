@@ -10,6 +10,8 @@
     <div class="alert alert-danger" v-if="error">{{error}}</div>
     <div v-else>
       <member
+        :id="shownUser.id"
+        :current-user-id="user.id"
         :username="shownUser.username"
         :date-joined="shownUser.dateJoined | date"
         :followers="shownUser.followers.length"
@@ -34,7 +36,7 @@
 
       <collections
         :user-id="shownUser.id"
-        :are-my-own="shownUser.id === store.getUser().id"
+        :are-my-own="collectionsAreMyOwn"
         v-show="isMyFrontpage || isMemberPage"
       ></collections>
     </div>
@@ -43,14 +45,13 @@
 </template>
 
 <script>
-import {USERS_URL} from '../constants/api'
 import followButton from './FollowButton'
+import {fetchUser} from '../services/api'
 import collections from './collections'
 import blockButton from './BlockButton'
 import navigation from './Navigation'
 import member from './Member'
 import store from '../store'
-import Vue from 'vue'
 
 export default {
   name: 'Dashboard',
@@ -78,34 +79,39 @@ export default {
         return this.shownUser.id === this.user.id &&
                this.$route.path === '/my' || this.$route.path === '/my/collections'
       }
+    },
+
+    collectionsAreMyOwn () {
+      return this.shownUser.id === this.store.getUser().id
     }
   },
 
   route: {
     data () {
       this.isMyFrontpage = this.$route.path === '/my'
-      this.isMemberPage = /\/users\/\d/.test(this.$route.path)
+      this.isMemberPage = /\/users\/\d*\/?$/i.test(this.$route.path)
 
       if (this.isMemberPage && this.$route.params.uid) {
         const id = this.$route.params.uid
         this.error = ''
 
-        Vue.http.headers.common['Authorization'] = `Bearer ${this.store.getToken()}`
-
-        this.$http
-          .get(`${USERS_URL}/${id}`)
+        fetchUser(id, store.getToken())
           .then(res => {
             this.loading = false
-            this.shownUser = res.data.payload
+            this.shownUser = res.payload
           })
           .catch(err => {
             console.log(err)
             this.loading = false
+            if (err.status === 404) {
+              this.error = 'User not found.'
+              return
+            }
             this.error = 'Oops... something went wrong. Please try again.'
           })
       } else {
         // Own user's page.
-        this.shownUser = this.store.getUser()
+        this.shownUser = store.getUser()
         this.loading = false
       }
     }

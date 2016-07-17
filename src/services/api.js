@@ -7,8 +7,8 @@ import {
   USERS_URL,
   COLLECTIONS_URL,
   PASSWORD_EDIT_URL,
-  EMAIL_EDIT_URL /* ,
-  CURATION_ACQUIRE_URL*/
+  EMAIL_EDIT_URL,
+  CURATION_ACQUIRE_URL
 } from '../constants/api'
 
 import {
@@ -42,6 +42,10 @@ export const postData = (payload, token = null) => {
 
 export const getData = (token = null) => {
   return data('GET', null, token)
+}
+
+export const patchData = (payload, token = null) => {
+  return data('PATCH', payload, token)
 }
 
 export const deleteData = token => {
@@ -97,11 +101,15 @@ export const registerViaFb = payload => {
   return http(FACEBOOK_REGISTER_URL, postData(payload))
 }
 
-export const fetchCollections = (userId, token, bustCache = false) => {
+export const fetchUser = (userId, token) => {
+  return http(`${USERS_URL}/${userId}`, getData(token))
+}
+
+export const fetchCollections = (uid, token, bustCache = false) => {
   const cached = store.getCollections()
 
   if (!cached || bustCache) {
-    return http(`${USERS_URL}/${userId}/collections`, getData(token))
+    return http(`${USERS_URL}/${uid}/collections`, getData(token))
   } else {
     return Promise.resolve({payload: cached})
   }
@@ -111,6 +119,27 @@ export const createCollection = (payload, token) => {
   // Mark collections for dirty checking and refreshment.
   store.markCollectionsDirty(true)
   return http(COLLECTIONS_URL, postData(payload, token))
+}
+
+export const addVideo = (payload, token) => {
+  return http(CURATION_ACQUIRE_URL, postData(payload, token))
+}
+
+export const toggleCollectionVisibility = (cid, isPrivate, token) => {
+  return http(`${COLLECTIONS_URL}/${cid}`, patchData({is_private: isPrivate}, token))
+}
+
+export const editCollectionName = (cid, name, token) => {
+  return http(`${COLLECTIONS_URL}/${cid}`, patchData({name}, token))
+}
+
+export const deleteCollection = (cid, token) => {
+  return fetch(`${COLLECTIONS_URL}/${cid}`, deleteData(token))
+    .then(res => {
+      if (res.status === 204) {
+        return true
+      }
+    })
 }
 
 export const editPassword = ({user_id, password, current_password, confirm_password, token}) => {
@@ -163,4 +192,8 @@ export const fetchBlockedUsers = token => {
 
 export const fetchBlockedCollections = token => {
   return http(`${COLLECTIONS_URL}/blocked`, getData(token))
+}
+
+export const userToUserRelationships = (type, id, token) => {
+  return http(`${USERS_URL}/${id}/${type}`, getData(token))
 }

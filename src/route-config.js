@@ -66,7 +66,13 @@ const routeConfig = router => {
     '/users/:uid': {
       auth: true,
       name: 'users',
-      component: Dashboard
+      component: Dashboard,
+      subRoutes: {
+        '/followed': {
+          name: 'followed',
+          component: Follow
+        }
+      }
     },
     '/password/reset': {
       component: PasswordReset,

@@ -45,9 +45,11 @@
 </template>
 
 <script>
-import {requestBody, headers} from '../services/utils'
+import {
+  toggleCollectionVisibility,
+  editCollectionName,
+  deleteCollection as deleteCollectionCommand} from '../services/api'
 import deleteCollection from './DeleteCollection'
-import {COLLECTIONS_URL} from '../constants/api'
 import followButton from './FollowButton'
 import blockButton from './BlockButton'
 import store from '../store'
@@ -74,12 +76,9 @@ export default {
     toggleVisibility () {
       const currentVisibility = this.collection.is_private
 
-      this.$http
-        .patch(`${COLLECTIONS_URL}/${this.collection.id}`, requestBody({
-          is_private: !currentVisibility
-        }), headers())
+      toggleCollectionVisibility(this.collection.id, !currentVisibility, store.getToken())
         .then(res => {
-          this.collection.is_private = res.data.is_private
+          this.collection.is_private = res.is_private
         })
         .catch(err => {
           console.log(err)
@@ -92,14 +91,11 @@ export default {
 
     editName (e) {
       if (this.isEditMode) {
-        const newName = e.srcElement.value.trim() !== '' ? e.srcElement.value.trim() : 'Untitled'
-        this.collection.name = newName
+        const name = e.srcElement.value.trim() !== '' ? e.srcElement.value.trim() : 'Untitled'
+        this.collection.name = name
         this.isEditMode = false
 
-        this.$http
-          .patch(`${COLLECTIONS_URL}/${this.collection.id}`, requestBody({
-            name: newName
-          }), headers())
+        editCollectionName(this.collection.id, name, store.getToken())
           .then(res => {
             console.log(res)
           })
@@ -120,8 +116,7 @@ export default {
     finalizeDeletion (cid, vm, reqBody) {
       this.error = null
 
-      this.$http
-        .delete(`${COLLECTIONS_URL}/${cid}`, reqBody, headers())
+      deleteCollectionCommand(cid, store.getToken())
         .then(res => {
           vm.$destroy(true)
           this.$els.rack.remove()

@@ -37,7 +37,7 @@
                   <option selected>Choose a collection</option>
                 </optgroup>
                 <optgroup>
-                  <option v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
+                  <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
                 </optgroup>
                 <optgroup>
                   <option>{{createNewLabel}}</option>
@@ -81,8 +81,8 @@
 </template>
 
 <script>
-import {USERS_URL, CURATION_ACQUIRE_URL} from '../constants/api'
-import {requestBody, headers} from '../services/utils'
+import {fetchCollections, addVideo} from '../services/api'
+import errors from '../services/errors'
 import validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'
@@ -104,12 +104,12 @@ export default {
 
   data () {
     return {
-      store,
       createNewLabel: '...or create a new one',
       submitted: false,
       success: null,
       error: null,
       warning: null,
+      collections: store.getCollections(),
       payload: {
         collection_id: -1,
         url: '',
@@ -119,13 +119,13 @@ export default {
   },
 
   computed: {
-    collections () {
-      return this.store.getCollections() || this.fetchCollections()
-    },
-
     showNewCollectionForm () {
       return this.payload.collection_id === this.createNewLabel
     }
+  },
+
+  ready () {
+    this.getCollections()
   },
 
   methods: {
@@ -153,8 +153,7 @@ export default {
         this.error = null
         this.payload = chooseNameOrId(addUrlSchemeIfNeeded(this.payload))
 
-        this.$http
-          .post(CURATION_ACQUIRE_URL, requestBody(this.payload), headers(this.store.getToken()))
+        addVideo(this.payload, store.getToken())
           .then(res => {
             console.log(res)
             this.success = 'Video will be added to your collection shortly.'
@@ -169,10 +168,11 @@ export default {
     },
 
     parseError (err) {
-      if (err.data.error.code && err.data.error.code[0] === 'duplicate') {
-        this.warning = 'This video is already added to processing queue and will show in your collection soon. Please be patient!'
+      console.log(err)
+      if (errors[err.message]) {
+        this.error = errors[err.message]
       } else {
-        this.error = 'Oops... there was an error. Please try again.'
+        this.error = 'Oops... something went wrong, please try again.'
       }
     },
 
@@ -192,16 +192,17 @@ export default {
       this.warning = null
     },
 
-    fetchCollections () {
-      this.$http
-        .get(`${USERS_URL}/${store.getUser().id}/collections`)
-        .then(res => {
-          return res.data.payload
-        })
-        .catch(err => {
-          console.log(err)
-          this.error = 'Oops... There was an error. Please refresh the page.'
-        })
+    getCollections () {
+      if (!this.collections) {
+        fetchCollections(store.getUser().id, store.getToken())
+          .then(res => {
+            this.collections = res.payload
+          })
+          .catch(err => {
+            console.log(err)
+            this.error = 'Oops... There was an error. Please refresh the page.'
+          })
+      }
     }
   }
 }
