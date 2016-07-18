@@ -37,7 +37,7 @@
       <collections
         :user-id="shownUser.id"
         :are-my-own="collectionsAreMyOwn"
-        v-show="isMyFrontpage || isMemberPage"
+        v-show="shouldShowCollections"
       ></collections>
     </div>
   </div>
@@ -53,6 +53,10 @@ import navigation from './Navigation'
 import member from './Member'
 import store from '../store'
 
+const PAGE_MEMBER = 'member'
+const PAGE_FRONT = 'frontpage'
+const PAGE_RELATIONSHIPS = 'relationships'
+
 export default {
   name: 'Dashboard',
 
@@ -66,9 +70,18 @@ export default {
       loading: true,
       shownUser: null,
       error: null,
-      isMyFrontpage: false,
-      isMemberPage: false,
+      pageType: '',
       user: store.getUser()
+    }
+  },
+
+  methods: {
+    determinePageType (path) {
+      // TODO: Refactor - this is inelegant and suboptimal!
+      if (path === '/my') return PAGE_FRONT
+
+      if (/\/users\/\d*\/(followers|followed)\/?$/i.test(path)) return PAGE_RELATIONSHIPS
+      if (/\/users\/\d*\/?/i.test(path)) return PAGE_MEMBER
     }
   },
 
@@ -81,17 +94,24 @@ export default {
       }
     },
 
+    shouldShowCollections () {
+      return this.pageType === PAGE_FRONT || (this.pageType === PAGE_MEMBER && this.pageType !== PAGE_RELATIONSHIPS)
+    },
+
     collectionsAreMyOwn () {
       return this.shownUser.id === this.store.getUser().id
+    },
+
+    shouldFetchUser () {
+      return this.pageType !== PAGE_FRONT
     }
   },
 
   route: {
     data () {
-      this.isMyFrontpage = this.$route.path === '/my'
-      this.isMemberPage = /\/users\/\d*\/?$/i.test(this.$route.path)
+      this.pageType = this.determinePageType(this.$route.path)
 
-      if (this.isMemberPage && this.$route.params.uid) {
+      if (this.shouldFetchUser && this.$route.params.uid) {
         const id = this.$route.params.uid
         this.error = ''
 

@@ -71,6 +71,10 @@ const routeConfig = router => {
         '/followed': {
           name: 'followed',
           component: Follow
+        },
+        '/followers': {
+          name: 'followers',
+          component: Follow
         }
       }
     },

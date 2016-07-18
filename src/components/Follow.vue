@@ -50,7 +50,6 @@ export default {
     data () {
       this.loading = true
       this.error = false
-
       this.relationship = this.$route.path.indexOf('followers') > -1 || +store.getUser().id !== +this.$route.params.uid
                           ? 'followers' : 'followed'
 
