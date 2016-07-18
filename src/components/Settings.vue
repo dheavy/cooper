@@ -89,16 +89,14 @@
 <script>
 import {editPassword, editEmail, deactivate} from '../services/api'
 import errors from '../services/errors'
-import validator from 'vue-validator'
+import Validator from 'vue-validator'
 import {router} from '../main'
 import store from '../store'
 
 export default {
   name: 'Settings',
 
-  components: {
-    validator
-  },
+  components: {Validator},
 
   data () {
     return {

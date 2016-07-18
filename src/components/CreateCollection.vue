@@ -46,14 +46,14 @@
 
 <script>
 import {createCollection} from '../services/api'
-import toggleSwitch from './ToggleSwitch'
+import ToggleSwitch from './ToggleSwitch'
 import {router} from '../main'
 import store from '../store'
 
 export default {
   name: 'CreateCollection',
 
-  components: [toggleSwitch],
+  components: [ToggleSwitch],
 
   data () {
     return {

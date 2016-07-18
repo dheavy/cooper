@@ -51,8 +51,8 @@
 
 <script>
 import facebookAuth from './FacebookAuth'
-import navigation from './Navigation'
-import validator from 'vue-validator'
+import Navigation from './Navigation'
+import Validator from 'vue-validator'
 import auth from '../services/auth'
 import {router} from '../main'
 import store from '../store'
@@ -73,7 +73,7 @@ export default {
   },
 
   components: {
-    navigation, validator
+    Navigation, Validator
   },
 
   methods: {

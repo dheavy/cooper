@@ -44,14 +44,14 @@
 
 <script>
 import {fetchBlockedUsers, fetchBlockedCollections} from '../services/api'
-import blockButton from './BlockButton'
+import BlockButton from './BlockButton'
 import store from '../store'
 
 export default {
   name: 'Blocked',
 
   components: {
-    blockButton
+    BlockButton
   },
 
   data () {

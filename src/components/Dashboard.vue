@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import followButton from './FollowButton'
+import FollowButton from './FollowButton'
 import {fetchUser} from '../services/api'
-import collections from './collections'
-import blockButton from './BlockButton'
-import navigation from './Navigation'
-import member from './Member'
+import Collections from './collections'
+import BlockButton from './BlockButton'
+import Navigation from './Navigation'
+import Member from './Member'
 import store from '../store'
 
 const PAGE_MEMBER = 'member'
@@ -61,7 +61,7 @@ export default {
   name: 'Dashboard',
 
   components: {
-    navigation, member, collections, followButton, blockButton
+    Navigation, Member, Collections, FollowButton, BlockButton
   },
 
   data () {

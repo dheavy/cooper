@@ -49,9 +49,9 @@ import {
   toggleCollectionVisibility,
   editCollectionName,
   deleteCollection as deleteCollectionCommand} from '../services/api'
-import deleteCollection from './DeleteCollection'
-import followButton from './FollowButton'
-import blockButton from './BlockButton'
+import DeleteCollection from './DeleteCollection'
+import FollowButton from './FollowButton'
+import BlockButton from './BlockButton'
 import store from '../store'
 
 export default {
@@ -60,7 +60,7 @@ export default {
   props: ['collection', 'areMyOwn', 'otherCollections'],
 
   components: {
-    deleteCollection, followButton, blockButton
+    DeleteCollection, FollowButton, BlockButton
   },
 
   data () {

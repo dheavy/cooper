@@ -15,7 +15,7 @@
 
 <script>
 import {fetchCollections} from '../services/api'
-import collectionRack from './CollectionRack'
+import CollectionRack from './CollectionRack'
 import store from '../store'
 
 export default {
@@ -24,7 +24,7 @@ export default {
   props: ['userId', 'areMyOwn'],
 
   components: {
-    collectionRack
+    CollectionRack
   },
 
   data () {

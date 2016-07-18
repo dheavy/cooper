@@ -82,7 +82,7 @@
 
 <script>
 import {fetchCollections, addVideo} from '../services/api'
-import validator from 'vue-validator'
+import Validator from 'vue-validator'
 import {parseError} from '../mixins'
 import {router} from '../main'
 import store from '../store'
@@ -90,7 +90,7 @@ import store from '../store'
 export default {
   name: 'CreateCollection',
 
-  components: {validator},
+  components: {Validator},
 
   mixins: [parseError],
 

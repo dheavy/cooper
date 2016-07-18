@@ -26,14 +26,14 @@
 
 <script>
 import {userToUserRelationships} from '../services/api'
-import followButton from './FollowButton'
+import FollowButton from './FollowButton'
 import store from '../store'
 
 export default {
   name: 'Follow',
 
   components: {
-    followButton
+    FollowButton
   },
 
   data () {

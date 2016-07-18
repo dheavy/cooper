@@ -102,14 +102,14 @@
 </template>
 
 <script>
-import registration from '../services/registration'
-import facebookAuth from './FacebookAuth'
-import navigation from './Navigation'
-import validator from 'vue-validator'
+import Registration from '../services/registration'
+import FacebookAuth from './FacebookAuth'
+import Navigation from './Navigation'
+import Validator from 'vue-validator'
 import {parseError} from '../mixins'
 import {router} from '../main'
 import store from '../store'
-import login from './Login'
+import Login from './Login'
 import Vue from 'vue'
 
 export default {
@@ -150,14 +150,14 @@ export default {
   },
 
   components: {
-    navigation, validator, facebookAuth, login
+    Navigation, Validator, FacebookAuth, Login
   },
 
   methods: {
     checkUsername (forFacebookRegistration = false) {
       const username = forFacebookRegistration ? this.credentialsFb.username : this.credentials.username
       if (username.length > 2) {
-        registration.checkUsername(username, forFacebookRegistration)
+        Registration.checkUsername(username, forFacebookRegistration)
           .then(res => {
             if (res.status === 200) {
               if (forFacebookRegistration) {
@@ -183,15 +183,15 @@ export default {
     },
 
     fbAuthInit () {
-      return facebookAuth.auth()
+      return FacebookAuth.auth()
     },
 
     fbAuthContinue (token) {
-      return facebookAuth.auth(token)
+      return FacebookAuth.auth(token)
     },
 
     fbCheckUser (payload) {
-      return facebookAuth.checkUser(payload)
+      return FacebookAuth.checkUser(payload)
     },
 
     fbRegistrationLastStep (payload) {
@@ -209,13 +209,13 @@ export default {
         router.go({path: '/register'})
       })
 
-      registration.checkUsername(this, this.credentialsFb.username, true)
+      Registration.checkUsername(this, this.credentialsFb.username, true)
     },
 
     submit () {
       this.error = ''
       if (this.$registerValidation.valid) {
-        registration
+        Registration
           .register(this.credentials)
           .catch(err => {
             console.log(err.message)
@@ -227,7 +227,7 @@ export default {
     submitFacebook () {
       this.error = ''
       if (this.$registerValidation.valid) {
-        registration
+        Registration
           .registerViaFacebook(this.credentialsFb)
           .catch(err => {
             this.parseError(err)
@@ -274,7 +274,7 @@ export default {
               })
               .then(res => {
                 if (res.status === 200) {
-                  login.methods.fbLoginUser({token: res.token, user: res.user})
+                  Login.methods.fbLoginUser({token: res.token, user: res.user})
                 } else {
                   this.fbRegistrationLastStep(res)
                 }

@@ -9,7 +9,7 @@ import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
 import CreateVideo from './components/CreateVideo'
-import PasswordReset from './components/PasswordReset'
+// import PasswordReset from './components/PasswordReset'
 import CreateCollection from './components/CreateCollection'
 
 const routeConfig = router => {
@@ -77,7 +77,7 @@ const routeConfig = router => {
           name: 'followers',
           component: Follow
         }
-      },
+      }
     },
     '/feed': {
       auth: true,
@@ -93,7 +93,7 @@ const routeConfig = router => {
       auth: true,
       name: 'feed-collection',
       component: Feed
-    },
+    }
   })
 
   router.redirect({

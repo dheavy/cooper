@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import navigation from './Navigation'
+import Navigation from './Navigation'
 
 export default {
   name: 'Home',
 
   components: {
-    navigation
+    Navigation
   }
 }
 </script>
