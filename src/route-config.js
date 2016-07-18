@@ -1,5 +1,6 @@
 import auth from './services/auth'
 import Home from './components/Home'
+import Feed from './components/Feed'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import Follow from './components/Follow'
@@ -76,12 +77,23 @@ const routeConfig = router => {
           name: 'followers',
           component: Follow
         }
-      }
+      },
     },
-    '/password/reset': {
-      component: PasswordReset,
-      auth: true
-    }
+    '/feed': {
+      auth: true,
+      name: 'feed-public',
+      component: Feed
+    },
+    '/feed/mine': {
+      auth: true,
+      name: 'feed-mine',
+      component: Feed
+    },
+    '/feed/:cid': {
+      auth: true,
+      name: 'feed-collection',
+      component: Feed
+    },
   })
 
   router.redirect({
