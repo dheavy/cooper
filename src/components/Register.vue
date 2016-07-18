@@ -104,9 +104,9 @@
 <script>
 import registration from '../services/registration'
 import facebookAuth from './FacebookAuth'
-import errors from '../services/errors'
 import navigation from './Navigation'
 import validator from 'vue-validator'
+import {parseError} from '../mixins'
 import {router} from '../main'
 import store from '../store'
 import login from './Login'
@@ -114,6 +114,8 @@ import Vue from 'vue'
 
 export default {
   name: 'Register',
+
+  mixins: [parseError],
 
   data () {
     return {
@@ -230,15 +232,6 @@ export default {
           .catch(err => {
             this.parseError(err)
           })
-      }
-    },
-
-    parseError (err) {
-      console.log(err)
-      if (errors[err.message]) {
-        this.error = errors[err.message]
-      } else {
-        this.error = 'Oops... something went wrong, please try again.'
       }
     }
   },

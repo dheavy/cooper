@@ -82,8 +82,8 @@
 
 <script>
 import {fetchCollections, addVideo} from '../services/api'
-import errors from '../services/errors'
 import validator from 'vue-validator'
+import {parseError} from '../mixins'
 import {router} from '../main'
 import store from '../store'
 
@@ -91,6 +91,8 @@ export default {
   name: 'CreateCollection',
 
   components: {validator},
+
+  mixins: [parseError],
 
   validators: {
     validExistingCollection (val) {
@@ -164,15 +166,6 @@ export default {
           })
 
         this.resetValidation()
-      }
-    },
-
-    parseError (err) {
-      console.log(err)
-      if (errors[err.message]) {
-        this.error = errors[err.message]
-      } else {
-        this.error = 'Oops... something went wrong, please try again.'
       }
     },
 
