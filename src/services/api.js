@@ -8,12 +8,15 @@ import {
   COLLECTIONS_URL,
   PASSWORD_EDIT_URL,
   EMAIL_EDIT_URL,
-  CURATION_ACQUIRE_URL
+  CURATION_ACQUIRE_URL,
+  FEED_URL
 } from '../constants/api'
 
 import {
   FACEBOOK_GRAPH_ME_URL,
-  FACEBOOK_OAUTH_URL
+  FACEBOOK_OAUTH_URL,
+  FEED_MINE,
+  FEED_COLLECTIONS
 } from '../constants/config'
 
 import {requestBody, headers} from './utils'
@@ -196,4 +199,24 @@ export const fetchBlockedCollections = token => {
 
 export const userToUserRelationships = (type, id, token) => {
   return http(`${USERS_URL}/${id}/${type}`, getData(token))
+}
+
+export const fetchCollectionFeed = ({collectionId, token}) => {
+  return http(`${COLLECTIONS_URL}/${collectionId}`, getData(token))
+}
+
+export const fetchMyFeed = ({userId, token}) => {
+  return http(`${FEED_URL}/${userId}`, getData(token))
+}
+
+export const fetchFeed = ({type, userId, token, collectionId}) => {
+  if (type === FEED_COLLECTIONS && collectionId) {
+    return fetchCollectionFeed({collectionId, token})
+  }
+
+  if (type === FEED_MINE && userId) {
+    return fetchMyFeed({userId, token})
+  }
+
+  return http(`${FEED_URL}`, getData(token))
 }

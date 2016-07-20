@@ -1,11 +1,27 @@
 <template>
-  <media :video="video" :playlist="[]" :scale="scales.normal" ></media>
+  <waterfall :line="h" :line-gap="sizes.normal.width + 10" :watch="playlist">
+    <waterfall-slot v-for="video in playlist" move-class="item-move" :width="sizes.normal.width" :height="sizes.normal.height" :order="$index">
+      <media :video="video" :playlist="playlist" :scale="scales.normal"></media>
+    </waterfall-slot>
+  </waterfall>
 </template>
 
 <script>
-import {MEDIA_SCALE_NORMAL, MEDIA_SCALE_LARGE} from '../constants/config'
+import {
+  MEDIA_SCALE_NORMAL,
+  MEDIA_SCALE_LARGE,
+  MEDIA_NORMAL_WIDTH,
+  MEDIA_NORMAL_HEIGHT,
+  MEDIA_LARGE_WIDTH,
+  MEDIA_LARGE_HEIGHT,
+  FEED_PUBLIC,
+  FEED_MINE,
+  FEED_COLLECTION
+} from '../constants/config'
 import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 import Waterfall from 'vue-waterfall/lib/waterfall'
+import {fetchFeed} from '../services/api'
+import store from '../store'
 import Media from './media'
 
 export default {
@@ -17,25 +33,62 @@ export default {
 
   data () {
     return {
-      video: {
-        id: '16',
-        hash: '4322553893b442094406e1d5524fbdc2',
-        collection: '156',
-        originalUrl: 'http://www.dailymotion.com/video/x2ih1h4_fantastic-four-director-talks-johnny-storm-s-race-ign-news_',
-        embedUrl: 'https://www.dailymotion.com/embed/video/x2ih1h4',
-        duration: '00:01:11',
-        createdAt: '2016-07-06T08:32:40.789855Z',
-        isNaughty: 'false',
-        isPrivate: 'false',
-        poster: 'http://s2.dmcdn.net/JMwDE/x720-JQM.png',
-        title: 'Fantastic Four Director Talks Johnny Storm\'s Race - IGN News',
-        slug: 'fantastic-four-director-talks-johnny-storms-race-ign-news'
-      },
+      playlist: [],
+      type: '',
       scales: {
         normal: MEDIA_SCALE_NORMAL,
         large: MEDIA_SCALE_LARGE
+      },
+      sizes: {
+        normal: {
+          width: MEDIA_NORMAL_WIDTH,
+          height: MEDIA_NORMAL_HEIGHT
+        },
+        large: {
+          width: MEDIA_LARGE_WIDTH,
+          height: MEDIA_LARGE_HEIGHT
+        }
       }
+    }
+  },
+
+  methods: {
+    determineFeedType (path) {
+      if (/\/feed\/collection\/?$/.test(path)) return FEED_COLLECTION
+      if (/\/feed\/mine\/?$/.test(path)) return FEED_MINE
+      if (/\/feed\/?$/.test(path)) return FEED_PUBLIC
+    }
+  },
+
+  route: {
+    data () {
+      this.type = this.determineFeedType(this.$route.path)
+
+      const payload = {
+        type: this.type,
+        userId: store.getUser().id,
+        token: store.getToken()
+      }
+
+      payload.collectionId = this.type === FEED_COLLECTION
+                             ? this.$route.params.cid
+                             : null
+
+      fetchFeed(payload)
+        .then(res => {
+          this.playlist = res.payload.videos
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
 </script>
+
+<style>
+  .item-move {
+    /* applied to the element when moving */
+    transition: transform .5s cubic-bezier(.55,0,.1,1);
+  }
+</style>
