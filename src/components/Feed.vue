@@ -1,5 +1,12 @@
 <template>
-  <waterfall
+  <media
+    v-for="video in playlist"
+    :video="video"
+    :playlist="playlist"
+    :scale="video.scale"
+    v-bind:style="{width: (video.scale === 'normal' ? sizes.normal.width : sizes.large.width) + 'px', height: (video.scale === 'normal' ? sizes.normal.height : sizes.large.height) + 'px'}"
+  ></media>
+  <!-- <waterfall
     id="wf"
     :line="v"
     :line-gap="sizes.normal.width + sizes.gutter"
@@ -19,7 +26,7 @@
         v-bind:style="{width: (video.scale === 'normal' ? sizes.normal.width : sizes.large.width) + 'px', height: (video.scale === 'normal' ? sizes.normal.height : sizes.large.height) + 'px'}"
       ></media>
     </waterfall-slot>
-  </waterfall>
+  </waterfall> -->
 </template>
 
 <script>
@@ -34,8 +41,6 @@ import {
   FEED_MINE,
   FEED_COLLECTION
 } from '../constants/config'
-import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
-import Waterfall from 'vue-waterfall/lib/waterfall'
 import {fetchFeed} from '../services/api'
 import store from '../store'
 import Media from './media'
@@ -43,9 +48,7 @@ import Media from './media'
 export default {
   name: 'Feed',
 
-  components: {
-    Waterfall, WaterfallSlot, Media
-  },
+  components: {Media},
 
   data () {
     return {

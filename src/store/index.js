@@ -93,4 +93,4 @@ const store = new Vue({
 
 export default store
 
-Vue.component('store', store)
+// Vue.component('store', store)
