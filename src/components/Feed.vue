@@ -1,7 +1,23 @@
 <template>
-  <waterfall :line="h" :line-gap="sizes.normal.width + 10" :watch="playlist">
-    <waterfall-slot v-for="video in playlist" move-class="item-move" :width="sizes.normal.width" :height="sizes.normal.height" :order="$index">
-      <media :video="video" :playlist="playlist" :scale="scales.normal"></media>
+  <waterfall
+    id="wf"
+    :line="v"
+    :line-gap="sizes.normal.width + sizes.gutter"
+    :watch="playlist"
+  >
+    <waterfall-slot
+      v-for="video in playlist"
+      move-class="item-move"
+      :width="video.scale === 'normal' ? sizes.normal.width : sizes.large.width"
+      :height="video.scale === 'normal' ? sizes.normal.height : sizes.large.height"
+      :order="$index"
+    >
+      <media
+        :video="video"
+        :playlist="playlist"
+        :scale="video.scale"
+        v-bind:style="{width: (video.scale === 'normal' ? sizes.normal.width : sizes.large.width) + 'px', height: (video.scale === 'normal' ? sizes.normal.height : sizes.large.height) + 'px'}"
+      ></media>
     </waterfall-slot>
   </waterfall>
 </template>
@@ -40,6 +56,7 @@ export default {
         large: MEDIA_SCALE_LARGE
       },
       sizes: {
+        gutter: 10,
         normal: {
           width: MEDIA_NORMAL_WIDTH,
           height: MEDIA_NORMAL_HEIGHT
@@ -57,6 +74,20 @@ export default {
       if (/\/feed\/collection\/?$/.test(path)) return FEED_COLLECTION
       if (/\/feed\/mine\/?$/.test(path)) return FEED_MINE
       if (/\/feed\/?$/.test(path)) return FEED_PUBLIC
+    }
+  },
+
+  events: {
+    // HACK: Fix height of WF container after reflow, otherwise
+    // height of random, large mediae are not taken into account
+    // and disappear under the hidden overflow.
+    'wf-reflowed' () {
+      const wf = document.getElementById('wf')
+      setTimeout(() => {
+        wf.style.overflow = 'auto'
+        wf.style.height = wf.scrollHeight + this.sizes.gutter + 'px'
+        wf.style.overflow = 'hidden'
+      }, 500)
     }
   },
 
