@@ -10,6 +10,9 @@
           <a class="nav-link" v-link="{path: '/my/videos/create'}">Add video</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" v-link="{path: '/feed'}">Feed</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
         </li>
         <li class="nav-item">

@@ -1,5 +1,5 @@
 <template>
-  <div class="media" v-bind:style="styles" class="clearfix">
+  <div class="media-item" v-bind:style="styles" class="clearfix">
     <div class="poster"></div>
     <div class="data {{scale}}">
       <div class="title">{{video.title}}</div>
@@ -29,9 +29,7 @@ export default {
       styles: {
         backgroundSize: 'cover',
         backgroundColor: '#CCC',
-        backgroundImage: null,
-        width: null,
-        height: null
+        backgroundImage: null
       }
     }
   },
@@ -39,17 +37,29 @@ export default {
   ready () {
     this.width = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_WIDTH : MEDIA_LARGE_WIDTH
     this.height = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_HEIGHT : MEDIA_LARGE_HEIGHT
-    this.styles.width = this.width + 'px'
-    this.styles.height = this.height + 'px'
     this.styles.backgroundImage = `url(${this.video.poster})`
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.media {
+.media-item {
   font-size: 11px;
   color: white;
+  float: left;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+
+  &.normal {
+    width: 265px;
+    height: 204px;
+  }
+
+  &.large {
+    width: 540px;
+    height: 418px;
+  }
 
   .data {
     background-color: rgba(0, 0, 0, 0.5);

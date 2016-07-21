@@ -6,7 +6,7 @@ export const FACEBOOK_OAUTH_URL = `https://www.facebook.com/v2.6/dialog/oauth?cl
 export const MEDIA_NORMAL_WIDTH = 265
 export const MEDIA_NORMAL_HEIGHT = 204
 export const MEDIA_LARGE_WIDTH = 540
-export const MEDIA_LARGE_HEIGHT = MEDIA_NORMAL_HEIGHT * 2
+export const MEDIA_LARGE_HEIGHT = 418
 export const MEDIA_SCALE_NORMAL = 'normal'
 export const MEDIA_SCALE_LARGE = 'large'
 
