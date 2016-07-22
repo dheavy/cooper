@@ -78,6 +78,7 @@ export default {
 <style lang="scss" scoped>
 .layout {
   width: 100%;
+  position: relative;
   height: auto;
   min-height: 100vh;
 }

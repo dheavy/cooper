@@ -52,13 +52,20 @@ export default {
   margin-bottom: 10px;
 
   &.normal {
-    width: 265px;
+    width: 270px;
     height: 204px;
   }
 
   &.large {
-    width: 540px;
+    width: 551px;
     height: 418px;
+  }
+
+  @media screen and (max-width: 767px) {
+    &.large {
+      width: 270px;
+      height: 204px;
+    }
   }
 
   .data {
