@@ -10,7 +10,6 @@ require('./services/filters')
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
-// Vue.use(vueMasonry)
 
 export const router = new VueRouter({
   history: true,
