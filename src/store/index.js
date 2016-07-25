@@ -17,6 +17,9 @@ const store = new Vue({
   },
 
   methods: {
+    /**
+     * Set user once acquired after login. Store in localstorage as well.
+     */
     setUser ({id, username, email, last_login, date_joined, followers, following, blocking, collections_followed, collections_blocked}) {
       this.state.user = {
         id, username, email,
@@ -29,18 +32,62 @@ const store = new Vue({
       localStorage.setItem('user', JSON.stringify(this.state.user))
     },
 
+    /**
+     * Mark a collection as dirty to invalidate its cache and fetch it again.
+     *
+     * @param  {Boolean} mark   Set as dirty or not.
+     */
     markCollectionsDirty (mark) {
       this.dirty.collections = mark
       mark ? localStorage.setItem('collections_dirty', true) : localStorage.removeItem('collections_dirty')
     },
 
+    /**
+     * Whether collections are to be cache-invalidated or not.
+     *
+     * @return {Boolean}
+     */
     areCollectionsDirty () {
       return this.dirty.collections !== null ? this.dirty.collections : !!localStorage.getItem('collections_dirty')
     },
 
+    /**
+     * Set collections to store.
+     * Cache results, both as collections for later retrieval,
+     * and as a set of videos' IDs to keep an index and compare with displayed
+     * videos on feeds to see if user already added the video.
+     *
+     * @param {Array} collections
+     */
     setCollections (collections) {
       this.state.collections = collections
+      this.createOrUpdateVideosIndex(this.reduceVideosInCollections(collections))
       localStorage.setItem('collections', JSON.stringify(this.state.collections))
+    },
+
+    /**
+     * Create and store in localStorage an index of videos ID currently owned by user.
+     *
+     * @param  {Array} videos  Array of IDs
+     */
+    createOrUpdateVideosIndex (videos) {
+      localStorage.setItem('videos_index', JSON.stringify(videos.map(v => v.id)))
+    },
+
+    /**
+     * Given a set of collections, traverse and reduce the it
+     * as a flat array of videos.
+     *
+     * @param  {Array} collections
+     * @return {Array}
+     */
+    reduceVideosInCollections (collections) {
+      const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
+      return flatten(collections.map(c => c.videos))
+    },
+
+    getVideosIndex () {
+      return localStorage.getItem('videos_index')
     },
 
     getUser () {
