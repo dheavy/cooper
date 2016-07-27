@@ -3,6 +3,26 @@
     :auth="true"
     :user-id="user.id"
   ></navigation>
+  <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-primary {{type === 'feed-public' ? 'active' : ''}}">
+      <input
+        type="radio"
+        name="options"
+        autocomplete="off"
+        :checked="type === 'feed-public' ? true : false"
+        @click.prevent="showPublicFeed()"
+      > Public Feed
+    </label>
+    <label class="btn btn-primary {{type === 'feed-mine' ? 'active' : ''}}">
+      <input
+        type="radio"
+        name="options"
+        autocomplete="off"
+        :checked="type === 'feed-mine' ? true : false"
+        @click.prevent="showMyFeed()"
+      > My Feed
+    </label>
+  </div>
   <section class="layout clearfix">
     <media
       v-for="video in playlist | orderBy 'id' -1"
@@ -64,6 +84,7 @@ import {fetchFeed, fetchCollections} from '../services/api'
 import CreateVideo from './CreateVideo'
 import Navigation from './Navigation'
 import Masonry from 'masonry-layout'
+import {router} from '../main'
 import store from '../store'
 import Media from './media'
 
@@ -126,6 +147,14 @@ export default {
       this.payload.hash = ''
       this.payload.title = ''
       this.$els.modal.style.display = 'none'
+    },
+
+    showPublicFeed () {
+      router.go({name: 'feed-public'})
+    },
+
+    showMyFeed () {
+      router.go({name: 'feed-mine'})
     }
   },
 
