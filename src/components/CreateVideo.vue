@@ -8,7 +8,7 @@
           </button>
           <h4 class="col-sm-12">Add a video</h4>
         </div>
-        <div class="alert alert-success" v-if="success">{{success}} <a href="#" v-on:click.prevent="exit()">Back to collections.</a></div>
+        <div class="alert alert-success" v-if="success">{{success}} <a href="#" v-on:click.prevent="exit">Back to collections.</a></div>
         <div class="alert alert-danger" v-if="error">{{error}}</div>
         <div class="alert alert-warning" v-if="warning">{{warning}}</div>
         <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $createVideoValidation.cid.validExistingCollection">Please choose a collection.</div>

@@ -87,7 +87,7 @@ const store = new Vue({
     },
 
     getVideosIndex () {
-      return localStorage.getItem('videos_index')
+      return localStorage.getItem('videos_index') || []
     },
 
     getUser () {
@@ -134,6 +134,8 @@ const store = new Vue({
       localStorage.removeItem('user')
       localStorage.removeItem('token')
       localStorage.removeItem('collections')
+      localStorage.removeItem('videos_index')
+      localStorage.removeItem('collections_dirty')
     }
   }
 })

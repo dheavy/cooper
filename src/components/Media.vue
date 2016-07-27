@@ -5,6 +5,9 @@
       <div class="title">{{video.title | ellipsis '80'}}</div>
       <div class="duration">{{video.duration}}</div>
     </div>
+    <div class="ui">
+      <button v-bind:class="['add-btn', isAdded ? 'added' : '']">&hearts;</button>
+    </div>
   </div>
 </template>
 
@@ -20,7 +23,7 @@ import {
 export default {
   name: 'Media',
 
-  props: ['video', 'playlist', 'scale'],
+  props: ['video', 'playlist', 'scale', 'isAdded'],
 
   data () {
     return {
@@ -65,6 +68,31 @@ export default {
     &.large {
       width: 270px;
       height: 204px;
+    }
+  }
+
+  .ui {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // background: red;
+
+    .add-btn {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+      left: 100%;
+      top: 10px;
+      margin-left: -40px;
+      background-color: transparent;
+      border-color: black;
+      color: black;
+
+      &.added {
+        border-color: white;
+        color: white;
+      }
     }
   }
 
