@@ -53,41 +53,12 @@ const store = new Vue({
 
     /**
      * Set collections to store.
-     * Cache results, both as collections for later retrieval,
-     * and as a set of videos' IDs to keep an index and compare with displayed
-     * videos on feeds to see if user already added the video.
+     * Cache results, both as collections for later retrieval.
      *
      * @param {Array} collections
      */
     setCollections (collections) {
       this.state.collections = collections
-      this.createOrUpdateVideosIndex(this.reduceVideosInCollections(collections))
-      localStorage.setItem('collections', JSON.stringify(this.state.collections))
-    },
-
-    /**
-     * Create and store in localStorage an index of videos ID currently owned by user.
-     *
-     * @param  {Array} videos  Array of IDs
-     */
-    createOrUpdateVideosIndex (videos) {
-      localStorage.setItem('videos_index', JSON.stringify(videos.map(v => v.id)))
-    },
-
-    /**
-     * Given a set of collections, traverse and reduce the it
-     * as a flat array of videos.
-     *
-     * @param  {Array} collections
-     * @return {Array}
-     */
-    reduceVideosInCollections (collections) {
-      const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
-      return flatten(collections.map(c => c.videos))
-    },
-
-    getVideosIndex () {
-      return localStorage.getItem('videos_index') || []
     },
 
     getUser () {
@@ -134,7 +105,6 @@ const store = new Vue({
       localStorage.removeItem('user')
       localStorage.removeItem('token')
       localStorage.removeItem('collections')
-      localStorage.removeItem('videos_index')
       localStorage.removeItem('collections_dirty')
     }
   }
