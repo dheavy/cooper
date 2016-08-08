@@ -34,15 +34,15 @@
     ></media>
   </section>
 
-  <div class="modal" v-el:modal>
+  <div name="close" class="modal" v-el:modal @click.stop.prevent="hideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <validator name="addVideoValidation">
           <form novalidate>
             <div class="modal-header">
-              <button type="button" class="close" @click="hideModal">
-                <span aria-hidden="true">&times;</span>
+              <button type="button" class="close" @click.stop.prevent="hideModal">
+                <span name="close" aria-hidden="true">&times;</span>
               </button>
               <div class="alert alert-success" v-if="success">{{success}}</div>
               <div class="alert alert-danger" v-if="error">{{error}}</div>
@@ -96,7 +96,7 @@
             </div>
 
             <div class="modal-footer" v-show="isFormVisible">
-              <button type="button" class="btn btn-secondary" @click.prevent="hideModal">Close</button>
+              <button name="close" type="button" class="btn btn-secondary" @click.prevent="hideModal">Close</button>
               <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
             </div>
           </form>
@@ -218,7 +218,9 @@ export default {
         })
     },
 
-    hideModal () {
+    hideModal (e) {
+      if (e.target.getAttribute('name') !== 'close') return
+
       this.payload = {hash: '', collection_id: -1, title: ''}
       this.warning = null
       this.error = null
