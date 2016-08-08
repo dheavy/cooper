@@ -39,7 +39,7 @@
       </div>
     </article>
     <article>
-      <a href="#" class="thumb thumb-more">more...</a>
+      <a v-link="{name: 'feed-collection', params: {cid: collection.id}}" class="thumb thumb-more">more...</a>
     </article>
   </section>
 </template>
