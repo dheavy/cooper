@@ -16,23 +16,28 @@ const routeConfig = router => {
   router.map({
     '/': {
       component: Home,
-      redirectIfAuth: true
+      redirectIfAuth: true,
+      name: 'home'
     },
     '/login': {
       component: Login,
-      redirectIfAuth: true
+      redirectIfAuth: true,
+      name: 'login'
     },
     '/logout': {
       component: Logout,
-      auth: true
+      auth: true,
+      name: 'logout'
     },
     '/register': {
       component: Register,
-      redirectIfAuth: true
+      redirectIfAuth: true,
+      name: 'register'
     },
     '/facebook': {
       component: Register,
-      redirectIfAuth: true
+      redirectIfAuth: true,
+      name: 'facebook'
     },
     '/my': {
       component: Dashboard,
@@ -70,11 +75,11 @@ const routeConfig = router => {
       component: Dashboard,
       subRoutes: {
         '/followed': {
-          name: 'followed',
+          name: 'users-followed',
           component: Follow
         },
         '/followers': {
-          name: 'followers',
+          name: 'users-followers',
           component: Follow
         }
       }

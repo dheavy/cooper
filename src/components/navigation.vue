@@ -4,33 +4,36 @@
       &#9776;
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-      <a class="navbar-brand" href="/">MyPleasu.re</a>
+      <a class="navbar-brand" v-link="{name: 'home'}">MyPleasu.re</a>
       <ul v-if="auth" class="nav navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/my/videos/create'}">Add video</a>
+          <a class="nav-link" v-link="{name: 'create-video'}">Add video</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/feed'}">Feed</a>
+          <a class="nav-link" v-link="{name: 'feed-public'}">Feed</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/my/settings'}">Settings</a>
+          <a class="nav-link" v-link="{name: 'home'}">My collections</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/my/blocked'}">Blocked</a>
+          <a class="nav-link" v-link="{name: 'settings'}">Settings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/logout'}">Log out</a>
+          <a class="nav-link" v-link="{name: 'blocked'}">Blocked</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" v-link="{name: 'logout'}">Log out</a>
         </li>
       </ul>
       <ul v-else class="nav navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/'}">Home</a>
+          <a class="nav-link" v-link="{name: 'home'}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/register'}" href="#">Register</a>
+          <a class="nav-link" v-link="{name: 'register'}" href="#">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{path: '/login'}" href="#">Log In</a>
+          <a class="nav-link" v-link="{name: 'login'}" href="#">Log In</a>
         </li>
       </ul>
     </div>
