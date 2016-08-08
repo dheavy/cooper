@@ -181,7 +181,7 @@ export default {
 
   methods: {
     determineFeedType (path) {
-      if (/\/feed\/collection\/?$/.test(path)) return FEED_COLLECTION
+      if (/\/feed\/\d+\/?$/.test(path)) return FEED_COLLECTION
       if (/\/feed\/mine\/?$/.test(path)) return FEED_MINE
       if (/\/feed\/?$/.test(path)) return FEED_PUBLIC
     },
