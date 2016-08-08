@@ -1,6 +1,5 @@
 import routeConfig from './route-config'
 import VueResource from 'vue-resource'
-// import vueMasonry from './components/Masonry'
 import VueRouter from 'vue-router'
 import App from './components/app'
 import Vue from 'vue'

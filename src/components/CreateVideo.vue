@@ -151,7 +151,7 @@ export default {
 
       this.submitted = true
 
-      if (!this.$createVideoValidation.url.url && (!this.$createVideoValidation.cid.validExistingCollection || !this.$createVideoValidation.ncid.validExistingCollection)) {
+      if (!this.$createVideoValidation.url.url && (!this.$createVideoValidation.cid.validExistingCollection || !this.$createVideoValidation.ncid.validNewCollection)) {
         this.error = null
         this.payload = chooseNameOrId(addUrlSchemeIfNeeded(this.payload))
 

@@ -13,7 +13,8 @@ import {
   COLLECTION_ID_INVALID,
   COLLECTION_ID_OR_NAME_MISSING,
   USER_NOT_FOUND,
-  COLLECTION_NOT_FOUND
+  COLLECTION_NOT_FOUND,
+  VIDEO_ALREADY_QUEUED
 } from '../constants/codes'
 
 const messages = {}
@@ -33,5 +34,6 @@ messages[COLLECTION_ID_INVALID] = 'The passed collection ID is invalid.'
 messages[COLLECTION_ID_OR_NAME_MISSING] = 'Please provide a collection or the name create a new one.'
 messages[USER_NOT_FOUND] = 'User was not found.'
 messages[COLLECTION_NOT_FOUND] = 'Collection was not found.'
+messages[VIDEO_ALREADY_QUEUED] = 'Please be patient... Video is already being processed.'
 
 export default messages

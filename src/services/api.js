@@ -112,7 +112,10 @@ export const fetchCollections = (uid, token, bustCache = false) => {
   const cached = store.getCollections()
 
   if (!cached || bustCache) {
-    return http(`${USERS_URL}/${uid}/collections`, getData(token))
+    return http(`${USERS_URL}/${uid}/collections`, getData(token)).then(res => {
+      store.setCollections(res.payload)
+      return res
+    })
   } else {
     return Promise.resolve({payload: cached})
   }
@@ -219,4 +222,27 @@ export const fetchFeed = ({type, userId, token, collectionId}) => {
   }
 
   return http(`${FEED_URL}`, getData(token))
+}
+
+export const checkIfUserHasVideo = (userId, hash, token) => {
+  return fetch(`${USERS_URL}/${userId}/hash/${hash}`, getData(token))
+    .then(res => {
+      return res.json()
+    })
+}
+
+export const curateVideo = (userId, originalId, hash, url, title, scale, collection, newCollectionName, token) => {
+  const data = {
+    requester: userId,
+    original_id: originalId,
+    hash, url, title, scale
+  }
+
+  if (+collection < 0 && newCollectionName !== '') {
+    data['new_collection_name'] = newCollectionName
+  } else {
+    data['collection_id'] = collection
+  }
+
+  return http(`${CURATION_ACQUIRE_URL}`, postData(data, token))
 }

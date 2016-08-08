@@ -6,7 +6,7 @@
       <div class="duration">{{video.duration}}</div>
     </div>
     <div class="ui">
-      <button v-bind:class="['add-btn', isAdded ? 'added' : '']">&hearts;</button>
+      <button class="add-btn" @click="addHandler(video)">&hearts;</button>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ import {
 export default {
   name: 'Media',
 
-  props: ['video', 'playlist', 'scale', 'isAdded'],
+  props: ['video', 'playlist', 'scale', 'addHandler'],
 
   data () {
     return {
@@ -86,13 +86,8 @@ export default {
       top: 10px;
       margin-left: -40px;
       background-color: transparent;
-      border-color: black;
-      color: black;
-
-      &.added {
-        border-color: white;
-        color: white;
-      }
+      border-color: white;
+      color: white;
     }
   }
 

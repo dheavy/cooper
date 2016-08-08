@@ -120,6 +120,7 @@ export default {
         .then(res => {
           vm.$destroy(true)
           this.$els.rack.remove()
+          this.store.markCollectionsDirty(true)
         })
         .catch(err => {
           console.log(err)
