@@ -16,7 +16,7 @@ import {
   FACEBOOK_GRAPH_ME_URL,
   FACEBOOK_OAUTH_URL,
   FEED_MINE,
-  FEED_COLLECTIONS
+  FEED_COLLECTION
 } from '../constants/config'
 
 import {requestBody, headers} from './utils'
@@ -206,6 +206,9 @@ export const userToUserRelationships = (type, id, token) => {
 
 export const fetchCollectionFeed = ({collectionId, token}) => {
   return http(`${COLLECTIONS_URL}/${collectionId}`, getData(token))
+    .then(res => {
+      return {payload: res.payload.videos}
+    })
 }
 
 export const fetchMyFeed = ({userId, token}) => {
@@ -213,7 +216,7 @@ export const fetchMyFeed = ({userId, token}) => {
 }
 
 export const fetchFeed = ({type, userId, token, collectionId}) => {
-  if (type === FEED_COLLECTIONS && collectionId) {
+  if (type === FEED_COLLECTION && collectionId) {
     return fetchCollectionFeed({collectionId, token})
   }
 
