@@ -207,7 +207,10 @@ export const userToUserRelationships = (type, id, token) => {
 export const fetchCollectionFeed = ({collectionId, token}) => {
   return http(`${COLLECTIONS_URL}/${collectionId}`, getData(token))
     .then(res => {
-      return {payload: res.payload.videos}
+      return {
+        payload: res.payload.videos,
+        name: res.payload.name
+      }
     })
 }
 

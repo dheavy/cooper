@@ -3,7 +3,12 @@
     :auth="true"
     :user-id="user.id"
   ></navigation>
-  <div class="btn-group" data-toggle="buttons">
+
+  <h3 v-if="type === 'feed-collection'">
+    {{currentCollectionName}}
+  </h3>
+
+  <div v-else class="btn-group" data-toggle="buttons">
     <label class="btn btn-primary {{type === 'feed-public' ? 'active' : ''}}">
       <input
         type="radio"
@@ -23,20 +28,29 @@
       > My Feed
     </label>
   </div>
+
   <section class="layout clearfix">
+    <div v-if="loaded && playlist.length === 0">
+      Nothing to display here...
+      <a v-if="type === 'feed-collection'" v-link="{name: 'create-video'}">Add a new video.</a>
+    </div>
     <media
+      v-else
       v-for="video in playlist | orderBy 'id' -1"
       class="media-item {{video.scale}}"
       :video="video"
       :playlist="playlist"
       :scale="video.scale"
-      :add-handler="showModal"
+      :feed-type="type"
+      :add-handler="showAddModal"
+      :edit-handler="showEditModal"
     ></media>
   </section>
 
-  <div name="close" class="modal" v-el:modal @click.stop.prevent="hideModal">
+  <!-- add video modal -->
+  <div name="close" class="modal" v-el:add-modal @click.stop.prevent="hideModal">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content"@>
 
         <validator name="addVideoValidation">
           <form novalidate>
@@ -105,6 +119,82 @@
       </div>
     </div>
   </div>
+  <!-- /add video modal -->
+
+  <!-- edit video modal -->
+  <div name="close" class="modal" v-el:edit-modal @click.stop.prevent="hideModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <validator name="addVideoValidation">
+          <form novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" @click.stop.prevent="hideModal">
+                <span name="close" aria-hidden="true">&times;</span>
+              </button>
+              <div class="alert alert-success" v-if="success">{{success}}</div>
+              <div class="alert alert-danger" v-if="error">{{error}}</div>
+              <div class="alert alert-warning" v-if="warning">{{{warning}}}</div>
+              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
+              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
+              <h4 v-if="!error && !warning && !success" class="col-sm-12">Edit this video</h4>
+            </div>
+
+            <div class="modal-body" v-show="isFormVisible">
+              <input type="hidden" class="form-control" v-model="payload.hash">
+              <div class="form-group row">
+                <div class="col-sm-12 col-md-12">
+                  <label for="title" class="col-sm-4 form-control-label">Title</label>
+                  <input type="text" class="form-control" name="title" placeholder="Title" v-model="payload.title">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12 col-md-12">
+                  <label for="collection" class="col-sm-4 form-control-label">Collection</label>
+                  <select
+                    v-model="payload.collection_id"
+                    v-validate:cid="{validExistingCollection: true}"
+                    class="c-select col-sm-12 col-md-12"
+                    name="collection"
+                  >
+                    <optgroup>
+                      <option selected value="-1">Choose a collection</option>
+                    </optgroup>
+                    <optgroup>
+                      <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
+                    </optgroup>
+                    <optgroup>
+                      <option >{{createNewLabel}}</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12 col-md-12">
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="payload.new_collection_name"
+                    v-show="showNewCollectionForm"
+                    placeholder="My new collection name"
+                    v-validate:ncid="{validNewCollection: true}"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer" v-show="isFormVisible">
+              <button name="close" type="button" class="btn btn-secondary" @click.prevent="hideModal">Close</button>
+              <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
+            </div>
+          </form>
+        </validator>
+
+      </div>
+    </div>
+  </div>
+  <!-- /edit video modal -->
+
 </template>
 
 <script>
@@ -153,6 +243,7 @@ export default {
   data () {
     return {
       layout: null,
+      loaded: false,
       isFormVisible: true,
       submitted: false,
       error: null,
@@ -160,6 +251,7 @@ export default {
       success: null,
       playlist: [],
       createNewLabel: '...or create a new one',
+      currentCollectionName: null,
       payload: {
         id: '',
         original_url: '',
@@ -199,12 +291,12 @@ export default {
       }
     },
 
-    showModal (video) {
+    showAddModal (video) {
       this.payload.title = video.title
       this.payload.hash = video.hash
       this.payload.id = video.id
       this.payload.scale = video.scale
-      this.$els.modal.style.display = 'block'
+      this.$els.addModal.style.display = 'block'
 
       checkIfUserHasVideo(store.getUser().id, video.hash, store.getToken())
         .then(res => {
@@ -218,6 +310,15 @@ export default {
         })
     },
 
+    showEditModal (video) {
+      this.payload.title = video.title
+      this.payload.hash = video.hash
+      this.payload.id = video.id
+      this.payload.scale = video.scale
+      this.payload.collection_id = video.collection
+      this.$els.editModal.style.display = 'block'
+    },
+
     hideModal (e) {
       if (e.target.getAttribute('name') !== 'close') return
 
@@ -225,7 +326,8 @@ export default {
       this.warning = null
       this.error = null
       this.success = null
-      this.$els.modal.style.display = 'none'
+      this.$els.addModal.style.display = 'none'
+      this.$els.editModal.style.display = 'none'
     },
 
     showPublicFeed () {
@@ -268,20 +370,20 @@ export default {
       this.warning = null
     },
 
-    addVideo (payload) {
-      const chooseNameOrId = payload => {
-        if (payload.new_collection_name.trim() !== '') {
-          payload.collection_id = -1
-          payload.new_collection_name = payload.new_collection_name.trim()
-        }
-        return payload
+    chooseNameOrId = payload => {
+      if (payload.new_collection_name.trim() !== '') {
+        payload.collection_id = -1
+        payload.new_collection_name = payload.new_collection_name.trim()
       }
+      return payload
+    },
 
+    addVideo (payload) {
       this.submitted = true
 
       if (!this.$addVideoValidation.cid.validExistingCollection || !this.$addVideoValidation.ncid.validNewCollection) {
         this.error = null
-        this.payload = chooseNameOrId(this.payload)
+        this.payload = this.chooseNameOrId(this.payload)
 
         curateVideo(
           store.getUser().id,
@@ -295,7 +397,6 @@ export default {
           store.getToken()
         )
           .then(res => {
-            console.log(res)
             this.success = 'Video added successfully!'
             this.hideForm()
             store.markCollectionsDirty(true)
@@ -306,6 +407,10 @@ export default {
 
         this.resetValidation()
       }
+    },
+
+    editVideo (payload) {
+      //
     }
   },
 
@@ -326,13 +431,24 @@ export default {
       fetchFeed(payload)
         .then(res => {
           this.playlist = res.payload
-          this.$nextTick(() => {
-            this.layout = new Masonry('.layout', {
-              itemSelector: '.media-item',
-              isResizeBound: true,
-              gutter: 10
+
+          // In case we're dealing with feed-collection,
+          // expect a collection `name`.
+          if (res.name) {
+            this.currentCollectionName = res.name
+          }
+
+          if (this.playlist.length > 0) {
+            this.$nextTick(() => {
+              this.layout = new Masonry('.layout', {
+                itemSelector: '.media-item',
+                isResizeBound: true,
+                gutter: 10
+              })
             })
-          })
+          }
+
+          this.loaded = true
         })
         .catch(err => {
           console.log(err)

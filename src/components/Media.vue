@@ -6,7 +6,8 @@
       <div class="duration">{{video.duration}}</div>
     </div>
     <div class="ui">
-      <button class="add-btn" @click="addHandler(video)">&hearts;</button>
+    <button v-if="feedType === 'feed-collection'" class="add-btn" @click="editHandler(video)">&#x270F;</button>
+      <button v-else class="add-btn" @click="addHandler(video)">&hearts;</button>
     </div>
   </div>
 </template>
@@ -23,7 +24,9 @@ import {
 export default {
   name: 'Media',
 
-  props: ['video', 'playlist', 'scale', 'addHandler'],
+  props: [
+    'video', 'playlist', 'scale', 'feedType', 'addHandler', 'editHandler'
+  ],
 
   data () {
     return {
@@ -47,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 .media-item {
-  font-size: 11px;
+  font-size: 12px;
   color: white;
   float: left;
   margin: 0;
