@@ -370,7 +370,7 @@ export default {
       this.warning = null
     },
 
-    chooseNameOrId = payload => {
+    chooseNameOrId (payload) {
       if (payload.new_collection_name.trim() !== '') {
         payload.collection_id = -1
         payload.new_collection_name = payload.new_collection_name.trim()
