@@ -11,8 +11,7 @@ Vue.use(VueResource)
 Vue.use(VueRouter)
 
 export const router = new VueRouter({
-  history: true,
-  saveScrollPosition: true
+  history: true
 })
 
 routeConfig(router)
