@@ -6,6 +6,7 @@ import {
   FACEBOOK_REGISTER_URL,
   USERS_URL,
   COLLECTIONS_URL,
+  VIDEOS_URL,
   PASSWORD_EDIT_URL,
   EMAIL_EDIT_URL,
   CURATION_ACQUIRE_URL,
@@ -251,4 +252,8 @@ export const curateVideo = (userId, originalId, hash, url, title, scale, collect
   }
 
   return http(`${CURATION_ACQUIRE_URL}`, postData(data, token))
+}
+
+export const editVideo = (video, token) => {
+  return http(`${VIDEOS_URL}/${video.id}`, patchData(video, token))
 }

@@ -48,19 +48,19 @@
   </section>
 
   <!-- add video modal -->
-  <div name="close" class="modal" v-el:add-modal @click.stop.prevent="hideModal">
+  <div name="close" class="modal" v-el:add-modal @click.stop="hideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content"@>
 
         <validator name="addVideoValidation">
           <form novalidate>
             <div class="modal-header">
-              <button type="button" class="close" @click.stop.prevent="hideModal">
+              <button type="button" class="close" @click.stop="hideModal">
                 <span name="close" aria-hidden="true">&times;</span>
               </button>
               <div class="alert alert-success" v-if="success">{{success}}</div>
               <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning">{{{warning}}}</div>
+              <div class="alert alert-warning" v-if="warning" name="close">{{{warning}}}</div>
               <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
               <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
               <h4 v-if="!error && !warning && !success" class="col-sm-12">Add this video</h4>
@@ -110,7 +110,7 @@
             </div>
 
             <div class="modal-footer" v-show="isFormVisible">
-              <button name="close" type="button" class="btn btn-secondary" @click.prevent="hideModal">Close</button>
+              <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
               <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
             </div>
           </form>
@@ -122,21 +122,21 @@
   <!-- /add video modal -->
 
   <!-- edit video modal -->
-  <div name="close" class="modal" v-el:edit-modal @click.stop.prevent="hideModal">
+  <div name="close" class="modal" v-el:edit-modal @click.stop="hideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
-        <validator name="addVideoValidation">
+        <validator name="editVideoValidation">
           <form novalidate>
             <div class="modal-header">
-              <button type="button" class="close" @click.stop.prevent="hideModal">
+              <button type="button" class="close" @click.stop="hideModal">
                 <span name="close" aria-hidden="true">&times;</span>
               </button>
               <div class="alert alert-success" v-if="success">{{success}}</div>
               <div class="alert alert-danger" v-if="error">{{error}}</div>
               <div class="alert alert-warning" v-if="warning">{{{warning}}}</div>
-              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
-              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
+              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $editVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
+              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $editVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
               <h4 v-if="!error && !warning && !success" class="col-sm-12">Edit this video</h4>
             </div>
 
@@ -157,9 +157,6 @@
                     class="c-select col-sm-12 col-md-12"
                     name="collection"
                   >
-                    <optgroup>
-                      <option selected value="-1">Choose a collection</option>
-                    </optgroup>
                     <optgroup>
                       <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
                     </optgroup>
@@ -184,8 +181,8 @@
             </div>
 
             <div class="modal-footer" v-show="isFormVisible">
-              <button name="close" type="button" class="btn btn-secondary" @click.prevent="hideModal">Close</button>
-              <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
+              <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
+              <button type="button" class="btn btn-primary" @click.prevent="editVideo(payload)">Save changes</button>
             </div>
           </form>
         </validator>
@@ -207,7 +204,8 @@ import {
   fetchFeed,
   fetchCollections,
   checkIfUserHasVideo,
-  curateVideo
+  curateVideo,
+  editVideo
 } from '../services/api'
 import CreateVideo from './CreateVideo'
 import Navigation from './Navigation'
@@ -368,6 +366,7 @@ export default {
       this.success = null
       this.error = null
       this.warning = null
+      this.showForm = true
     },
 
     chooseNameOrId (payload) {
@@ -410,14 +409,25 @@ export default {
     },
 
     editVideo (payload) {
-      //
-    }
-  },
+      this.submitted = true
 
-  route: {
-    data () {
-      this.type = this.determineFeedType(this.$route.path)
+      if (!this.$addVideoValidation.cid.validExistingCollection || !this.$addVideoValidation.ncid.validNewCollection) {
+        editVideo(payload, store.getToken())
+          .then(res => {
+            store.markCollectionsDirty(true)
+            this.fetchData()
+            this.success = 'Video edited successfully successfully!'
+            this.hideForm()
+          })
+          .catch(err => {
+            this.parseError(err)
+          })
 
+        this.resetValidation()
+      }
+    },
+
+    fetchData () {
       const payload = {
         type: this.type,
         userId: store.getUser().id,
@@ -453,6 +463,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    }
+  },
+
+  route: {
+    data () {
+      this.type = this.determineFeedType(this.$route.path)
+      this.fetchData()
     }
   }
 }
