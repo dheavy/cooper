@@ -183,7 +183,7 @@
 
               <span v-show="isDeleting">
                 <button name="cancel" type="button" class="btn btn-secondary" @click.stop="cancelDelete">No, go back</button>
-                <button name="confirm" type="button" class="btn btn-danger" @click.stop="applyDelete">Yes, delete video</button>
+                <button name="confirm" type="button" class="btn btn-danger" @click.stop="applyDelete(payload)">Yes, delete video</button>
               </span>
             </div>
           </form>
@@ -207,7 +207,8 @@
     fetchCollections,
     checkIfUserHasVideo,
     curateVideo,
-    editVideo
+    editVideo,
+    deleteVideo
   } from '../services/api'
   import CreateVideo from './CreateVideo'
   import {parseError} from '../mixins'
@@ -312,6 +313,8 @@
       },
 
       showEditModal (video) {
+        this.showForm()
+
         this.payload.title = video.title
         this.payload.hash = video.hash
         this.payload.id = video.id
@@ -323,15 +326,16 @@
       hideModal (e) {
         if (e.target.getAttribute('name') !== 'close') return
 
+        this.showForm()
+
         this.payload = {hash: '', collection_id: -1, title: ''}
+
         this.warning = null
         this.error = null
         this.success = null
         this.isDeleting = false
         this.$els.addModal.style.display = 'none'
         this.$els.editModal.style.display = 'none'
-
-        this.showForm()
       },
 
       showPublicFeed () {
@@ -374,7 +378,7 @@
         this.success = null
         this.error = null
         this.warning = null
-        this.showForm = true
+        this.showForm()
       },
 
       chooseNameOrId (payload) {
@@ -424,7 +428,7 @@
             .then(res => {
               store.markCollectionsDirty(true)
               this.fetchData()
-              this.success = 'Video edited successfully successfully!'
+              this.success = 'Video successfully edited!'
               this.hideForm()
             })
             .catch(err => {
@@ -441,8 +445,21 @@
         this.hideForm(true)
       },
 
-      applyDelete () {
+      applyDelete (payload) {
+        this.submitted = true
 
+        deleteVideo(payload, store.getToken())
+          .then(res => {
+            store.markCollectionsDirty(true)
+            this.fetchData()
+            this.success = 'Video successfully deleted!'
+            this.hideForm(false)
+          })
+          .catch(err => {
+            this.parseError(err)
+          })
+
+        this.resetValidation()
       },
 
       cancelDelete () {

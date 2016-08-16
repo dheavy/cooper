@@ -257,3 +257,12 @@ export const curateVideo = (userId, originalId, hash, url, title, scale, collect
 export const editVideo = (video, token) => {
   return http(`${VIDEOS_URL}/${video.id}`, patchData(video, token))
 }
+
+export const deleteVideo = (video, token) => {
+  return fetch(`${VIDEOS_URL}/${video.id}`, deleteData(token))
+    .then(res => {
+      if (res.status === 204) {
+        return true
+      }
+    })
+}
