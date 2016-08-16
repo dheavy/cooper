@@ -6,6 +6,7 @@ const store = new Vue({
   data () {
     return {
       state: {
+        authenticated: false,
         user: null,
         token: null,
         collections: null
@@ -17,6 +18,10 @@ const store = new Vue({
   },
 
   methods: {
+    setAuthentication (auth) {
+      this.state.authenticated = auth
+    },
+
     /**
      * Set user once acquired after login. Store in localstorage as well.
      */

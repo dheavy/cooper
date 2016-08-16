@@ -16,11 +16,13 @@ export default {
   loginViaTokenAndUser (token, user, redirect) {
     store.setToken(token)
     store.setUser(user)
+    store.setAuthentication(true)
     redirect ? router.go(redirect) : void (0)
   },
 
   logout () {
     store.clear()
+    store.setAuthentication(false)
     delete Vue.http.options.headers['Authorization']
   }
 }

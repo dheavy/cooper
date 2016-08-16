@@ -1,9 +1,4 @@
 <template>
-  <navigation
-    :auth="true"
-    :user-id="user.id"
-  ></navigation>
-
   <h3 v-if="type === 'feed-collection'">
     {{currentCollectionName}}
   </h3>
@@ -208,7 +203,6 @@ import {
   editVideo
 } from '../services/api'
 import CreateVideo from './CreateVideo'
-import Navigation from './Navigation'
 import {parseError} from '../mixins'
 import Masonry from 'masonry-layout'
 import {router} from '../main'
@@ -220,7 +214,7 @@ export default {
 
   mixins: [parseError],
 
-  components: {Media, Navigation, CreateVideo},
+  components: {Media, CreateVideo},
 
   validators: {
     validExistingCollection (val) {

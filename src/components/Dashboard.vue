@@ -1,8 +1,4 @@
 <template>
-  <navigation
-    :auth="true"
-    :user-id="user.id"
-  ></navigation>
   <div v-if="loading">
     <h2>Loading...</h2>
   </div>

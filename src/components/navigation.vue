@@ -44,6 +44,6 @@
 export default {
   name: 'Navigation',
 
-  props: ['auth', 'userId']
+  props: ['auth']
 }
 </script>

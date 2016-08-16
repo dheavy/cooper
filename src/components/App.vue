@@ -1,12 +1,22 @@
 <template>
+  <navigation :auth="store.state.authenticated"></navigation>
   <div id="app" class="container">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Navigation from './Navigation'
+import store from '../store'
+
 export default {
-  name: 'App'
+  name: 'App',
+
+  components: {Navigation},
+
+  data () {
+    return {store}
+  }
 }
 </script>
 

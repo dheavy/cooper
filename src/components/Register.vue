@@ -1,5 +1,4 @@
 <template>
-  <navigation :auth="false" :user-id="null"></navigation>
   <facebook-auth></facebook-auth>
 
   <div v-if="loading">
@@ -104,7 +103,6 @@
 <script>
 import Registration from '../services/registration'
 import FacebookAuth from './FacebookAuth'
-import Navigation from './Navigation'
 import Validator from 'vue-validator'
 import {parseError} from '../mixins'
 import {router} from '../main'
@@ -150,7 +148,7 @@ export default {
   },
 
   components: {
-    Navigation, Validator, FacebookAuth, Login
+    Validator, FacebookAuth, Login
   },
 
   methods: {

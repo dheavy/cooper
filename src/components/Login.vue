@@ -1,5 +1,4 @@
 <template>
-  <navigation :auth="false" :user-id="null"></navigation>
   <validator name="loginValidation">
     <form novalidate class="col-sm-4 col-sm-offset-4">
       <h2>Log In</h2>
@@ -51,7 +50,6 @@
 
 <script>
 import facebookAuth from './FacebookAuth'
-import Navigation from './Navigation'
 import Validator from 'vue-validator'
 import auth from '../services/auth'
 import {router} from '../main'
@@ -72,9 +70,7 @@ export default {
     }
   },
 
-  components: {
-    Navigation, Validator
-  },
+  components: {Validator},
 
   methods: {
     fbAuth () {
