@@ -25,7 +25,7 @@
   </div>
 
   <section class="layout clearfix">
-    <div v-if="loaded && playlist.length === 0">
+    <div v-if="isLoaded && playlist.length === 0">
       Nothing to display here...
       <a v-if="type === 'feed-collection'" v-link="{name: 'create-video'}">Add a new video.</a>
     </div>
@@ -104,7 +104,7 @@
               </div>
             </div>
 
-            <div class="modal-footer" v-show="isFormVisible">
+            <div class="modal-footer" v-show="areFormButtonsVisible">
               <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
               <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
             </div>
@@ -175,9 +175,16 @@
               </div>
             </div>
 
-            <div class="modal-footer" v-show="isFormVisible">
-              <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
-              <button type="button" class="btn btn-primary" @click.prevent="editVideo(payload)">Save changes</button>
+            <div class="modal-footer" v-show="areFormButtonsVisible">
+              <span v-show="!isDeleting">
+                <button name="delete" type="button" class="btn btn-danger" @click.stop="confirmDelete(payload)">Delete video</button>
+                <button name="edit" type="button" class="btn btn-primary" @click.prevent="editVideo(payload)">Save changes</button>
+              </span>
+
+              <span v-show="isDeleting">
+                <button name="cancel" type="button" class="btn btn-secondary" @click.stop="cancelDelete">No, go back</button>
+                <button name="confirm" type="button" class="btn btn-danger" @click.stop="applyDelete">Yes, delete video</button>
+              </span>
             </div>
           </form>
         </validator>
@@ -235,8 +242,10 @@
     data () {
       return {
         layout: null,
-        loaded: false,
+        isLoaded: false,
+        isDeleting: false,
         isFormVisible: true,
+        areFormButtonsVisible: true,
         submitted: false,
         error: null,
         warning: null,
@@ -318,8 +327,11 @@
         this.warning = null
         this.error = null
         this.success = null
+        this.isDeleting = false
         this.$els.addModal.style.display = 'none'
         this.$els.editModal.style.display = 'none'
+
+        this.showForm()
       },
 
       showPublicFeed () {
@@ -332,10 +344,12 @@
 
       showForm () {
         this.isFormVisible = true
+        this.areFormButtonsVisible = true
       },
 
-      hideForm () {
+      hideForm (hideButtons = true) {
         this.isFormVisible = false
+        this.areFormButtonsVisible = hideButtons
       },
 
       resetValidation () {
@@ -421,6 +435,22 @@
         }
       },
 
+      confirmDelete (payload) {
+        this.isDeleting = true
+        this.warning = `<p>Are you sure you want to delete <strong>${payload.title}</strong>?</p>`
+        this.hideForm(true)
+      },
+
+      applyDelete () {
+
+      },
+
+      cancelDelete () {
+        this.warning = null
+        this.isDeleting = false
+        this.showForm()
+      },
+
       fetchData () {
         const payload = {
           type: this.type,
@@ -452,7 +482,7 @@
               })
             }
 
-            this.loaded = true
+            this.isLoaded = true
           })
           .catch(err => {
             console.log(err)
