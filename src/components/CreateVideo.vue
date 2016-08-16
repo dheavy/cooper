@@ -81,122 +81,122 @@
 </template>
 
 <script>
-import {fetchCollections, addVideo} from '../services/api'
-import Validator from 'vue-validator'
-import {parseError} from '../mixins'
-import {router} from '../main'
-import store from '../store'
+  import {fetchCollections, addVideo} from '../services/api'
+  import Validator from 'vue-validator'
+  import {parseError} from '../mixins'
+  import {router} from '../main'
+  import store from '../store'
 
-export default {
-  name: 'CreateCollection',
+  export default {
+    name: 'CreateCollection',
 
-  components: {Validator},
+    components: {Validator},
 
-  mixins: [parseError],
+    mixins: [parseError],
 
-  validators: {
-    validExistingCollection (val) {
-      return val >= 1
+    validators: {
+      validExistingCollection (val) {
+        return val >= 1
+      },
+
+      validNewCollection (val) {
+        return val.trim() !== ''
+      }
     },
 
-    validNewCollection (val) {
-      return val.trim() !== ''
-    }
-  },
-
-  data () {
-    return {
-      createNewLabel: '...or create a new one',
-      submitted: false,
-      success: null,
-      error: null,
-      warning: null,
-      collections: store.getCollections(),
-      payload: {
-        collection_id: -1,
-        url: '',
-        new_collection_name: null
-      }
-    }
-  },
-
-  computed: {
-    showNewCollectionForm () {
-      return this.payload.collection_id === this.createNewLabel
-    }
-  },
-
-  ready () {
-    this.getCollections()
-  },
-
-  methods: {
-    create () {
-      const addUrlSchemeIfNeeded = payload => {
-        let url = payload.url
-        if (url.indexOf('http') === -1) {
-          url = `http://${url}`
-          payload = Object.assign({}, payload, {url})
+    data () {
+      return {
+        createNewLabel: '...or create a new one',
+        submitted: false,
+        success: null,
+        error: null,
+        warning: null,
+        collections: store.getCollections(),
+        payload: {
+          collection_id: -1,
+          url: '',
+          new_collection_name: null
         }
-        return payload
       }
+    },
 
-      const chooseNameOrId = payload => {
-        if (payload.new_collection_name !== null) {
-          payload.collection_id = -1
-          payload.new_collection_name = payload.new_collection_name.trim() === '' ? 'Untitled' : payload.new_collection_name
+    computed: {
+      showNewCollectionForm () {
+        return this.payload.collection_id === this.createNewLabel
+      }
+    },
+
+    ready () {
+      this.getCollections()
+    },
+
+    methods: {
+      create () {
+        const addUrlSchemeIfNeeded = payload => {
+          let url = payload.url
+          if (url.indexOf('http') === -1) {
+            url = `http://${url}`
+            payload = Object.assign({}, payload, {url})
+          }
+          return payload
         }
-        return payload
-      }
 
-      this.submitted = true
+        const chooseNameOrId = payload => {
+          if (payload.new_collection_name !== null) {
+            payload.collection_id = -1
+            payload.new_collection_name = payload.new_collection_name.trim() === '' ? 'Untitled' : payload.new_collection_name
+          }
+          return payload
+        }
 
-      if (!this.$createVideoValidation.url.url && (!this.$createVideoValidation.cid.validExistingCollection || !this.$createVideoValidation.ncid.validNewCollection)) {
+        this.submitted = true
+
+        if (!this.$createVideoValidation.url.url && (!this.$createVideoValidation.cid.validExistingCollection || !this.$createVideoValidation.ncid.validNewCollection)) {
+          this.error = null
+          this.payload = chooseNameOrId(addUrlSchemeIfNeeded(this.payload))
+
+          addVideo(this.payload, store.getToken())
+            .then(res => {
+              console.log(res)
+              this.success = 'Video will be added to your collection shortly.'
+            })
+            .catch(err => {
+              console.log(err)
+              this.parseError(err)
+            })
+
+          this.resetValidation()
+        }
+      },
+
+      resetValidation () {
+        this.submitted = false
+        this.resetForm()
+        this.$resetValidation()
+      },
+
+      exit () {
+        router.go(window.history.back())
+      },
+
+      resetForm () {
+        this.success = null
         this.error = null
-        this.payload = chooseNameOrId(addUrlSchemeIfNeeded(this.payload))
+        this.warning = null
+      },
 
-        addVideo(this.payload, store.getToken())
-          .then(res => {
-            console.log(res)
-            this.success = 'Video will be added to your collection shortly.'
-          })
-          .catch(err => {
-            console.log(err)
-            this.parseError(err)
-          })
-
-        this.resetValidation()
-      }
-    },
-
-    resetValidation () {
-      this.submitted = false
-      this.resetForm()
-      this.$resetValidation()
-    },
-
-    exit () {
-      router.go(window.history.back())
-    },
-
-    resetForm () {
-      this.success = null
-      this.error = null
-      this.warning = null
-    },
-
-    getCollections () {
-      if (!this.collections) {
-        fetchCollections(store.getUser().id, store.getToken())
-          .then(res => {
-            this.collections = res.payload
-          })
-          .catch(err => {
-            console.log(err)
-            this.error = 'Oops... There was an error. Please refresh the page.'
-          })
+      getCollections () {
+        if (!this.collections) {
+          fetchCollections(store.getUser().id, store.getToken())
+            .then(res => {
+              this.collections = res.payload
+            })
+            .catch(err => {
+              console.log(err)
+              this.error = 'Oops... There was an error. Please refresh the page.'
+            })
+        }
       }
     }
   }
-}
 </script>

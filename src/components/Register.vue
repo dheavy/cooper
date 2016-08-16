@@ -101,195 +101,195 @@
 </template>
 
 <script>
-import Registration from '../services/registration'
-import FacebookAuth from './FacebookAuth'
-import Validator from 'vue-validator'
-import {parseError} from '../mixins'
-import {router} from '../main'
-import store from '../store'
-import Login from './Login'
-import Vue from 'vue'
+  import Registration from '../services/registration'
+  import FacebookAuth from './FacebookAuth'
+  import Validator from 'vue-validator'
+  import {parseError} from '../mixins'
+  import {router} from '../main'
+  import store from '../store'
+  import Login from './Login'
+  import Vue from 'vue'
 
-export default {
-  name: 'Register',
+  export default {
+    name: 'Register',
 
-  mixins: [parseError],
+    mixins: [parseError],
 
-  data () {
-    return {
-      store,
-      facebook: false,
-      loading: false,
-      credentials: {
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      },
-      credentialsFb: {
-        fb_email: '',
-        fb_id: '',
-        intent: '',
-        tmp_username: '',
-        user_id: '',
-        fb_name: ''
-      },
-      classHasSuccess: 'has-success',
-      classHasWarning: 'has-warning',
-      classHasDanger: 'has-danger',
-      classFormControlSuccess: 'form-control-success',
-      classFormControlWarning: 'form-control-warning',
-      classFormControlDanger: 'form-control-danger',
-      usernameAvailable: null,
-      fbUsernameAvailable: null,
-      submitted: false,
-      error: ''
-    }
-  },
-
-  components: {
-    Validator, FacebookAuth, Login
-  },
-
-  methods: {
-    checkUsername (forFacebookRegistration = false) {
-      const username = forFacebookRegistration ? this.credentialsFb.username : this.credentials.username
-      if (username.length > 2) {
-        Registration.checkUsername(username, forFacebookRegistration)
-          .then(res => {
-            if (res.status === 200) {
-              if (forFacebookRegistration) {
-                this.fbUsernameAvailable = true
-              } else {
-                this.usernameAvailable = true
-              }
-            } else {
-              if (forFacebookRegistration) {
-                this.fbUsernameAvailable = false
-              } else {
-                this.usernameAvailable = false
-              }
-            }
-          })
-          .catch(err => {
-            this.parseError(err)
-          })
-      } else {
-        this.fbUsernameAvailable = null
-        this.usernameAvailable = null
-      }
-    },
-
-    fbAuthInit () {
-      return FacebookAuth.auth()
-    },
-
-    fbAuthContinue (token) {
-      return FacebookAuth.auth(token)
-    },
-
-    fbCheckUser (payload) {
-      return FacebookAuth.checkUser(payload)
-    },
-
-    fbRegistrationLastStep (payload) {
-      this.loading = false
-      this.facebook = true
-      this.credentialsFb = {
-        username: payload.tmp_username,
-        fb_id: payload.fb_id,
-        user_id: payload.user_id,
-        fb_email: payload.fb_email,
-        tmp_username: payload.tmp_username
-      }
-
-      Vue.nextTick(() => {
-        router.go({path: '/register'})
-      })
-
-      Registration.checkUsername(this, this.credentialsFb.username, true)
-    },
-
-    submit () {
-      this.error = ''
-      if (this.$registerValidation.valid) {
-        Registration
-          .register(this.credentials)
-          .catch(err => {
-            console.log(err.message)
-            this.parseError(err)
-          })
-      }
-    },
-
-    submitFacebook () {
-      this.error = ''
-      if (this.$registerValidation.valid) {
-        Registration
-          .registerViaFacebook(this.credentialsFb)
-          .catch(err => {
-            this.parseError(err)
-          })
-      }
-    }
-  },
-
-  computed: {
-    isPasswordValid () {
-      if (this.credentials.password.length === 0) return null
-      return this.$registerValidation.password && this.$registerValidation.password.valid
-    },
-
-    isPasswordConfirmValid () {
-      if (this.credentials.confirmPassword.length === 0) return null
-      return this.$registerValidation.password &&
-             this.credentials.password &&
-             this.credentials.confirmPassword &&
-             this.credentials.password === this.credentials.confirmPassword
-    },
-
-    isEmailValid () {
-      if (this.credentials.email.length === 0) return null
-      return this.$registerValidation.email && this.$registerValidation.email.valid
-    }
-  },
-
-  route: {
     data () {
-      try {
-        if (window.location.hash.indexOf('access_token=') > -1) {
-          this.loading = true
+      return {
+        store,
+        facebook: false,
+        loading: false,
+        credentials: {
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        },
+        credentialsFb: {
+          fb_email: '',
+          fb_id: '',
+          intent: '',
+          tmp_username: '',
+          user_id: '',
+          fb_name: ''
+        },
+        classHasSuccess: 'has-success',
+        classHasWarning: 'has-warning',
+        classHasDanger: 'has-danger',
+        classFormControlSuccess: 'form-control-success',
+        classFormControlWarning: 'form-control-warning',
+        classFormControlDanger: 'form-control-danger',
+        usernameAvailable: null,
+        fbUsernameAvailable: null,
+        submitted: false,
+        error: ''
+      }
+    },
 
-          const split = window.location.hash.split('=')
-          const token = split.splice(1).join('=')
-          this.fbAuthContinue(token)
+    components: {
+      Validator, FacebookAuth, Login
+    },
+
+    methods: {
+      checkUsername (forFacebookRegistration = false) {
+        const username = forFacebookRegistration ? this.credentialsFb.username : this.credentials.username
+        if (username.length > 2) {
+          Registration.checkUsername(username, forFacebookRegistration)
             .then(res => {
-              this.fbCheckUser({
-                'fb_access_token': token,
-                'fb_id': res.id,
-                'fb_name': res.name,
-                'fb_email': res.email || ''
-              })
-              .then(res => {
-                if (res.status === 200) {
-                  Login.methods.fbLoginUser({token: res.token, user: res.user})
+              if (res.status === 200) {
+                if (forFacebookRegistration) {
+                  this.fbUsernameAvailable = true
                 } else {
-                  this.fbRegistrationLastStep(res)
+                  this.usernameAvailable = true
                 }
+              } else {
+                if (forFacebookRegistration) {
+                  this.fbUsernameAvailable = false
+                } else {
+                  this.usernameAvailable = false
+                }
+              }
+            })
+            .catch(err => {
+              this.parseError(err)
+            })
+        } else {
+          this.fbUsernameAvailable = null
+          this.usernameAvailable = null
+        }
+      },
+
+      fbAuthInit () {
+        return FacebookAuth.auth()
+      },
+
+      fbAuthContinue (token) {
+        return FacebookAuth.auth(token)
+      },
+
+      fbCheckUser (payload) {
+        return FacebookAuth.checkUser(payload)
+      },
+
+      fbRegistrationLastStep (payload) {
+        this.loading = false
+        this.facebook = true
+        this.credentialsFb = {
+          username: payload.tmp_username,
+          fb_id: payload.fb_id,
+          user_id: payload.user_id,
+          fb_email: payload.fb_email,
+          tmp_username: payload.tmp_username
+        }
+
+        Vue.nextTick(() => {
+          router.go({path: '/register'})
+        })
+
+        Registration.checkUsername(this, this.credentialsFb.username, true)
+      },
+
+      submit () {
+        this.error = ''
+        if (this.$registerValidation.valid) {
+          Registration
+            .register(this.credentials)
+            .catch(err => {
+              console.log(err.message)
+              this.parseError(err)
+            })
+        }
+      },
+
+      submitFacebook () {
+        this.error = ''
+        if (this.$registerValidation.valid) {
+          Registration
+            .registerViaFacebook(this.credentialsFb)
+            .catch(err => {
+              this.parseError(err)
+            })
+        }
+      }
+    },
+
+    computed: {
+      isPasswordValid () {
+        if (this.credentials.password.length === 0) return null
+        return this.$registerValidation.password && this.$registerValidation.password.valid
+      },
+
+      isPasswordConfirmValid () {
+        if (this.credentials.confirmPassword.length === 0) return null
+        return this.$registerValidation.password &&
+               this.credentials.password &&
+               this.credentials.confirmPassword &&
+               this.credentials.password === this.credentials.confirmPassword
+      },
+
+      isEmailValid () {
+        if (this.credentials.email.length === 0) return null
+        return this.$registerValidation.email && this.$registerValidation.email.valid
+      }
+    },
+
+    route: {
+      data () {
+        try {
+          if (window.location.hash.indexOf('access_token=') > -1) {
+            this.loading = true
+
+            const split = window.location.hash.split('=')
+            const token = split.splice(1).join('=')
+            this.fbAuthContinue(token)
+              .then(res => {
+                this.fbCheckUser({
+                  'fb_access_token': token,
+                  'fb_id': res.id,
+                  'fb_name': res.name,
+                  'fb_email': res.email || ''
+                })
+                .then(res => {
+                  if (res.status === 200) {
+                    Login.methods.fbLoginUser({token: res.token, user: res.user})
+                  } else {
+                    this.fbRegistrationLastStep(res)
+                  }
+                })
+                .catch(err => {
+                  throw err
+                })
               })
               .catch(err => {
                 throw err
               })
-            })
-            .catch(err => {
-              throw err
-            })
+          }
+        } catch (err) {
+          this.error = 'Oops... there was an error. Please try again.'
+          this.loading = false
         }
-      } catch (err) {
-        this.error = 'Oops... there was an error. Please try again.'
-        this.loading = false
       }
     }
   }
-}
 </script>

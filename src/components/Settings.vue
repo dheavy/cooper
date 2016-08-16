@@ -87,158 +87,158 @@
 </template>
 
 <script>
-import {editPassword, editEmail, deactivate} from '../services/api'
-import errors from '../services/errors'
-import Validator from 'vue-validator'
-import {router} from '../main'
-import store from '../store'
+  import {editPassword, editEmail, deactivate} from '../services/api'
+  import errors from '../services/errors'
+  import Validator from 'vue-validator'
+  import {router} from '../main'
+  import store from '../store'
 
-export default {
-  name: 'Settings',
+  export default {
+    name: 'Settings',
 
-  components: {Validator},
+    components: {Validator},
 
-  data () {
-    return {
-      editPassword: {
-        currentPassword: '',
-        password: '',
-        passwordConfirm: ''
-      },
-      editEmail: {
-        email: ''
-      },
-      editPasswordSubmitted: null,
-      classHasSuccess: 'has-success',
-      classHasWarning: 'has-warning',
-      classHasDanger: 'has-danger',
-      classFormControlSuccess: 'form-control-success',
-      classFormControlWarning: 'form-control-warning',
-      classFormControlDanger: 'form-control-danger',
-      errorDeactivate: '',
-      errorEditEmail: '',
-      errorEditPassword: '',
-      successEditPassword: '',
-      successEditEmail: ''
-    }
-  },
-
-  methods: {
-    resetForms () {
-      this.editPassword = {
-        currentPassword: '',
-        password: '',
-        passwordConfirm: ''
-      }
-
-      this.editEmail = {
-        email: ''
+    data () {
+      return {
+        editPassword: {
+          currentPassword: '',
+          password: '',
+          passwordConfirm: ''
+        },
+        editEmail: {
+          email: ''
+        },
+        editPasswordSubmitted: null,
+        classHasSuccess: 'has-success',
+        classHasWarning: 'has-warning',
+        classHasDanger: 'has-danger',
+        classFormControlSuccess: 'form-control-success',
+        classFormControlWarning: 'form-control-warning',
+        classFormControlDanger: 'form-control-danger',
+        errorDeactivate: '',
+        errorEditEmail: '',
+        errorEditPassword: '',
+        successEditPassword: '',
+        successEditEmail: ''
       }
     },
 
-    resetEditPasswordValidation () {
-      this.editPasswordSubmitted = false
-      this.$resetValidation()
-    },
+    methods: {
+      resetForms () {
+        this.editPassword = {
+          currentPassword: '',
+          password: '',
+          passwordConfirm: ''
+        }
 
-    resetEditEmailValidation () {
-      this.editEmailSubmitted = false
-      this.$resetValidation()
-    },
+        this.editEmail = {
+          email: ''
+        }
+      },
 
-    submitEditEmail () {
-      this.successEditEmail = ''
-      this.errorEditEmail = ''
+      resetEditPasswordValidation () {
+        this.editPasswordSubmitted = false
+        this.$resetValidation()
+      },
 
-      const id = store.getUser().id
+      resetEditEmailValidation () {
+        this.editEmailSubmitted = false
+        this.$resetValidation()
+      },
 
-      if (this.$editEmailValidation.valid || this.editEmail.email === '') {
-        return editEmail({
-          user_id: id,
-          email: this.editEmail.email,
-          token: store.getToken()
-        })
+      submitEditEmail () {
+        this.successEditEmail = ''
+        this.errorEditEmail = ''
+
+        const id = store.getUser().id
+
+        if (this.$editEmailValidation.valid || this.editEmail.email === '') {
+          return editEmail({
+            user_id: id,
+            email: this.editEmail.email,
+            token: store.getToken()
+          })
+            .then(res => {
+              this.successEditEmail = 'Email successfully modified!'
+              this.resetForms()
+            })
+            .catch(err => {
+              this.parseEmailError(err)
+            })
+        }
+      },
+
+      submitEditPassword () {
+        this.successEditPassword = ''
+        this.errorEditPassword = ''
+
+        const id = store.getUser().id
+
+        if (this.$editPasswordValidation.valid) {
+          return editPassword({
+            user_id: id,
+            password: this.editPassword.password,
+            current_password: this.editPassword.currentPassword,
+            confirm_password: this.editPassword.passwordConfirm,
+            token: store.getToken()
+          })
+            .then(res => {
+              this.successEditPassword = 'Password successfully changed!'
+              this.resetForms()
+            })
+            .catch(err => {
+              this.parsePasswordError(err)
+            })
+        }
+      },
+
+      deactivate () {
+        const id = store.getUser().id
+
+        return deactivate(id, store.getToken())
           .then(res => {
-            this.successEditEmail = 'Email successfully modified!'
-            this.resetForms()
+            router.go({path: '/logout'})
           })
           .catch(err => {
-            this.parseEmailError(err)
+            console.log(err)
+            this.errorDeactivate = 'Oops... There was an error on our end. Please try again.'
           })
+      },
+
+      parseEmailError (err) {
+        if (err.message && errors[err.message]) {
+          this.errorEditEmail = errors[err.message]
+        } else {
+          this.errorEditEmail = 'Oops... there was an error. Please try again.'
+        }
+      },
+
+      parsePasswordError (err) {
+        if (err.message && errors[err.message]) {
+          this.errorEditPassword = errors[err.message]
+        } else {
+          this.errorEditPassword = 'Oops... there was an error. Please try again.'
+        }
       }
     },
 
-    submitEditPassword () {
-      this.successEditPassword = ''
-      this.errorEditPassword = ''
+    computed: {
+      isPasswordValid () {
+        if (this.editPassword.password.length === 0) return null
+        return this.$editPasswordValidation.password && this.$editPasswordValidation.password.valid
+      },
 
-      const id = store.getUser().id
+      isPasswordConfirmValid () {
+        if (this.editPassword.passwordConfirm.length === 0) return null
+        return this.$editPasswordValidation.passwordConfirm &&
+               this.$editPasswordValidation.passwordConfirm.valid &&
+               this.editPassword.password === this.editPassword.passwordConfirm
+      },
 
-      if (this.$editPasswordValidation.valid) {
-        return editPassword({
-          user_id: id,
-          password: this.editPassword.password,
-          current_password: this.editPassword.currentPassword,
-          confirm_password: this.editPassword.passwordConfirm,
-          token: store.getToken()
-        })
-          .then(res => {
-            this.successEditPassword = 'Password successfully changed!'
-            this.resetForms()
-          })
-          .catch(err => {
-            this.parsePasswordError(err)
-          })
+      isEmailValid () {
+        if (this.editEmail.email.length === 0) return null
+        return this.$editEmailValidation.valid
       }
-    },
-
-    deactivate () {
-      const id = store.getUser().id
-
-      return deactivate(id, store.getToken())
-        .then(res => {
-          router.go({path: '/logout'})
-        })
-        .catch(err => {
-          console.log(err)
-          this.errorDeactivate = 'Oops... There was an error on our end. Please try again.'
-        })
-    },
-
-    parseEmailError (err) {
-      if (err.message && errors[err.message]) {
-        this.errorEditEmail = errors[err.message]
-      } else {
-        this.errorEditEmail = 'Oops... there was an error. Please try again.'
-      }
-    },
-
-    parsePasswordError (err) {
-      if (err.message && errors[err.message]) {
-        this.errorEditPassword = errors[err.message]
-      } else {
-        this.errorEditPassword = 'Oops... there was an error. Please try again.'
-      }
-    }
-  },
-
-  computed: {
-    isPasswordValid () {
-      if (this.editPassword.password.length === 0) return null
-      return this.$editPasswordValidation.password && this.$editPasswordValidation.password.valid
-    },
-
-    isPasswordConfirmValid () {
-      if (this.editPassword.passwordConfirm.length === 0) return null
-      return this.$editPasswordValidation.passwordConfirm &&
-             this.$editPasswordValidation.passwordConfirm.valid &&
-             this.editPassword.password === this.editPassword.passwordConfirm
-    },
-
-    isEmailValid () {
-      if (this.editEmail.email.length === 0) return null
-      return this.$editEmailValidation.valid
     }
   }
-}
 </script>

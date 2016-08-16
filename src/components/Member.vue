@@ -23,31 +23,31 @@
 </template>
 
 <script>
-import {router} from '../main'
+  import {router} from '../main'
 
-export default {
-  name: 'Member',
+  export default {
+    name: 'Member',
 
-  props: [
-    'id',
-    'currentUserId',
-    'username',
-    'dateJoined',
-    'following',
-    'followers',
-    'canCreateCollection'
-  ],
+    props: [
+      'id',
+      'currentUserId',
+      'username',
+      'dateJoined',
+      'following',
+      'followers',
+      'canCreateCollection'
+    ],
 
-  methods: {
-    createNewCollectionHandler () {
-      router.go({name: 'create-collection'})
+    methods: {
+      createNewCollectionHandler () {
+        router.go({name: 'create-collection'})
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.member {
-  margin-bottom: 2em;
-}
+  .member {
+    margin-bottom: 2em;
+  }
 </style>

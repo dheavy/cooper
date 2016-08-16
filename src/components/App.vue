@@ -6,24 +6,24 @@
 </template>
 
 <script>
-import Navigation from './Navigation'
-import store from '../store'
+  import Navigation from './Navigation'
+  import store from '../store'
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {Navigation},
+    components: {Navigation},
 
-  data () {
-    return {store}
+    data () {
+      return {store}
+    }
   }
-}
 </script>
 
 <style lang="scss">
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+  @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
-body {
-  margin-top: 70px;
-}
+  body {
+    margin-top: 70px;
+  }
 </style>

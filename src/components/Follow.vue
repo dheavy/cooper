@@ -25,45 +25,45 @@
 </template>
 
 <script>
-import {userToUserRelationships} from '../services/api'
-import FollowButton from './FollowButton'
-import store from '../store'
+  import {userToUserRelationships} from '../services/api'
+  import FollowButton from './FollowButton'
+  import store from '../store'
 
-export default {
-  name: 'Follow',
+  export default {
+    name: 'Follow',
 
-  components: {
-    FollowButton
-  },
+    components: {
+      FollowButton
+    },
 
-  data () {
-    return {
-      store,
-      error: null,
-      loading: null,
-      usersList: null,
-      relationship: null
-    }
-  },
-
-  route: {
     data () {
-      this.loading = true
-      this.error = false
-      this.relationship = this.$route.path.indexOf('followers') > -1 || +store.getUser().id !== +this.$route.params.uid
-                          ? 'followers' : 'followed'
+      return {
+        store,
+        error: null,
+        loading: null,
+        usersList: null,
+        relationship: null
+      }
+    },
 
-      return userToUserRelationships(this.relationship, this.$route.params.uid, store.getToken())
-        .then(res => {
-          this.loading = false
-          this.usersList = res.payload
-        })
-        .catch(err => {
-          console.log(err)
-          this.loading = false
-          this.error = 'Oops... something went wrong. Please refresh the page.'
-        })
+    route: {
+      data () {
+        this.loading = true
+        this.error = false
+        this.relationship = this.$route.path.indexOf('followers') > -1 || +store.getUser().id !== +this.$route.params.uid
+                            ? 'followers' : 'followed'
+
+        return userToUserRelationships(this.relationship, this.$route.params.uid, store.getToken())
+          .then(res => {
+            this.loading = false
+            this.usersList = res.payload
+          })
+          .catch(err => {
+            console.log(err)
+            this.loading = false
+            this.error = 'Oops... something went wrong. Please refresh the page.'
+          })
+      }
     }
   }
-}
 </script>

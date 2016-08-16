@@ -45,50 +45,50 @@
 </template>
 
 <script>
-import {createCollection} from '../services/api'
-import ToggleSwitch from './ToggleSwitch'
-import {router} from '../main'
-import store from '../store'
+  import {createCollection} from '../services/api'
+  import ToggleSwitch from './ToggleSwitch'
+  import {router} from '../main'
+  import store from '../store'
 
-export default {
-  name: 'CreateCollection',
+  export default {
+    name: 'CreateCollection',
 
-  components: [ToggleSwitch],
+    components: [ToggleSwitch],
 
-  data () {
-    return {
-      success: false,
-      error: false
-    }
-  },
-
-  methods: {
-    create () {
-      const name = this.$els.name.value.trim() !== '' ? this.$els.name.value : 'Untitled'
-      const makePrivate = this.$els.visibility.childNodes[1].checked
-
-      this.resetForm()
-
-      return createCollection({name, 'is_private': makePrivate}, store.getToken())
-        .then(res => {
-          this.success = true
-        })
-        .catch(err => {
-          console.log(err)
-          this.error = true
-        })
+    data () {
+      return {
+        success: false,
+        error: false
+      }
     },
 
-    exit () {
-      router.go(window.history.back())
-    },
+    methods: {
+      create () {
+        const name = this.$els.name.value.trim() !== '' ? this.$els.name.value : 'Untitled'
+        const makePrivate = this.$els.visibility.childNodes[1].checked
 
-    resetForm () {
-      this.success = false
-      this.error = false
+        this.resetForm()
+
+        return createCollection({name, 'is_private': makePrivate}, store.getToken())
+          .then(res => {
+            this.success = true
+          })
+          .catch(err => {
+            console.log(err)
+            this.error = true
+          })
+      },
+
+      exit () {
+        router.go(window.history.back())
+      },
+
+      resetForm () {
+        this.success = false
+        this.error = false
+      }
     }
   }
-}
 </script>
 
 

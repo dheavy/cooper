@@ -45,283 +45,283 @@
 </template>
 
 <script>
-import {
-  toggleCollectionVisibility,
-  editCollectionName,
-  deleteCollection as deleteCollectionCommand} from '../services/api'
-import DeleteCollection from './DeleteCollection'
-import FollowButton from './FollowButton'
-import BlockButton from './BlockButton'
-import store from '../store'
+  import {
+    toggleCollectionVisibility,
+    editCollectionName,
+    deleteCollection as deleteCollectionCommand} from '../services/api'
+  import DeleteCollection from './DeleteCollection'
+  import FollowButton from './FollowButton'
+  import BlockButton from './BlockButton'
+  import store from '../store'
 
-export default {
-  name: 'CollectionRack',
+  export default {
+    name: 'CollectionRack',
 
-  props: ['collection', 'areMyOwn', 'otherCollections'],
+    props: ['collection', 'areMyOwn', 'otherCollections'],
 
-  components: {
-    DeleteCollection, FollowButton, BlockButton
-  },
-
-  data () {
-    return {
-      store,
-      isDeleteMode: false,
-      isEditMode: false,
-      error: null
-    }
-  },
-
-  methods: {
-    toggleVisibility () {
-      const currentVisibility = this.collection.is_private
-
-      toggleCollectionVisibility(this.collection.id, !currentVisibility, store.getToken())
-        .then(res => {
-          this.collection.is_private = res.is_private
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    components: {
+      DeleteCollection, FollowButton, BlockButton
     },
 
-    toggleEditMode () {
-      this.isEditMode = !this.isEditMode
+    data () {
+      return {
+        store,
+        isDeleteMode: false,
+        isEditMode: false,
+        error: null
+      }
     },
 
-    editName (e) {
-      if (this.isEditMode) {
-        const name = e.srcElement.value.trim() !== '' ? e.srcElement.value.trim() : 'Untitled'
-        this.collection.name = name
-        this.isEditMode = false
+    methods: {
+      toggleVisibility () {
+        const currentVisibility = this.collection.is_private
 
-        editCollectionName(this.collection.id, name, store.getToken())
+        toggleCollectionVisibility(this.collection.id, !currentVisibility, store.getToken())
           .then(res => {
-            console.log(res)
+            this.collection.is_private = res.is_private
           })
           .catch(err => {
             console.log(err)
           })
+      },
+
+      toggleEditMode () {
+        this.isEditMode = !this.isEditMode
+      },
+
+      editName (e) {
+        if (this.isEditMode) {
+          const name = e.srcElement.value.trim() !== '' ? e.srcElement.value.trim() : 'Untitled'
+          this.collection.name = name
+          this.isEditMode = false
+
+          editCollectionName(this.collection.id, name, store.getToken())
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      },
+
+      setDeletion () {
+        this.isDeleteMode = true
+      },
+
+      cancelDeletion () {
+        this.isDeleteMode = false
+      },
+
+      finalizeDeletion (cid, vm, reqBody) {
+        this.error = null
+
+        deleteCollectionCommand(cid, store.getToken())
+          .then(res => {
+            vm.$destroy(true)
+            this.$els.rack.remove()
+            this.store.markCollectionsDirty(true)
+          })
+          .catch(err => {
+            console.log(err)
+            this.error = 'Oops... there was an error. Please try again.'
+          })
       }
-    },
-
-    setDeletion () {
-      this.isDeleteMode = true
-    },
-
-    cancelDeletion () {
-      this.isDeleteMode = false
-    },
-
-    finalizeDeletion (cid, vm, reqBody) {
-      this.error = null
-
-      deleteCollectionCommand(cid, store.getToken())
-        .then(res => {
-          vm.$destroy(true)
-          this.$els.rack.remove()
-          this.store.markCollectionsDirty(true)
-        })
-        .catch(err => {
-          console.log(err)
-          this.error = 'Oops... there was an error. Please try again.'
-        })
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.delete-collection {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  margin-top: 20px;
-  margin-left: 40px;
-}
-
-.tools {
-  float: left;
-  margin-top: 35px;
-
-  button {
-    width: 50px;
-    height: 50px;
-    display: block;
-    margin-bottom: 10px;
-  }
-}
-
-.name {
-  position: relative;
-  display: block;
-  margin-left: 60px;
-  margin-bottom: 10px;
-}
-
-.rack {
-  float: left;
-}
-
-.collection {
-  width: 100%;
-  height: 230px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #CCCCCC;
-  overflow: hidden;
-}
-
-.cover {
-  overflow: hidden;
-  width: 300px;
-  margin-left: 10px;
-  height: 180px;
-  float: left;
-  background-color: black;
-}
-
-.thumb {
-  overflow: hidden;
-  width: 140px;
-  height: 85px;
-  float: left;
-  background-color: black;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  display: none;
-}
-
-.thumb-more {
-  background-color: #CCCCCC;
-}
-
-.empty {
-  background-color: #CCCCCC;
-}
-
-@media screen and (min-width: 1200px) {
-  .thumb-0,
-  .thumb-1,
-  .thumb-2,
-  .thumb-3,
-  .thumb-4,
-  .thumb-5,
-  .thumb-6,
-  .thumb-7,
-  .thumb-8,
-  .thumb-9,
-  .thumb-more {
-    display: block;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .cover {
-    width: 280px;
-  }
-
-  .thumb {
-    width: 132px;
-  }
-
-  .thumb-0,
-  .thumb-1,
-  .thumb-2,
-  .thumb-3,
-  .thumb-4,
-  .thumb-5,
-  .thumb-6,
-  .thumb-7,
-  .thumb-more {
-    display: block;
-  }
-}
-
-@media screen and (max-width: 990px) {
-  .cover {
-    width: 204px;
-  }
-
-  .thumb-0,
-  .thumb-1,
-  .thumb-2,
-  .thumb-3,
-  .thumb-4,
-  .thumb-5,
-  .thumb-more {
-    display: block;
-  }
-
-  .thumb-6,
-  .thumb-7,
-  .thumb-8,
-  .thumb-9 {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 770px) {
-  .thumb {
-    width: 131px;
-  }
-
-  .thumb-0,
-  .thumb-1,
-  .thumb-2,
-  .thumb-3,
-  .thumb-more {
-    display: block;
-  }
-
-  .thumb-4,
-  .thumb-5,
-  .thumb-6,
-  .thumb-7,
-  .thumb-8,
-  .thumb-9 {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 575px) {
-  .thumb {
-    width: 130px;
-  }
-}
-
-@media screen and (max-width: 574px) {
-  .cover {
+  .delete-collection {
+    position: relative;
     width: 100%;
+    height: 100%;
+    z-index: 2;
+    margin-top: 20px;
+    margin-left: 40px;
+  }
 
-    img {
-      width: 100%;
-      height: auto;
+  .tools {
+    float: left;
+    margin-top: 35px;
+
+    button {
+      width: 50px;
+      height: 50px;
+      display: block;
+      margin-bottom: 10px;
     }
   }
 
-  .rack {
-    width: calc(100% - 60px);
+  .name {
+    position: relative;
+    display: block;
+    margin-left: 60px;
+    margin-bottom: 10px;
   }
 
-  .thumb-1,
-  .thumb-2,
-  .thumb-3,
-  .thumb-4,
-  .thumb-5,
-  .thumb-6,
-  .thumb-7,
-  .thumb-8,
-  .thumb-9 {
+  .rack {
+    float: left;
+  }
+
+  .collection {
+    width: 100%;
+    height: 230px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #CCCCCC;
+    overflow: hidden;
+  }
+
+  .cover {
+    overflow: hidden;
+    width: 300px;
+    margin-left: 10px;
+    height: 180px;
+    float: left;
+    background-color: black;
+  }
+
+  .thumb {
+    overflow: hidden;
+    width: 140px;
+    height: 85px;
+    float: left;
+    background-color: black;
+    margin-bottom: 10px;
+    margin-left: 10px;
     display: none;
   }
 
   .thumb-more {
-    margin-top: -85px;
-    width: 90px;
-    height: 75px;
-    position: relative;
-    margin-left: calc(100% - 100px);
+    background-color: #CCCCCC;
   }
-}
+
+  .empty {
+    background-color: #CCCCCC;
+  }
+
+  @media screen and (min-width: 1200px) {
+    .thumb-0,
+    .thumb-1,
+    .thumb-2,
+    .thumb-3,
+    .thumb-4,
+    .thumb-5,
+    .thumb-6,
+    .thumb-7,
+    .thumb-8,
+    .thumb-9,
+    .thumb-more {
+      display: block;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .cover {
+      width: 280px;
+    }
+
+    .thumb {
+      width: 132px;
+    }
+
+    .thumb-0,
+    .thumb-1,
+    .thumb-2,
+    .thumb-3,
+    .thumb-4,
+    .thumb-5,
+    .thumb-6,
+    .thumb-7,
+    .thumb-more {
+      display: block;
+    }
+  }
+
+  @media screen and (max-width: 990px) {
+    .cover {
+      width: 204px;
+    }
+
+    .thumb-0,
+    .thumb-1,
+    .thumb-2,
+    .thumb-3,
+    .thumb-4,
+    .thumb-5,
+    .thumb-more {
+      display: block;
+    }
+
+    .thumb-6,
+    .thumb-7,
+    .thumb-8,
+    .thumb-9 {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 770px) {
+    .thumb {
+      width: 131px;
+    }
+
+    .thumb-0,
+    .thumb-1,
+    .thumb-2,
+    .thumb-3,
+    .thumb-more {
+      display: block;
+    }
+
+    .thumb-4,
+    .thumb-5,
+    .thumb-6,
+    .thumb-7,
+    .thumb-8,
+    .thumb-9 {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    .thumb {
+      width: 130px;
+    }
+  }
+
+  @media screen and (max-width: 574px) {
+    .cover {
+      width: 100%;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .rack {
+      width: calc(100% - 60px);
+    }
+
+    .thumb-1,
+    .thumb-2,
+    .thumb-3,
+    .thumb-4,
+    .thumb-5,
+    .thumb-6,
+    .thumb-7,
+    .thumb-8,
+    .thumb-9 {
+      display: none;
+    }
+
+    .thumb-more {
+      margin-top: -85px;
+      width: 90px;
+      height: 75px;
+      position: relative;
+      margin-left: calc(100% - 100px);
+    }
+  }
 </style>

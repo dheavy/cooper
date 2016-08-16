@@ -22,59 +22,59 @@
 </template>
 
 <script>
-import {requestBody} from '../services/utils'
+  import {requestBody} from '../services/utils'
 
-export default {
-  name: 'DeleteCollection',
+  export default {
+    name: 'DeleteCollection',
 
-  props: ['collectionToDelete', 'otherCollections', 'onCancel', 'onFinalize'],
+    props: ['collectionToDelete', 'otherCollections', 'onCancel', 'onFinalize'],
 
-  data () {
-    return {
-      hasStartedDeletion: false,
-      enableFinalizeBtn: false
-    }
-  },
-
-  methods: {
-    maybeDisable () {
-      this.enableFinalizeBtn = +this.$els.videosDecision.value >= -1
-    },
-
-    startDeletion () {
-      if (this.collectionToDelete.videos.length === 0) {
-        return this.finalizeDeletion()
+    data () {
+      return {
+        hasStartedDeletion: false,
+        enableFinalizeBtn: false
       }
-      this.hasStartedDeletion = true
     },
 
-    finalizeDeletion () {
-      const body = (this.$els.videosDecision && +this.$els.videosDecision.value > 0)
-                   ? requestBody({replacement: +this.$els.videosDecision.value})
-                   : null
+    methods: {
+      maybeDisable () {
+        this.enableFinalizeBtn = +this.$els.videosDecision.value >= -1
+      },
 
-      this.onFinalize(this.collectionToDelete.id, this, body)
+      startDeletion () {
+        if (this.collectionToDelete.videos.length === 0) {
+          return this.finalizeDeletion()
+        }
+        this.hasStartedDeletion = true
+      },
+
+      finalizeDeletion () {
+        const body = (this.$els.videosDecision && +this.$els.videosDecision.value > 0)
+                     ? requestBody({replacement: +this.$els.videosDecision.value})
+                     : null
+
+        this.onFinalize(this.collectionToDelete.id, this, body)
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.cancel {
-  margin-left: 10px;
-}
-
-@media screen and (max-width: 800px) {
   .cancel {
-    margin-left: 0px;
-    margin-top: 0px;
+    margin-left: 10px;
   }
-}
 
-@media screen and (max-width: 570px) {
-  .cancel {
-    margin-left: 0px;
-    margin-top: 10px;
+  @media screen and (max-width: 800px) {
+    .cancel {
+      margin-left: 0px;
+      margin-top: 0px;
+    }
   }
-}
+
+  @media screen and (max-width: 570px) {
+    .cancel {
+      margin-left: 0px;
+      margin-top: 10px;
+    }
+  }
 </style>

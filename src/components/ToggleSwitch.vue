@@ -6,9 +6,9 @@
 </template>
 
 <script>
-export default {
-  name: 'ToggleSwitch'
-}
+  export default {
+    name: 'ToggleSwitch'
+  }
 </script>
 
 <style lang="scss" scoped>

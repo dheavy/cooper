@@ -41,9 +41,9 @@
 </template>
 
 <script>
-export default {
-  name: 'Navigation',
+  export default {
+    name: 'Navigation',
 
-  props: ['auth']
-}
+    props: ['auth']
+  }
 </script>

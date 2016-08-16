@@ -49,69 +49,69 @@
 </template>
 
 <script>
-import facebookAuth from './FacebookAuth'
-import Validator from 'vue-validator'
-import auth from '../services/auth'
-import {router} from '../main'
-import store from '../store'
+  import facebookAuth from './FacebookAuth'
+  import Validator from 'vue-validator'
+  import auth from '../services/auth'
+  import {router} from '../main'
+  import store from '../store'
 
-export default {
-  name: 'Login',
+  export default {
+    name: 'Login',
 
-  data () {
-    return {
-      store,
-      credentials: {
-        username: '',
-        password: ''
-      },
-      submitted: '',
-      error: ''
-    }
-  },
-
-  components: {Validator},
-
-  methods: {
-    fbAuth () {
-      return facebookAuth.auth()
-    },
-
-    resetValidation () {
-      this.submitted = false
-      this.$resetValidation()
-    },
-
-    fbLoginUser ({token, user}) {
-      store.setToken(token)
-      store.setUser(user)
-      router.go({path: '/my'})
-    },
-
-    submit () {
-      this.submitted = true
-      if (this.$loginValidation.valid) {
-        this.error = ''
-        const credentials = {
-          username: this.credentials.username,
-          password: this.credentials.password
-        }
-
-        auth
-          .login(credentials, '/my')
-          .catch(err => this.parseError(err))
-
-        this.resetValidation()
+    data () {
+      return {
+        store,
+        credentials: {
+          username: '',
+          password: ''
+        },
+        submitted: '',
+        error: ''
       }
     },
 
-    parseError (err) {
-      if (+err.status === 404 || +err.status === 400) {
-        this.error = 'Incorrect username or password.'
-      } else {
-        this.error = 'Oops... something went wrong, please try again.'
+    components: {Validator},
+
+    methods: {
+      fbAuth () {
+        return facebookAuth.auth()
+      },
+
+      resetValidation () {
+        this.submitted = false
+        this.$resetValidation()
+      },
+
+      fbLoginUser ({token, user}) {
+        store.setToken(token)
+        store.setUser(user)
+        router.go({path: '/my'})
+      },
+
+      submit () {
+        this.submitted = true
+        if (this.$loginValidation.valid) {
+          this.error = ''
+          const credentials = {
+            username: this.credentials.username,
+            password: this.credentials.password
+          }
+
+          auth
+            .login(credentials, '/my')
+            .catch(err => this.parseError(err))
+
+          this.resetValidation()
+        }
+      },
+
+      parseError (err) {
+        if (+err.status === 404 || +err.status === 400) {
+          this.error = 'Incorrect username or password.'
+        } else {
+          this.error = 'Oops... something went wrong, please try again.'
+        }
       }
     }
   }
-}
 </script>

@@ -43,57 +43,57 @@
 </template>
 
 <script>
-import {fetchBlockedUsers, fetchBlockedCollections} from '../services/api'
-import BlockButton from './BlockButton'
-import store from '../store'
+  import {fetchBlockedUsers, fetchBlockedCollections} from '../services/api'
+  import BlockButton from './BlockButton'
+  import store from '../store'
 
-export default {
-  name: 'Blocked',
+  export default {
+    name: 'Blocked',
 
-  components: {
-    BlockButton
-  },
+    components: {
+      BlockButton
+    },
 
-  data () {
-    return {
-      store,
-      usersLoading: false,
-      collectionsLoading: false,
-      errorUsers: false,
-      errorCollections: false,
-      blockedUsers: null,
-      blockedCollections: null
-    }
-  },
-
-  route: {
     data () {
-      this.usersLoading = true
+      return {
+        store,
+        usersLoading: false,
+        collectionsLoading: false,
+        errorUsers: false,
+        errorCollections: false,
+        blockedUsers: null,
+        blockedCollections: null
+      }
+    },
 
-      // Blocked users
-      fetchBlockedUsers(this.store.getToken())
-        .then(res => {
-          this.usersLoading = false
-          this.blockedUsers = res.payload
-        })
-        .catch(err => {
-          console.log(err)
-          this.usersLoading = false
-          this.errorUsers = 'Oops... something went wrong. Please try again.'
-        })
+    route: {
+      data () {
+        this.usersLoading = true
 
-      // Blocked collections
-      fetchBlockedCollections(this.store.getToken())
-        .then(res => {
-          this.collectionsLoading = false
-          this.blockedCollections = res.payload
-        })
-        .catch(err => {
-          console.log(err)
-          this.collectionsLoading = false
-          this.errorCollectioons = 'Oops... something went wrong. Please try again.'
-        })
+        // Blocked users
+        fetchBlockedUsers(this.store.getToken())
+          .then(res => {
+            this.usersLoading = false
+            this.blockedUsers = res.payload
+          })
+          .catch(err => {
+            console.log(err)
+            this.usersLoading = false
+            this.errorUsers = 'Oops... something went wrong. Please try again.'
+          })
+
+        // Blocked collections
+        fetchBlockedCollections(this.store.getToken())
+          .then(res => {
+            this.collectionsLoading = false
+            this.blockedCollections = res.payload
+          })
+          .catch(err => {
+            console.log(err)
+            this.collectionsLoading = false
+            this.errorCollectioons = 'Oops... something went wrong. Please try again.'
+          })
+      }
     }
   }
-}
 </script>
