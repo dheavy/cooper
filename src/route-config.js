@@ -1,3 +1,4 @@
+import store from './store'
 import auth from './services/auth'
 import Home from './components/Home'
 import Feed from './components/Feed'
@@ -106,6 +107,9 @@ const routeConfig = router => {
   })
 
   router.beforeEach(transition => {
+    // Ensure auth ref in store is in sync with actual auth state.
+    store.setAuthentication(auth.isAuthenticated())
+
     if (transition.to.auth && !auth.isAuthenticated()) {
       return transition.redirect('/login')
     }
