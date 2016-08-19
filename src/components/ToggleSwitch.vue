@@ -1,13 +1,21 @@
 <template>
-  <div class="switch">
-    <input id="cmn-toggle-4" name="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
-    <label for="cmn-toggle-4"></label>
+  <div class="switch" @click="toggleCheck">
+    <input name="toggle" class="toggle toggle-round-flat" type="checkbox" :checked="checked">
+    <label for="toggle"></label>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'ToggleSwitch'
+    name: 'ToggleSwitch',
+
+    props: ['checked'],
+
+    methods: {
+      toggleCheck () {
+        this.checked = !this.checked
+      }
+    }
   }
 </script>
 
@@ -19,19 +27,19 @@
   $transition-timing: 0.4s;
   $smaller-radius: 26px;
 
-  .cmn-toggle {
+  .toggle {
     position: absolute;
     margin-left: -9999px;
     visibility: hidden;
   }
 
-  .cmn-toggle + label {
+  .toggle + label {
     display: block;
     position: relative;
     cursor: pointer;
   }
 
-  input.cmn-toggle-round-flat + label {
+  input.toggle-round-flat + label {
     padding: $padding;
     width: $width;
     height: $height;
@@ -47,13 +55,13 @@
     transition: background $transition-timing;
   }
 
-  input.cmn-toggle-round-flat + label:before, input.cmn-toggle-round-flat + label:after {
+  input.toggle-round-flat + label:before, input.toggle-round-flat + label:after {
     display: block;
     position: absolute;
     content: "";
   }
 
-  input.cmn-toggle-round-flat + label:before {
+  input.toggle-round-flat + label:before {
     top: $padding;
     left: $padding;
     bottom: $padding;
@@ -70,7 +78,7 @@
     transition: background $transition-timing;
   }
 
-  input.cmn-toggle-round-flat + label:after {
+  input.toggle-round-flat + label:after {
     top: $padding * 2;
     left: $padding * 2;
     bottom: $padding * 2;
@@ -87,12 +95,12 @@
     transition: margin $transition-timing, background $transition-timing;
   }
 
-  input.cmn-toggle-round-flat:checked + label {
-    background-color: #8ce196;
+  input.toggle-round-flat:checked + label {
+    background-color: #639bb5;
   }
 
-  input.cmn-toggle-round-flat:checked + label:after {
+  input.toggle-round-flat:checked + label:after {
     margin-left: $radius;
-    background-color: #8ce196;
+    background-color: #639bb5;
   }
 </style>
