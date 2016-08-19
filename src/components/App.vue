@@ -1,5 +1,5 @@
 <template>
-  <navigation :auth="store.state.authenticated"></navigation>
+  <navigation></navigation>
   <div id="app" class="container">
     <router-view></router-view>
   </div>
@@ -7,16 +7,11 @@
 
 <script>
   import Navigation from './Navigation'
-  import store from '../store'
 
   export default {
     name: 'App',
 
-    components: {Navigation},
-
-    data () {
-      return {store}
-    }
+    components: {Navigation}
   }
 </script>
 
