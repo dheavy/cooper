@@ -210,8 +210,8 @@
     editVideo,
     deleteVideo
   } from '../services/api'
+  import {parseError, watchViewModeChanges} from '../mixins'
   import CreateVideo from './CreateVideo'
-  import {parseError} from '../mixins'
   import Masonry from 'masonry-layout'
   import {router} from '../main'
   import store from '../store'
@@ -220,7 +220,7 @@
   export default {
     name: 'Feed',
 
-    mixins: [parseError],
+    mixins: [parseError, watchViewModeChanges],
 
     components: {Media, CreateVideo},
 

@@ -6,7 +6,8 @@ const store = new Vue({
   data () {
     return {
       state: {
-        authenticated: false,
+        isAuthenticated: false,
+        isNaughtyMode: !!JSON.parse(String(localStorage.getItem('naughty')).toLowerCase()) || false,
         user: null,
         token: null,
         collections: null
@@ -17,9 +18,20 @@ const store = new Vue({
     }
   },
 
+  watch: {
+    // Keep view mode value in local storage. Update as we change.
+    'state.isNaughtyMode': (val) => {
+      if (!!JSON.parse(String(localStorage.getItem('naughty')).toLowerCase()) !== val) {
+        localStorage.setItem('naughty', val)
+      }
+    }
+  },
+
   methods: {
     setAuthentication (auth) {
-      this.state.authenticated = auth
+      if (this.state.isAuthenticated !== auth) {
+        this.state.isAuthenticated = auth
+      }
     },
 
     /**
@@ -67,7 +79,8 @@ const store = new Vue({
     },
 
     getUser () {
-      return this.state.user || JSON.parse(localStorage.getItem('user'))
+      this.state.user = this.state.user ? this.state.user : JSON.parse(localStorage.getItem('user'))
+      return this.state.user
     },
 
     getCollections () {
@@ -98,7 +111,8 @@ const store = new Vue({
     },
 
     getToken () {
-      return this.state.token || localStorage.getItem('token')
+      this.state.token = this.state.token ? this.state.token : localStorage.getItem('token')
+      return this.state.token
     },
 
     clear () {
