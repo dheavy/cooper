@@ -5,7 +5,7 @@
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
       <a class="navbar-brand" v-link="{name: 'home'}">MyPleasu.re</a>
-      <ul v-if="auth" class="nav navbar-nav">
+      <ul v-if="store.state.isAuthenticated" class="nav navbar-nav">
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'create-video'}">Add video</a>
         </li>
@@ -24,6 +24,10 @@
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'logout'}">Log out</a>
         </li>
+
+        <li class="nav-item pull-xs-right">
+          <toggle-switch :checked.sync="store.state.isNaughtyMode"></toggle-switch>
+        </li>
       </ul>
       <ul v-else class="nav navbar-nav">
         <li class="nav-item">
@@ -41,9 +45,16 @@
 </template>
 
 <script>
+  import ToggleSwitch from './ToggleSwitch'
+  import store from '../store'
+
   export default {
     name: 'Navigation',
 
-    props: ['auth']
+    components: {ToggleSwitch},
+
+    data () {
+      return {store}
+    }
   }
 </script>
