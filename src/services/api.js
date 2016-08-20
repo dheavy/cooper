@@ -219,7 +219,7 @@ export const fetchMyFeed = ({userId, token}) => {
   return http(`${FEED_URL}/${userId}`, getData(token))
 }
 
-export const fetchFeed = ({type, userId, token, collectionId}) => {
+export const fetchFeed = ({type, userId, token, collectionId, naughty}) => {
   if (type === FEED_COLLECTION && collectionId) {
     return fetchCollectionFeed({collectionId, token})
   }
@@ -228,7 +228,7 @@ export const fetchFeed = ({type, userId, token, collectionId}) => {
     return fetchMyFeed({userId, token})
   }
 
-  return http(`${FEED_URL}`, getData(token))
+  return http(`${FEED_URL}${naughty ? '/naughty' : ''}`, getData(token))
 }
 
 export const checkIfUserHasVideo = (userId, hash, token) => {

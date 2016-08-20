@@ -270,7 +270,7 @@
     },
 
     ready () {
-      this.getCollections()
+      this.fetchData(store.state.isNaughtyMode)
     },
 
     methods: {
@@ -427,7 +427,7 @@
           editVideo(payload, store.getToken())
             .then(res => {
               store.markCollectionsDirty(true)
-              this.fetchData()
+              this.fetchData(store.state.isNaughtyMode)
               this.success = 'Video successfully edited!'
               this.hideForm()
             })
@@ -451,7 +451,7 @@
         deleteVideo(payload, store.getToken())
           .then(res => {
             store.markCollectionsDirty(true)
-            this.fetchData()
+            this.fetchData(store.state.isNaughtyMode)
             this.success = 'Video successfully deleted!'
             this.hideForm(false)
           })
@@ -468,11 +468,12 @@
         this.showForm()
       },
 
-      fetchData () {
+      fetchData (naughty = false) {
         const payload = {
           type: this.type,
           userId: store.getUser().id,
-          token: store.getToken()
+          token: store.getToken(),
+          naughty: naughty
         }
 
         payload.collectionId = this.type === FEED_COLLECTION
@@ -504,13 +505,17 @@
           .catch(err => {
             console.log(err)
           })
+      },
+
+      viewModeChangeHandler (val) {
+        this.fetchData(val)
       }
     },
 
     route: {
       data () {
         this.type = this.determineFeedType(this.$route.path)
-        this.fetchData()
+        this.fetchData(store.state.isNaughtyMode)
       }
     }
   }

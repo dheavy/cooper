@@ -14,22 +14,20 @@ export const parseError = {
   }
 }
 
+// Component mixing in `watchViewModeChanges` must
+// implement a `viewModeChangeHandler` method.
 export const watchViewModeChanges = {
   created () {
-    console.log('x')
     store.$watch('state.isNaughtyMode', (val, oldVal) => {
       if (val !== oldVal) {
         this.viewModeChangeHandler(val)
       }
     }, {
-      deep: true,
-      immediate: true
+      deep: true
     })
   },
 
   methods: {
-    viewModeChangeHandler (val) {
-      console.log(val)
-    }
+    viewModeChangeHandler (val) {}
   }
 }
