@@ -32,6 +32,7 @@
     <media
       v-else
       v-for="video in playlist | orderBy 'id' -1"
+      v-show="video.is_naughty === store.state.isNaughtyMode"
       class="media-item {{video.scale}}"
       :video="video"
       :playlist="playlist"
@@ -242,6 +243,7 @@
 
     data () {
       return {
+        store,
         layout: null,
         isLoaded: false,
         isDeleting: false,
@@ -270,7 +272,7 @@
     },
 
     ready () {
-      this.fetchData(store.state.isNaughtyMode)
+      this.fetchData(this.store.state.isNaughtyMode)
     },
 
     methods: {
@@ -282,7 +284,7 @@
 
       getCollections () {
         if (!this.collections) {
-          fetchCollections(store.getUser().id, store.getToken())
+          fetchCollections(this.store.getUser().id, this.store.getToken())
             .then(res => {
               this.collections = res.payload
             })
@@ -300,7 +302,7 @@
         this.payload.scale = video.scale
         this.$els.addModal.style.display = 'block'
 
-        checkIfUserHasVideo(store.getUser().id, video.hash, store.getToken())
+        checkIfUserHasVideo(this.store.getUser().id, video.hash, this.store.getToken())
           .then(res => {
             if (+res.status === 206) {
               this.warning = `Pssst... You have already curated this video <a href="/feed/${res.payload.id}">here</a>.`
@@ -397,7 +399,7 @@
           this.payload = this.chooseNameOrId(this.payload)
 
           curateVideo(
-            store.getUser().id,
+            this.store.getUser().id,
             payload.id,
             payload.hash,
             payload.original_url,
@@ -405,12 +407,12 @@
             payload.scale,
             +payload.collection_id,
             payload.new_collection_name,
-            store.getToken()
+            this.store.getToken()
           )
             .then(res => {
               this.success = 'Video added successfully!'
               this.hideForm()
-              store.markCollectionsDirty(true)
+              this.store.markCollectionsDirty(true)
             })
             .catch(err => {
               this.parseError(err)
@@ -424,10 +426,10 @@
         this.submitted = true
 
         if (!this.$addVideoValidation.cid.validExistingCollection || !this.$addVideoValidation.ncid.validNewCollection) {
-          editVideo(payload, store.getToken())
+          editVideo(payload, this.store.getToken())
             .then(res => {
-              store.markCollectionsDirty(true)
-              this.fetchData(store.state.isNaughtyMode)
+              this.store.markCollectionsDirty(true)
+              this.fetchData(this.store.state.isNaughtyMode)
               this.success = 'Video successfully edited!'
               this.hideForm()
             })
@@ -448,10 +450,10 @@
       applyDelete (payload) {
         this.submitted = true
 
-        deleteVideo(payload, store.getToken())
+        deleteVideo(payload, this.store.getToken())
           .then(res => {
-            store.markCollectionsDirty(true)
-            this.fetchData(store.state.isNaughtyMode)
+            this.store.markCollectionsDirty(true)
+            this.fetchData(this.store.state.isNaughtyMode)
             this.success = 'Video successfully deleted!'
             this.hideForm(false)
           })
@@ -471,8 +473,8 @@
       fetchData (naughty = false) {
         const payload = {
           type: this.type,
-          userId: store.getUser().id,
-          token: store.getToken(),
+          userId: this.store.getUser().id,
+          token: this.store.getToken(),
           naughty: naughty
         }
 
@@ -515,7 +517,7 @@
     route: {
       data () {
         this.type = this.determineFeedType(this.$route.path)
-        this.fetchData(store.state.isNaughtyMode)
+        this.fetchData(this.store.state.isNaughtyMode)
       }
     }
   }
