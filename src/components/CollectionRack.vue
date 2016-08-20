@@ -30,12 +30,19 @@
     </div>
 
     <article class="rack" v-for="n in 10 | orderBy 'created_at' -1">
-      <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] ? '' : 'empty'}}">
+      <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
           <p>There's nothing here... yet.<br>
           <a v-if="areMyOwn" href="#">Add a video</a></p>
         </div>
-        <a href="#"><img v-if="collection.videos[$index]" v-bind:src="collection.videos[$index].poster" width="auto" height="100%"></a>
+        <a href="#">
+          <img
+            v-if="collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode"
+            v-bind:src="collection.videos[$index].poster"
+            width="auto"
+            height="100%"
+          >
+        </a>
       </div>
     </article>
     <article>
