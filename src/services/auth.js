@@ -1,6 +1,6 @@
+import {login, fetchCollections} from './api'
 import {router} from '../main'
 import store from '../store'
-import {login} from './api'
 import Vue from 'vue'
 
 export default {
@@ -10,6 +10,7 @@ export default {
     return login(credentials)
       .then(res => {
         this.loginViaTokenAndUser(res.token, res.user, '/my')
+        this.getCollections(res.user, res.token)
       })
   },
 
@@ -18,6 +19,14 @@ export default {
     store.setUser(user)
     store.setAuthentication(true)
     redirect ? router.go(redirect) : void (0)
+  },
+
+  // Fetch and cache user's collections
+  getCollections (user, token) {
+    fetchCollections(user.id, token)
+      .catch(err => {
+        console.log(err)
+      })
   },
 
   logout () {
