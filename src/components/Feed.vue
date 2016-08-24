@@ -44,155 +44,37 @@
   </section>
 
   <!-- add video modal -->
-  <div name="close" class="modal" v-el:add-modal @click.stop="hideModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content"@>
-
-        <validator name="addVideoValidation">
-          <form novalidate>
-            <div class="modal-header">
-              <button type="button" class="close" @click.stop="hideModal">
-                <span name="close" aria-hidden="true">&times;</span>
-              </button>
-              <div class="alert alert-success" v-if="success">{{success}}</div>
-              <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning" name="close">{{{warning}}}</div>
-              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
-              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
-              <h4 v-if="!error && !warning && !success" class="col-sm-12">Add this video</h4>
-            </div>
-
-            <div class="modal-body" v-show="isFormVisible">
-              <input type="hidden" class="form-control" v-model="payload.hash">
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <label for="title" class="col-sm-4 form-control-label">Title</label>
-                  <input type="text" class="form-control" name="title" placeholder="Title" v-model="payload.title">
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <label for="collection" class="col-sm-4 form-control-label">Collection</label>
-                  <select
-                    v-model="payload.collection_id"
-                    v-validate:cid="{validExistingCollection: true}"
-                    class="c-select col-sm-12 col-md-12"
-                    name="collection"
-                  >
-                    <optgroup>
-                      <option selected value="-1">Choose a collection</option>
-                    </optgroup>
-                    <optgroup>
-                      <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
-                    </optgroup>
-                    <optgroup>
-                      <option >{{createNewLabel}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="payload.new_collection_name"
-                    v-show="showNewCollectionForm"
-                    placeholder="My new collection name"
-                    v-validate:ncid="{validNewCollection: true}"
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer" v-show="areFormButtonsVisible">
-              <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
-              <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload)">Save changes</button>
-            </div>
-          </form>
-        </validator>
-
-      </div>
-    </div>
-  </div>
+  <modal-add-video
+    v-el:add-modal
+    :hide-modal='hideModal'
+    :success='success'
+    :error='error'
+    :warning='warning'
+    :is-form-visible='isFormVisible'
+    :payload.sync='payload'
+    :collections='collections'
+    :show-new-collection-form='showNewCollectionForm'
+    :add-video='addVideo'
+    :create-new-label='createNewLabel'
+  ></modal-add-video>
   <!-- /add video modal -->
 
   <!-- edit video modal -->
-  <div name="close" class="modal" v-el:edit-modal @click.stop="hideModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-
-        <validator name="editVideoValidation">
-          <form novalidate>
-            <div class="modal-header">
-              <button type="button" class="close" @click.stop="hideModal">
-                <span name="close" aria-hidden="true">&times;</span>
-              </button>
-              <div class="alert alert-success" v-if="success">{{success}}</div>
-              <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning">{{{warning}}}</div>
-              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $editVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
-              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $editVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
-              <h4 v-if="!error && !warning && !success" class="col-sm-12">Edit this video</h4>
-            </div>
-
-            <div class="modal-body" v-show="isFormVisible">
-              <input type="hidden" class="form-control" v-model="payload.hash">
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <label for="title" class="col-sm-4 form-control-label">Title</label>
-                  <input type="text" class="form-control" name="title" placeholder="Title" v-model="payload.title">
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <label for="collection" class="col-sm-4 form-control-label">Collection</label>
-                  <select
-                    v-model="payload.collection_id"
-                    v-validate:cid="{validExistingCollection: true}"
-                    class="c-select col-sm-12 col-md-12"
-                    name="collection"
-                  >
-                    <optgroup>
-                      <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
-                    </optgroup>
-                    <optgroup>
-                      <option >{{createNewLabel}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-12 col-md-12">
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="payload.new_collection_name"
-                    v-show="showNewCollectionForm"
-                    placeholder="My new collection name"
-                    v-validate:ncid="{validNewCollection: true}"
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer" v-show="areFormButtonsVisible">
-              <span v-show="!isDeleting">
-                <button name="delete" type="button" class="btn btn-danger" @click.stop="confirmDelete(payload)">Delete video</button>
-                <button name="edit" type="button" class="btn btn-primary" @click.prevent="editVideo(payload)">Save changes</button>
-              </span>
-
-              <span v-show="isDeleting">
-                <button name="cancel" type="button" class="btn btn-secondary" @click.stop="cancelDelete">No, go back</button>
-                <button name="confirm" type="button" class="btn btn-danger" @click.stop="applyDelete(payload)">Yes, delete video</button>
-              </span>
-            </div>
-          </form>
-        </validator>
-
-      </div>
-    </div>
-  </div>
+  <modal-edit-video
+    v-el:edit-modal
+    :hide-modal='hideModal'
+    :success='success'
+    :error='error'
+    :warning='warning'
+    :is-form-visible='isFormVisible'
+    :payload.sync='payload'
+    :collections='collections'
+    :show-new-collection-form='showNewCollectionForm'
+    :edit-video='editVideo'
+    :cancel-delete='cancelDelete'
+    :create-new-label='createNewLabel'
+    :apply-delete='applyDelete'
+  ></modal-edit-video>
   <!-- /edit video modal -->
 
 </template>
@@ -205,13 +87,14 @@
   } from '../constants/config'
   import {
     fetchFeed,
-    fetchCollections,
     checkIfUserHasVideo,
     curateVideo,
     editVideo,
     deleteVideo
   } from '../services/api'
   import {parseError, watchViewModeChanges} from '../mixins'
+  import ModalEditVideo from './ModalEditVideo'
+  import ModalAddVideo from './ModalAddVideo'
   import CreateVideo from './CreateVideo'
   import Masonry from 'masonry-layout'
   import {router} from '../main'
@@ -223,16 +106,8 @@
 
     mixins: [parseError, watchViewModeChanges],
 
-    components: {Media, CreateVideo},
-
-    validators: {
-      validExistingCollection (val) {
-        return val >= 1
-      },
-
-      validNewCollection (val) {
-        return val.trim() !== ''
-      }
+    components: {
+      Media, CreateVideo, ModalAddVideo, ModalEditVideo
     },
 
     computed: {
@@ -280,19 +155,6 @@
         if (/\/feed\/\d+\/?$/.test(path)) return FEED_COLLECTION
         if (/\/feed\/mine\/?$/.test(path)) return FEED_MINE
         if (/\/feed\/?$/.test(path)) return FEED_PUBLIC
-      },
-
-      getCollections () {
-        if (!this.collections) {
-          fetchCollections(this.store.getUser().id, this.store.getToken())
-            .then(res => {
-              this.collections = res.payload
-            })
-            .catch(err => {
-              console.log(err)
-              this.error = 'Oops... There was an error. Please refresh the page.'
-            })
-        }
       },
 
       showAddModal (video) {
@@ -384,17 +246,17 @@
       },
 
       chooseNameOrId (payload) {
-        if (payload.new_collection_name.trim() !== '') {
+        if (payload.new_collection_name && payload.new_collection_name.trim() !== '') {
           payload.collection_id = -1
           payload.new_collection_name = payload.new_collection_name.trim()
         }
         return payload
       },
 
-      addVideo (payload) {
+      addVideo (payload, $validator) {
         this.submitted = true
 
-        if (!this.$addVideoValidation.cid.validExistingCollection || !this.$addVideoValidation.ncid.validNewCollection) {
+        if (!$validator.cid.validExistingCollection || !$validator.ncid.validNewCollection) {
           this.error = null
           this.payload = this.chooseNameOrId(this.payload)
 
@@ -422,10 +284,10 @@
         }
       },
 
-      editVideo (payload) {
+      editVideo (payload, $validator) {
         this.submitted = true
 
-        if (!this.$addVideoValidation.cid.validExistingCollection || !this.$addVideoValidation.ncid.validNewCollection) {
+        if (!$validator.cid.validExistingCollection || !$validator.ncid.validNewCollection) {
           editVideo(payload, this.store.getToken())
             .then(res => {
               this.store.markCollectionsDirty(true)
