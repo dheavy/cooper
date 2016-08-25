@@ -1,5 +1,5 @@
 <template>
-  <div name="close" class="modal" @click.stop="hideModal">
+  <div rel="close" class="modal" @click.stop="hideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
@@ -7,11 +7,11 @@
           <form novalidate>
             <div class="modal-header">
               <button type="button" class="close" @click.stop="hideModal">
-                <span name="close" aria-hidden="true">&times;</span>
+                <span rel="close" aria-hidden="true">&times;</span>
               </button>
               <div class="alert alert-success" v-if="success">{{success}}</div>
               <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning" name="close">{{{warning}}}</div>
+              <div class="alert alert-warning" v-if="warning" rel="close">{{{warning}}}</div>
               <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
               <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
               <h4 v-if="!error && !warning && !success" class="col-sm-12">Add this video</h4>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="modal-footer" v-show="!success">
-              <button name="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
+              <button rel="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
               <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload, $addVideoValidation)">Save changes</button>
             </div>
           </form>

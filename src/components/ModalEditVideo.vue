@@ -1,5 +1,5 @@
 <template>
-  <div name="close" class="modal" @click.stop="hideModal">
+  <div rel="close" class="modal" @click.stop="hideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
@@ -7,7 +7,7 @@
           <form novalidate>
             <div class="modal-header">
               <button type="button" class="close" @click.stop="hideModal">
-                <span name="close" aria-hidden="true">&times;</span>
+                <span rel="close" aria-hidden="true">&times;</span>
               </button>
               <div class="alert alert-success" v-if="success">{{success}}</div>
               <div class="alert alert-danger" v-if="error">{{error}}</div>
@@ -84,11 +84,7 @@
       'hideModal', 'success', 'error', 'warning', 'isFormVisible',
       'payload', 'collections', 'showNewCollectionForm', 'createNewLabel',
       'editVideo', 'cancelDelete', 'applyDelete'
-    ],
-
-    ready () {
-      console.log(this.collections)
-    }
+    ]
   }
 </script>
 

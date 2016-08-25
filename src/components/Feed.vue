@@ -188,7 +188,7 @@
       },
 
       hideModal (e) {
-        if (e.target.getAttribute('name') !== 'close') return
+        if (e.target.getAttribute('rel') !== 'close') return
 
         this.showForm()
 

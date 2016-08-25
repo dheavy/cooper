@@ -1,4 +1,5 @@
 <template>
+  <modal-player></modal-player>
   <navigation></navigation>
   <div id="app" class="container">
     <router-view></router-view>
@@ -6,12 +7,13 @@
 </template>
 
 <script>
+  import ModalPlayer from './ModalPlayer'
   import Navigation from './Navigation'
 
   export default {
     name: 'App',
 
-    components: {Navigation}
+    components: {Navigation, ModalPlayer}
   }
 </script>
 
