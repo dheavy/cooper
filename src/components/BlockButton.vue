@@ -2,7 +2,7 @@
   <button
     class="{{cssClasses}}"
     v-show="canBlockOther !== null"
-    v-on:click="toggleBlock"
+    @click="toggleBlock"
   >
     <span v-if="canBlockOther === true">Block</span>
     <span v-if="canBlockOther === false">Unblock</span>

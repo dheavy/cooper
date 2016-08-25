@@ -8,6 +8,7 @@ const store = new Vue({
       state: {
         isAuthenticated: false,
         isNaughtyMode: !!JSON.parse(String(localStorage.getItem('naughty')).toLowerCase()) || false,
+        isPlayerOn: false,
         user: null,
         token: null,
         collections: null

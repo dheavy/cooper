@@ -32,7 +32,7 @@
       </div>
 
       <div class="form-group">
-        <button class="btn btn-primary" v-on:click.prevent="submit()">Log In</button>
+        <button class="btn btn-primary" @click.prevent="submit()">Log In</button>
       </div>
 
       <div class="form-group">
@@ -42,7 +42,7 @@
   </validator>
   <div class="form-group col-sm-4 col-sm-offset-4">
     <hr/>
-    <button class="btn btn-secondary" v-on:click.prevent="fbAuth">
+    <button class="btn btn-secondary" @click.prevent="fbAuth">
       Sign in with Facebook
     </button>
   </div>

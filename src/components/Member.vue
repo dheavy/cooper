@@ -15,7 +15,7 @@
   </section>
   <button
     class="btn btn-primary"
-    v-on:click.prevent="createNewCollectionHandler"
+    @click.prevent="createNewCollectionHandler"
     v-if="canCreateCollection"
   >
     Create a new collection

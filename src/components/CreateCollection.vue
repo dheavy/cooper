@@ -3,7 +3,7 @@
     <form class="col-sm-6 col-sm-offset-3">
       <div class="form-group row">
         <button type="button" class="close" aria-label="Close">
-          <span aria-hidden="true" v-on:click.prevent="exit">&times;</span>
+          <span aria-hidden="true" @click.prevent="exit">&times;</span>
         </button>
         <h4 class="col-sm-12">Create a new collection</h4>
       </div>
@@ -24,7 +24,7 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-6 col-sm-offset-4">
-            <button class="btn btn-primary col-sm-12 col-md-12" v-on:click.prevent="create">Create</button>
+            <button class="btn btn-primary col-sm-12 col-md-12" @click.prevent="create">Create</button>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-12">
-            <button class="btn btn-secondary col-sm-12 col-md-12" v-on:click.prevent="resetForm">Create another collection</button>
+            <button class="btn btn-secondary col-sm-12 col-md-12" @click.prevent="resetForm">Create another collection</button>
           </div>
         </div>
       </div>

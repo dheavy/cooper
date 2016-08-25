@@ -1,5 +1,5 @@
 <template>
-  <div class="media-item" v-bind:style="styles" class="clearfix">
+  <div class="media-item" :style="styles" class="clearfix">
     <div class="poster"></div>
     <div class="data {{scale}}">
       <div class="title">{{video.title | ellipsis '80'}}</div>

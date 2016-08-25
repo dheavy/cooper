@@ -4,11 +4,11 @@
       <form novalidate class="col-sm-6 col-sm-offset-3">
         <div class="form-group row">
           <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true" v-on:click.prevent="exit">&times;</span>
+            <span aria-hidden="true" @click.prevent="exit">&times;</span>
           </button>
           <h4 class="col-sm-12">Add a video</h4>
         </div>
-        <div class="alert alert-success" v-if="success">{{success}} <a href="#" v-on:click.prevent="exit">Back to collections.</a></div>
+        <div class="alert alert-success" v-if="success">{{success}} <a href="#" @click.prevent="exit">Back to collections.</a></div>
         <div class="alert alert-danger" v-if="error">{{error}}</div>
         <div class="alert alert-warning" v-if="warning">{{warning}}</div>
         <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $createVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
@@ -59,7 +59,7 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-6 col-sm-offset-6">
-              <button class="btn btn-primary col-sm-12 col-md-12" v-on:click.prevent="create">Create</button>
+              <button class="btn btn-primary col-sm-12 col-md-12" @click.prevent="create">Create</button>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-12">
-              <button class="btn btn-secondary col-sm-12 col-md-12" v-on:click.prevent="resetForm">Add another video</button>
+              <button class="btn btn-secondary col-sm-12 col-md-12" @click.prevent="resetForm">Add another video</button>
             </div>
           </div>
         </div>

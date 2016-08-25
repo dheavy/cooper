@@ -13,7 +13,7 @@
 
           <div class="alert alert-danger" v-if="error">{{{error}}}</div>
 
-          <div class="form-group" v-bind:class="[fbUsernameAvailable !== null ? (fbUsernameAvailable ? classHasSuccess : classHasDanger) : '']">
+          <div class="form-group" :class="[fbUsernameAvailable !== null ? (fbUsernameAvailable ? classHasSuccess : classHasDanger) : '']">
             <input
               type="text"
               class="form-control"
@@ -21,12 +21,12 @@
               v-model="credentialsFb.username"
               v-validate:username="{required: true, minlength: 3}"
               v-on:keyup="checkUsername(true) | debounce 250"
-              v-bind:class="[fbUsernameAvailable !== null ? (fbUsernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
+              :class="[fbUsernameAvailable !== null ? (fbUsernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
             >
           </div>
 
           <div class="form-group">
-            <button class="btn btn-primary" v-on:click.prevent="submitFacebook()">Register</button>
+            <button class="btn btn-primary" @click.prevent="submitFacebook()">Register</button>
           </div>
         </form>
       </validator>
@@ -39,7 +39,7 @@
 
           <div class="alert alert-danger" v-if="error">{{{error}}}</div>
 
-          <div class="form-group" v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classHasSuccess : classHasDanger) : '']">
+          <div class="form-group" :class="[usernameAvailable !== null ? (usernameAvailable ? classHasSuccess : classHasDanger) : '']">
             <input
               type="text"
               class="form-control"
@@ -47,51 +47,51 @@
               v-model="credentials.username"
               v-validate:username="{required: true, minlength: 3}"
               v-on:keyup="checkUsername() | debounce 250"
-              v-bind:class="[usernameAvailable !== null ? (usernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
+              :class="[usernameAvailable !== null ? (usernameAvailable ? classFormControlSuccess : classFormControlDanger) : '']"
             >
           </div>
 
-          <div class="form-group" v-bind:class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
+          <div class="form-group" :class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
             <input
               type="email"
               class="form-control"
               placeholder="Email"
               v-model="credentials.email"
               v-validate:email="{email: true}"
-              v-bind:class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
+              :class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
             >
           </div>
 
-          <div class="form-group" v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
+          <div class="form-group" :class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
             <input
               type="password"
               class="form-control"
               placeholder="Password"
               v-model="credentials.password"
               v-validate:password="{required: true, minlength: 8}"
-              v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
+              :class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
             >
           </div>
 
-          <div class="form-group" v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
+          <div class="form-group" :class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
             <input
               type="password"
               class="form-control"
               placeholder="Confirm password"
               v-model="credentials.confirmPassword"
               v-validate:confirm-password="{required: true, minlength: 8}"
-              v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
+              :class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
             >
           </div>
 
           <div class="form-group">
-            <button class="btn btn-primary" v-on:click.prevent="submit()">Register</button>
+            <button class="btn btn-primary" @click.prevent="submit()">Register</button>
           </div>
 
           <div class="form-group">
             <span class="small">
               <a v-link="{path: '/login'}">Log in</a> or
-              <a href="#" v-on:click.prevent="fbAuthInit()">register via Facebook</a>
+              <a href="#" @click.prevent="fbAuthInit()">register via Facebook</a>
             </span>
           </div>
         </form>

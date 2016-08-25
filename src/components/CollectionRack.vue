@@ -13,9 +13,9 @@
     </section>
 
     <div class="tools" v-if="areMyOwn">
-      <button v-on:click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
-      <button v-on:click="toggleEditMode">*</button>
-      <button v-on:click="setDeletion">!</button>
+      <button @click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
+      <button @click="toggleEditMode">*</button>
+      <button @click="setDeletion">!</button>
     </div>
     <div class="tools" v-else>
       <follow-button :store="store" :collection="collection"></follow-button>
@@ -38,7 +38,7 @@
         <a href="#">
           <img
             v-if="collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode"
-            v-bind:src="collection.videos[$index].poster"
+            :src="collection.videos[$index].poster"
             width="auto"
             height="100%"
           >

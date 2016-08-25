@@ -2,7 +2,7 @@
   <button
     class="{{cssClasses}}"
     v-show="canFollowOther !== null"
-    v-on:click="toggleFollow"
+    @click="toggleFollow"
   >
     <span v-if="canFollowOther === true">Follow</span>
     <span v-if="canFollowOther === false">Unfollow</span>

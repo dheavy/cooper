@@ -9,7 +9,7 @@
             <div class="alert alert-danger" v-if="errorEditEmail">{{{errorEditEmail}}}</div>
             <div class="alert alert-danger" v-if="editEmailSubmitted && ($editEmailValidation.email.email)">Please enter a valid email address.</div>
 
-            <div class="form-group" v-bind:class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
+            <div class="form-group" :class="[isEmailValid !== null ? (isEmailValid ? classHasSuccess : classHasWarning) : '']">
               <input
                 type="email"
                 class="form-control"
@@ -17,12 +17,12 @@
                 v-model="editEmail.email"
                 v-validate:password="{email: true}"
                 v-on:keyup="resetEditEmailValidation()"
-                v-bind:class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
+                :class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" v-on:click.prevent="submitEditEmail()">Edit email</button>
+              <button class="btn btn-primary" @click.prevent="submitEditEmail()">Edit email</button>
             </div>
           </form>
         </validator>
@@ -47,7 +47,7 @@
               >
             </div>
 
-            <div class="form-group" v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
+            <div class="form-group" :class="[isPasswordValid !== null ? (isPasswordValid ? classHasSuccess : classHasWarning) : '']">
               <input
                 type="password"
                 class="form-control"
@@ -55,11 +55,11 @@
                 v-model="editPassword.password"
                 v-validate:password="{required: true, minlength: 6}"
                 v-on:keyup="resetEditPasswordValidation()"
-                v-bind:class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
+                :class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
             </div>
 
-            <div class="form-group" v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
+            <div class="form-group" :class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classHasSuccess : classHasWarning) : '']">
               <input
                 type="password"
                 class="form-control"
@@ -67,12 +67,12 @@
                 v-model="editPassword.passwordConfirm"
                 v-validate:password-confirm="{required: true, minlength: 6}"
                 v-on:keyup="resetEditPasswordValidation()"
-                v-bind:class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
+                :class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" v-on:click.prevent="submitEditPassword()">Change password</button>
+              <button class="btn btn-primary" @click.prevent="submitEditPassword()">Change password</button>
             </div>
           </form>
         </validator>
@@ -80,7 +80,7 @@
 
       <div class="col-sm-4">
         <h4>Deactivate account</h4>
-        <button v-on:click="deactivate()" class="btn btn-secondary">Deactivate</button>
+        <button @click="deactivate()" class="btn btn-secondary">Deactivate</button>
       </div>
     </div>
   </section>
