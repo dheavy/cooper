@@ -5,6 +5,15 @@ const store = new Vue({
 
   data () {
     return {
+      player: {
+        'isVisible': false,
+        'video': {
+          'embed_url': '//player.vimeo.com/video/173451804',
+          'original_url': 'https://vimeo.com/173451804',
+          'title': 'A very nice video of a flower'
+        },
+        'playlist': []
+      },
       state: {
         isAuthenticated: false,
         isNaughtyMode: !!JSON.parse(String(localStorage.getItem('naughty')).toLowerCase()) || false,

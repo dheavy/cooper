@@ -1,5 +1,7 @@
 <template>
-  <modal-player></modal-player>
+  <modal-player
+    v-show="store.player.isVisible"
+  ></modal-player>
   <navigation></navigation>
   <div id="app" class="container">
     <router-view></router-view>
@@ -9,11 +11,16 @@
 <script>
   import ModalPlayer from './ModalPlayer'
   import Navigation from './Navigation'
+  import store from '../store'
 
   export default {
     name: 'App',
 
-    components: {Navigation, ModalPlayer}
+    components: {Navigation, ModalPlayer},
+
+    data () {
+      return {store}
+    }
   }
 </script>
 

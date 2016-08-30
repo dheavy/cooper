@@ -33,9 +33,9 @@
       <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
           <p>There's nothing here... yet.<br>
-          <a v-if="areMyOwn" href="#">Add a video</a></p>
+          <a v-if="areMyOwn" v-link="{name: 'create-video'}" href="#">Add a video</a></p>
         </div>
-        <a href="#">
+        <a @click.prevent="launchPlayer(collection.videos[$index], collection.videos)" href="#">
           <img
             v-if="collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode"
             :src="collection.videos[$index].poster"
@@ -57,6 +57,7 @@
     editCollectionName,
     deleteCollection as deleteCollectionCommand} from '../services/api'
   import DeleteCollection from './DeleteCollection'
+  import {launchPlayer} from '../services/mediae'
   import FollowButton from './FollowButton'
   import BlockButton from './BlockButton'
   import store from '../store'
@@ -73,6 +74,7 @@
     data () {
       return {
         store,
+        launchPlayer: launchPlayer,
         isDeleteMode: false,
         isEditMode: false,
         error: null
@@ -139,6 +141,13 @@
 </script>
 
 <style lang="scss" scoped>
+  a {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
   .delete-collection {
     position: relative;
     width: 100%;
