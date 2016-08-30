@@ -35,7 +35,7 @@
           <p>There's nothing here... yet.<br>
           <a v-if="areMyOwn" v-link="{name: 'create-video'}" href="#">Add a video</a></p>
         </div>
-        <a @click.prevent="launchPlayer(collection.videos[$index], collection.videos)" href="#">
+        <a @click.prevent="openPlayer(collection.videos[$index], collection.videos)" href="#">
           <img
             v-if="collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode"
             :src="collection.videos[$index].poster"
@@ -74,7 +74,9 @@
     data () {
       return {
         store,
-        launchPlayer: launchPlayer,
+        openPlayer: (video, playlist) => {
+          launchPlayer(video, playlist)
+        },
         isDeleteMode: false,
         isEditMode: false,
         error: null

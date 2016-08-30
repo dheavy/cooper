@@ -7,11 +7,7 @@ const store = new Vue({
     return {
       player: {
         'isVisible': false,
-        'video': {
-          'embed_url': '//player.vimeo.com/video/173451804',
-          'original_url': 'https://vimeo.com/173451804',
-          'title': 'A very nice video of a flower'
-        },
+        'video': null,
         'playlist': []
       },
       state: {
@@ -135,10 +131,18 @@ const store = new Vue({
       localStorage.removeItem('token')
       localStorage.removeItem('collections')
       localStorage.removeItem('collections_dirty')
+    },
+
+    setupPlayer (video, playlist) {
+      store.player.video = video
+      store.player.playlist = playlist
+    },
+
+    resetPlayer () {
+      store.player.video = null
+      store.player.playlist = []
     }
   }
 })
 
 export default store
-
-// Vue.component('store', store)

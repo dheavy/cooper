@@ -7,7 +7,6 @@
             <span rel="close">&times;</span>
           </button>
           <player
-            v-if="video"
             :video="video"
             :playlist="playlist"
           ></player>
@@ -20,19 +19,11 @@
 <script>
   import {exitPlayer} from '../services/mediae'
   import Player from './Player'
-  import store from '../store'
 
   export default {
     name: 'ModalPlayer',
 
     components: {Player},
-
-    data () {
-      return {
-        'playlist': store.player.playlist,
-        'video': store.player.video
-      }
-    },
 
     methods: {
       close () {
