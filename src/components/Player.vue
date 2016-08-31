@@ -12,11 +12,11 @@
       width="100%"
       height="400"
     ></iframe>
-    <div class="meta">
+    <div class="meta" v-if='video'>
       <h5 class="title">{{video.title}}</h5>
       <p class="link">Original URL - <a href="{{video.original_url}}">{{video.original_url}}</a></p>
       <div class="playlist">
-        <thumbnail v-for="item in playlist"></thumbnail>
+        <playlist-thumbnail v-for="item in playlist"></playlist-thumbnail>
       </div>
     </div>
   </div>
@@ -24,13 +24,13 @@
 
 <script>
   import ClipLoader from 'vue-spinner/src/ClipLoader'
-  import Thumbnail from './Thumbnail'
+  import PlaylistThumbnail from './PlaylistThumbnail'
   import store from '../store'
 
   export default {
     name: 'Player',
 
-    components: {ClipLoader, Thumbnail},
+    components: {ClipLoader, PlaylistThumbnail},
 
     data () {
       return {
@@ -44,17 +44,18 @@
         return store.player.video
       },
       playlist () {
-        return store.player.playlist || []
+        return store.player.playlist
       }
     },
 
     watch: {
       'store.player.video': {
-        handler: (video) => {
-          console.log('video', video)
+        handler (video) {
+          if (video) {
+            this.loadVideo()
+          }
         },
-        deep: true,
-        immediate: true
+        deep: true
       }
     },
 

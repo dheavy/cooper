@@ -3,13 +3,10 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <button type="button" class="close" @click.stop="close">
+          <button type="button" class="close" @click.stop="exitPlayer">
             <span rel="close">&times;</span>
           </button>
-          <player
-            :video="video"
-            :playlist="playlist"
-          ></player>
+          <player></player>
         </div>
       </div>
     </div>
@@ -26,9 +23,7 @@
     components: {Player},
 
     methods: {
-      close () {
-        exitPlayer()
-      }
+      exitPlayer: exitPlayer
     }
   }
 </script>
