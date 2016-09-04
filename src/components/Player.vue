@@ -18,9 +18,10 @@
       <div class="playlist clearfix">
         <playlist-thumbnail
           v-for="media in playlist"
-          v-if="media.is_naughty === store.state.isNaughtyMode"
+          v-if="media.is_naughty === store.state.isNaughtyMode && $index < 10"
           :media="media"
           :on-click="playlistThumbnailClickHandler"
+          :is-active="video.id === media.id"
         ></playlist-thumbnail>
         <div class="thumb-more">
           <a href="#" @click.prevent="thumbMoreClickHandler">...</a>
@@ -45,7 +46,8 @@
     data () {
       return {
         store,
-        loading: false
+        loading: false,
+        currentVideoIndex: 0
       }
     },
 
@@ -53,8 +55,13 @@
       video () {
         return store.player.video
       },
+
       playlist () {
         return store.player.playlist
+      },
+
+      maxVideoIndex () {
+        return store.player.playlist.length > 9 ? 9 : store.player.playlist.length
       }
     },
 
@@ -69,7 +76,17 @@
       }
     },
 
+    ready () {
+      window.addEventListener('keyup', this.keyupHandler)
+    },
+
     methods: {
+      keyupHandler (e) {
+        // Arrow left - 37, arrow right - 39
+        if (e.keyCode === 37) this.prevVideo()
+        if (e.keyCode === 39) this.nextVideo()
+      },
+
       loadVideo () {
         if (this.video && this.video.embed_url) {
           this.$els.iframe.setAttribute('src', this.video.embed_url)
@@ -79,12 +96,28 @@
       },
 
       playlistThumbnailClickHandler (video) {
+        this.currentVideoIndex = this.playlist.indexOf(video)
         this.store.player.video = video
       },
 
       thumbMoreClickHandler () {
         this.$router.go({name: 'feed-collection', params: {cid: this.video.collection}})
         this.exit()
+      },
+
+      prevVideo () {
+        this.currentVideoIndex = this.currentVideoIndex === 0 ? this.maxVideoIndex - 1 : this.currentVideoIndex - 1
+        this.playVideoByIndex(this.currentVideoIndex)
+      },
+
+      nextVideo () {
+        this.currentVideoIndex = this.currentVideoIndex < this.maxVideoIndex - 1 ? this.currentVideoIndex + 1 : 0
+        this.playVideoByIndex(this.currentVideoIndex)
+      },
+
+      playVideoByIndex (i) {
+        this.store.player.video = this.playlist[i]
+        console.log(this.store.player.video)
       }
     }
   }
