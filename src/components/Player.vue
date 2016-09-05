@@ -117,7 +117,6 @@
 
       playVideoByIndex (i) {
         this.store.player.video = this.playlist[i]
-        console.log(this.store.player.video)
       }
     }
   }
