@@ -6,8 +6,17 @@
       <div class="duration">{{video.duration}}</div>
     </div>
     <div class="ui">
-    <button v-if="feedType === 'feed-collection'" class="add-btn" @click="editHandler(video)">&#x270F;</button>
-      <button v-else class="add-btn" @click="addHandler(video)">&hearts;</button>
+      <button-edit
+        v-if="feedType === 'feed-collection'"
+        :edit-handler='editHandler'
+        :video='video'
+      ></button-edit>
+
+      <button-add
+        v-else
+        :add-handler='addHandler'
+        :video='video'
+      ></button-add>
     </div>
   </div>
 </template>
@@ -21,12 +30,17 @@ import {
   MEDIA_SCALE_NORMAL
 } from '../constants/config'
 
+import ButtonAdd from './ButtonAdd'
+import ButtonEdit from './ButtonEdit'
+
 export default {
   name: 'Media',
 
   props: [
     'video', 'playlist', 'scale', 'feedType', 'addHandler', 'editHandler'
   ],
+
+  components: {ButtonAdd, ButtonEdit},
 
   data () {
     return {
@@ -79,19 +93,6 @@ export default {
     width: 100%;
     height: 100%;
     // background: red;
-
-    .add-btn {
-      position: relative;
-      width: 30px;
-      height: 30px;
-      border-radius: 30px;
-      left: 100%;
-      top: 10px;
-      margin-left: -40px;
-      background-color: transparent;
-      border-color: white;
-      color: white;
-    }
   }
 
   .data {
