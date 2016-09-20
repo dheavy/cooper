@@ -1,20 +1,21 @@
 <template>
-  <div class="player">
+  <div class="player {{tvMode ? 'fullscreen' : ''}}" id="player">
     <clip-loader
       :loading="loading"
     ></clip-loader>
 
     <iframe
-      v-el:iframe
+      class="player-iframe"
+      v-el:player
       v-if='video'
       scrolling="no"
       frameborder="0"
       style="border:none;"
       width="100%"
-      height="400"
+      height="{{tvMode ? '100%' : 400}}"
     ></iframe>
 
-    <div class="meta" v-if='video'>
+    <div class="meta" v-if='video' v-el:commands>
       <h5 class="title">{{video.title}}</h5>
       <p class="link">Original URL - <a href="{{video.original_url}}">{{video.original_url}}</a></p>
       <div class="playlist clearfix">
@@ -38,7 +39,7 @@
         ></button-add>
 
         <button-tv
-          :toggle-handler="() => {}"
+          :toggle-handler="toggleTVMode"
           :video="video"
         ></button-tv>
       </div>
@@ -83,7 +84,7 @@
       ModalAddVideo
     },
 
-    props: ['exit'],
+    props: ['exit', 'tvMode'],
 
     // TODO: Refactor AddVideoModal
 
@@ -107,7 +108,8 @@
           collection_id: -1,
           new_collection_name: ''
         },
-        collections: store.getCollections()
+        collections: store.getCollections(),
+        commandsHideInterval: null
       }
     },
 
@@ -137,6 +139,15 @@
           }
         },
         deep: true
+      },
+      'tvMode': {
+        handler (isTVMode) {
+          if (isTVMode) {
+            this.enableHidingCommands()
+          } else {
+            this.disableHidingCommands()
+          }
+        }
       }
     },
 
@@ -145,6 +156,59 @@
     },
 
     methods: {
+      createTVModeCommandHideInterval (e) {
+        this.showCommands()
+        this.commandsHideInterval = setInterval(this.hideCommands, 3000)
+      },
+
+      destroyTVModeCommandHideTimer () {
+        clearInterval(this.commandsHideInterval)
+      },
+
+      showCommands () {
+        this.destroyTVModeCommandHideTimer()
+        this.$els.commands.classList.remove('hidden-xs-up')
+      },
+
+      hideCommands () {
+        this.$els.commands.classList.add('hidden-xs-up')
+        this.destroyTVModeCommandHideTimer()
+      },
+
+      enableHidingCommands () {
+        window.addEventListener('mousemove', this.createTVModeCommandHideInterval)
+        window.addEventListener('touchstart', this.createTVModeCommandHideInterval)
+        window.addEventListener('click', this.createTVModeCommandHideInterval)
+        window.addEventListener('keyup', this.createTVModeCommandHideInterval)
+      },
+
+      disableHidingCommands () {
+        window.removeEventListener('mousemove', this.createTVModeCommandHideInterval)
+        window.removeEventListener('touchstart', this.createTVModeCommandHideInterval)
+        window.removeEventListener('click', this.createTVModeCommandHideInterval)
+        window.removeEventListener('keyup', this.createTVModeCommandHideInterval)
+        this.destroyTVModeCommandHideTimer()
+      },
+
+      toggleTVMode () {
+        this.setTVMode(!this.store.player.isTVMode)
+      },
+
+      setTVMode (enable) {
+        this.store.player.isTVMode = enable
+
+        if (enable) {
+          window.addEventListener('keyup', this.escapeBtnHandler)
+        } else {
+          window.removeEventListener('keyup', this.escapeBtnHandler)
+        }
+      },
+
+      escapeBtnHandler (e) {
+        // "Esc" - 27
+        if (e.keyCode === 27) this.setTVMode(false)
+      },
+
       keyupHandler (e) {
         // Arrow left - 37, arrow right - 39
         if (e.keyCode === 37) this.prevVideo()
@@ -153,7 +217,7 @@
 
       loadVideo () {
         if (this.video && this.video.embed_url) {
-          this.$els.iframe.setAttribute('src', this.video.embed_url)
+          this.$els.player.setAttribute('src', this.video.embed_url)
           this.$router.go(`?v=${this.video.id}`)
           this.loading = false
         }
@@ -257,6 +321,23 @@
     border-radius: 0.3rem;
     overflow: hidden;
     position: relative;
+  }
+
+  .player.fullscreen {
+    height: 100vh;
+
+    .meta {
+      position: absolute;
+      width: 97%;
+      top: 100%;
+      margin-top: -150px;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 1em;
+    }
+
+    .commands {
+      right: 10px;
+    }
   }
 
   .link {

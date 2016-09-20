@@ -8,7 +8,8 @@ const store = new Vue({
       player: {
         'isVisible': false,
         'video': null,
-        'playlist': []
+        'playlist': [],
+        'isTVMode': false
       },
       state: {
         isAuthenticated: false,

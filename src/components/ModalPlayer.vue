@@ -1,12 +1,15 @@
 <template>
-  <div name="player-modal" rel="close" class="modal"  @click.stop="hideModal">
+  <div name="player-modal" class="modal player-modal {{store.player.isTVMode ? 'fullscreen' : ''}}" rel="close"  @click.stop="hideModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
           <button type="button" class="close" @click.stop="exitPlayer">
             <span rel="close">&times;</span>
           </button>
-          <player :exit="exitPlayer"></player>
+          <player
+            :tv-mode="store.player.isTVMode"
+            :exit="exitPlayer"
+          ></player>
         </div>
       </div>
     </div>
@@ -16,11 +19,16 @@
 <script>
   import {exitPlayer} from '../services/mediae'
   import Player from './Player'
+  import store from '../store'
 
   export default {
     name: 'ModalPlayer',
 
     components: {Player},
+
+    data () {
+      return {store}
+    },
 
     methods: {
       hideModal (e) {
@@ -35,6 +43,34 @@
 </script>
 
 <style lang="scss" scoped>
+  .player-modal.fullscreen {
+    .player-iframe {
+      height: 100vh;
+    }
+
+    .modal-content {
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      margin: 0;
+    }
+
+    .modal-dialog {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      top: 0;
+      left: 0;
+    }
+
+    .modal-body {
+      height: 100vh;
+      margin: 0;
+    }
+  }
+
   .modal {
     display: block;
   }
