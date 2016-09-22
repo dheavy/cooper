@@ -7,6 +7,9 @@
       <a class="navbar-brand" v-link="{name: 'home'}">MyPleasu.re</a>
       <ul v-if="store.state.isAuthenticated" class="nav navbar-nav">
         <li class="nav-item">
+          <a class="nav-link" href="#" @click.prevent="toggleSearch">Search</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" v-link="{name: 'create-video'}">Add video</a>
         </li>
         <li class="nav-item">
@@ -55,6 +58,12 @@
 
     data () {
       return {store}
+    },
+
+    methods: {
+      toggleSearch () {
+        this.store.search.isOpened = !this.store.search.isOpened
+      }
     }
   }
 </script>

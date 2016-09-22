@@ -2,7 +2,11 @@
   <modal-player
     v-show="store.player.isVisible"
   ></modal-player>
+
+  <search></search>
+
   <navigation></navigation>
+
   <div id="app" class="container">
     <router-view></router-view>
   </div>
@@ -11,12 +15,13 @@
 <script>
   import ModalPlayer from './ModalPlayer'
   import Navigation from './Navigation'
+  import Search from './Search'
   import store from '../store'
 
   export default {
     name: 'App',
 
-    components: {Navigation, ModalPlayer},
+    components: {Navigation, ModalPlayer, Search},
 
     data () {
       return {store}

@@ -5,6 +5,9 @@ const store = new Vue({
 
   data () {
     return {
+      search: {
+        isOpened: false
+      },
       player: {
         'isVisible': false,
         'video': null,
