@@ -1,7 +1,7 @@
 <template>
   <div class="overlay" v-show="store.search.isOpened">
     <header class="header">
-      <input type="text" name="search" class="search" placeholder="Search">
+      <input type="text" name="search" class="search" placeholder="Search" v-el:input>
     </header>
     <main class="results">
     </main>
@@ -16,16 +16,57 @@
 
     data () {
       return {store}
+    },
+
+    watch: {
+      'store.search.isOpened': {
+        handler (isOpened) {
+          isOpened ? this.registerCloseListener() : this.unregisterCloseListener()
+        }
+      }
+    },
+
+    methods: {
+      registerCloseListener (e) {
+        window.addEventListener('keyup', this.keyupHandler)
+      },
+
+      unregisterCloseListener () {
+        window.removeEventListener('keyup', this.keyupHandler)
+      },
+
+      keyupHandler (e) {
+        // 'Esc' => 27, 'Return' => 13
+        if (e.keyCode === 27) {
+          this.closeSearchPanel()
+        }
+
+        if (e.keyCode === 13) {
+          this.triggerSearch(this.$els.input.value)
+        }
+      },
+
+      closeSearchPanel () {
+        this.$els.input.value = ''
+        this.store.search.isOpened = false
+      },
+
+      triggerSearch (val) {
+
+      }
     }
   }
 </script>
 
 <style type="scss" scoped>
   .overlay {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.8);
     width: 100vw;
     height: 100vh;
+    position: fixed;
     margin-top: -20px;
+    z-index: 20;
+    color: white;
   }
 
   header {
