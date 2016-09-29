@@ -15,3 +15,5 @@ export const EMAIL_EDIT_URL = API_URL + 'edit/email'
 export const CURATION_ACQUIRE_URL = API_URL + 'curate/acquire'
 
 export const FEED_URL = API_URL + 'feed'
+
+export const SEARCH_URL = API_URL + 'search'

@@ -266,3 +266,7 @@ export const deleteVideo = (video, token) => {
       }
     })
 }
+
+export const search = (query, token) => {
+  return http(SEARCH_URL, postData(query, token))
+}
