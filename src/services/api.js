@@ -10,7 +10,8 @@ import {
   PASSWORD_EDIT_URL,
   EMAIL_EDIT_URL,
   CURATION_ACQUIRE_URL,
-  FEED_URL
+  FEED_URL,
+  SEARCH_URL
 } from '../constants/api'
 
 import {

@@ -3,9 +3,9 @@
     v-show="store.player.isVisible"
   ></modal-player>
 
-  <search></search>
-
   <navigation></navigation>
+
+  <search></search>
 
   <div id="app" class="container">
     <router-view></router-view>

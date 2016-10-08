@@ -1,38 +1,70 @@
 <template>
   <div class="overlay" v-show="store.search.isOpened">
-    <header class="header">
-      <input type="text" name="search" class="search" placeholder="Search" v-el:input>
-    </header>
-    <main class="results">
-    </main>
+    <div class="container">
+      <header class="header container">
+        <button type="button" class="close" @click.stop="closeSearchPanel">
+          <span rel="close" aria-hidden="true">&times;</span>
+        </button>
+        <input type="text" name="search" class="search col-xs-12" placeholder="Search" v-el:input>
+      </header>
+      <main class="results container">
+        <clip-loader :loading="loading"></clip-loader>
+        <div class="alert alert-danger" v-if="error">{{error}}</div>
+        <h6 v-show="message" class="col-xs-12">{{message}}</h6>
+
+        <div v-show="searchResults">
+          <div v-for="media in searchResults" class="col-md-3">
+            <div
+              class="thumb"
+              :style="{'background-image': 'url(' + media.poster + ')'}"
+            ></div>
+          </div>
+        </div>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
+  import ClipLoader from 'vue-spinner/src/ClipLoader'
+  import {search} from '../services/api'
+  import {parseError} from '../mixins'
   import store from '../store'
 
   export default {
     name: 'Search',
 
+    mixins: [parseError],
+
+    components: {ClipLoader},
+
     data () {
-      return {store}
+      return {
+        store,
+        error: null,
+        message: null,
+        loading: false,
+        searchResults: null
+      }
     },
 
     watch: {
       'store.search.isOpened': {
         handler (isOpened) {
-          isOpened ? this.registerCloseListener() : this.unregisterCloseListener()
+          isOpened ? this.isOpenedHandler() : this.isClosedHandler()
         }
       }
     },
 
     methods: {
-      registerCloseListener (e) {
+      isOpenedHandler (e) {
         window.addEventListener('keyup', this.keyupHandler)
+        document.body.style.overflow = 'hidden'
       },
 
-      unregisterCloseListener () {
+      isClosedHandler () {
         window.removeEventListener('keyup', this.keyupHandler)
+        document.body.style.overflow = 'auto'
       },
 
       keyupHandler (e) {
@@ -52,7 +84,20 @@
       },
 
       triggerSearch (val) {
-
+        this.loading = true
+        this.message = null
+        this.searchResults = null
+        search({query: val.toLowerCase()}, this.store.getToken())
+          .then(res => {
+            this.loading = false
+            this.message = res.message
+            this.searchResults = res.payload
+          })
+          .catch(err => {
+            this.loading = false
+            console.log(err)
+            this.parseError(err)
+          })
       }
     }
   }
@@ -64,17 +109,24 @@
     width: 100vw;
     height: 100vh;
     position: fixed;
-    margin-top: -20px;
-    z-index: 20;
+    margin-top: -70px;
+    z-index: 1040;
     color: white;
+    overflow: auto;
   }
 
   header {
     position: relative;
-    top: 20px;
+    top: 50px;
     padding: 0 1em;
     width: 100%;
     height: auto;
+  }
+
+  .close {
+    color: white;
+    text-shadow: none;
+    opacity: 1;
   }
 
   .search {
@@ -86,5 +138,31 @@
     height: 70px;
     font-size: 3rem;
     outline: 0;
+  }
+
+  .results {
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+    margin-top: 70px;
+  }
+
+  h6 {
+    margin-bottom: 2em;
+  }
+
+  .thumb {
+    text-align: center;
+    width: 100%;
+    height: 200px;
+    margin-right: 10%;
+    margin-bottom: 1em;
+    top: 0;
+    left: 0;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #000;
   }
 </style>
