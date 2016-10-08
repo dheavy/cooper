@@ -13,12 +13,22 @@
         <h6 v-show="message" class="col-xs-12">{{message}}</h6>
 
         <div v-show="searchResults">
-          <div v-for="media in searchResults" class="col-md-3">
+          <media
+            v-else
+            v-for="video in searchResults | orderBy 'id' -1"
+            v-show="video.is_naughty === store.state.isNaughtyMode"
+            class="media-item {{video.scale}}"
+            :video="video"
+            :playlist="searchResults"
+            :scale="normal"
+            :feed-type="search"
+          ></media>
+          <!-- <div v-for="media in searchResults" class="col-md-3">
             <div
               class="thumb"
               :style="{'background-image': 'url(' + media.poster + ')'}"
             ></div>
-          </div>
+          </div> -->
         </div>
       </main>
     </div>
@@ -30,13 +40,14 @@
   import {search} from '../services/api'
   import {parseError} from '../mixins'
   import store from '../store'
+  import Media from './media'
 
   export default {
     name: 'Search',
 
     mixins: [parseError],
 
-    components: {ClipLoader},
+    components: {ClipLoader, Media},
 
     data () {
       return {
@@ -92,6 +103,7 @@
             this.loading = false
             this.message = res.message
             this.searchResults = res.payload
+            console.log(this.searchResults)
           })
           .catch(err => {
             this.loading = false

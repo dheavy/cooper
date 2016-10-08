@@ -7,13 +7,13 @@
     </div>
     <div class="ui">
       <button-edit
-        v-if="feedType === 'feed-collection'"
+        v-if="addHandler && feedType === 'feed-collection'"
         :edit-handler='editHandler'
         :video='video'
       ></button-edit>
 
       <button-add
-        v-else
+        v-if="editHandler && feedType !== 'feed-collection'"
         :add-handler='addHandler'
         :video='video'
       ></button-add>
