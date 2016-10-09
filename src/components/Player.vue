@@ -20,8 +20,7 @@
       <p class="link">Original URL - <a href="{{video.original_url}}">{{video.original_url}}</a></p>
       <div class="playlist clearfix">
         <playlist-thumbnail
-          v-for="media in playlist"
-          v-if="media.is_naughty === store.state.isNaughtyMode && $index < 10"
+          v-for="media in filterPlaylistByViewMode(playlist, store.state.isNaughtyMode).slice(0, 10)"
           :media="media"
           :on-click="playlistThumbnailClickHandler"
           :is-active="video.id === media.id"
@@ -123,7 +122,7 @@
       },
 
       maxVideoIndex () {
-        return store.player.playlist.length > 9 ? 9 : store.player.playlist.length
+        return store.player.playlist.length - 1
       },
 
       showNewCollectionForm () {
@@ -156,6 +155,12 @@
     },
 
     methods: {
+      filterPlaylistByViewMode (playlist, mode) {
+        return playlist.filter((m) => {
+          return m.is_naughty === mode
+        })
+      },
+
       createTVModeCommandHideInterval (e) {
         this.showCommands()
         this.commandsHideInterval = setInterval(this.hideCommands, 3000)
@@ -218,7 +223,7 @@
       loadVideo () {
         if (this.video && this.video.embed_url) {
           this.$els.player.setAttribute('src', this.video.embed_url)
-          this.$router.go(`?v=${this.video.id}`)
+          // this.$router.go(`?v=${this.video.id}`)
           this.loading = false
         }
       },
