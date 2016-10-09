@@ -91,6 +91,12 @@
     width: 860px;
   }
 
+  @media (min-width: 544px) {
+    .modal-dialog {
+      max-width: 860px;
+    }
+  }
+
   button.close {
     margin-right: -2rem;
     opacity: 1;
