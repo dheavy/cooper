@@ -23,12 +23,6 @@
             :scale="normal"
             :feed-type="search"
           ></media>
-          <!-- <div v-for="media in searchResults" class="col-md-3">
-            <div
-              class="thumb"
-              :style="{'background-image': 'url(' + media.poster + ')'}"
-            ></div>
-          </div> -->
         </div>
       </main>
     </div>
