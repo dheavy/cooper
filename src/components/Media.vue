@@ -1,5 +1,9 @@
 <template>
-  <div class="media-item" :style="styles" class="clearfix">
+  <div class="media-item"
+    :style="styles"
+    @click="openPlayer(video, playlist)"
+    class="clearfix"
+  >
     <div class="poster"></div>
     <div class="data {{scale}}">
       <div class="title">{{video.title | ellipsis '80'}}</div>
@@ -30,6 +34,7 @@
     MEDIA_SCALE_NORMAL
   } from '../constants/config'
 
+  import {launchPlayer} from '../services/mediae'
   import ButtonAdd from './ButtonAdd'
   import ButtonEdit from './ButtonEdit'
 
@@ -58,6 +63,12 @@
       this.width = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_WIDTH : MEDIA_LARGE_WIDTH
       this.height = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_HEIGHT : MEDIA_LARGE_HEIGHT
       this.styles.backgroundImage = `url(${this.video.poster})`
+    },
+
+    methods: {
+      openPlayer (video, playlist) {
+        launchPlayer(video, playlist)
+      }
     }
   }
 </script>
@@ -70,6 +81,7 @@
     margin: 0;
     padding: 0;
     margin-bottom: 10px;
+    cursor: pointer;
 
     &.normal {
       width: 270px;
