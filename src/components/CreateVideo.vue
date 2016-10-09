@@ -37,7 +37,7 @@
                   <option selected>Choose a collection</option>
                 </optgroup>
                 <optgroup>
-                  <option v-if="collections" v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
+                  <option v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
                 </optgroup>
                 <optgroup>
                   <option>{{createNewLabel}}</option>
