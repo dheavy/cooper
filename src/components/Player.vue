@@ -239,17 +239,18 @@
       },
 
       prevVideo () {
-        this.currentVideoIndex = this.currentVideoIndex === 0 ? this.maxVideoIndex - 1 : this.currentVideoIndex - 1
+        this.currentVideoIndex = this.currentVideoIndex === 0 ? this.filterPlaylistByViewMode(this.playlist, this.store.state.isNaughtyMode).length - 1 : this.currentVideoIndex - 1
         this.playVideoByIndex(this.currentVideoIndex)
       },
 
       nextVideo () {
-        this.currentVideoIndex = this.currentVideoIndex < this.maxVideoIndex - 1 ? this.currentVideoIndex + 1 : 0
+        this.currentVideoIndex = this.currentVideoIndex < this.filterPlaylistByViewMode(this.playlist, this.store.state.isNaughtyMode).length - 1 ? this.currentVideoIndex + 1 : 0
         this.playVideoByIndex(this.currentVideoIndex)
       },
 
       playVideoByIndex (i) {
-        this.store.player.video = this.playlist[i]
+        const filtered = this.filterPlaylistByViewMode(this.playlist, this.store.state.isNaughtyMode)
+        this.store.player.video = filtered[i]
       },
 
       showAddModal (video) {
