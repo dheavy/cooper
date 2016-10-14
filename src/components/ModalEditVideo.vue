@@ -1,20 +1,20 @@
 <template>
-  <div rel="close" class="modal" @click.stop="hideModal">
+  <div rel="close" class="modal" @click.stop="onHideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <validator name="editVideoValidation">
           <form novalidate>
             <div class="modal-header">
-              <button type="button" class="close" @click.stop="hideModal">
+              <button type="button" class="close" @click.stop="onHideModal">
                 <span rel="close" aria-hidden="true">&times;</span>
               </button>
-              <div class="alert alert-success" v-if="success">{{success}}</div>
-              <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning">{{{warning}}}</div>
-              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $editVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
-              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $editVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
-              <h4 v-if="!error && !warning && !success" class="col-sm-12">Edit this video</h4>
+              <div class="alert alert-success" v-if="successMsg">{{successMsg}}</div>
+              <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
+              <div class="alert alert-warning" v-if="warningMsg">{{{warningMsg}}}</div>
+              <div class="alert alert-danger" v-if="submitted && !shouldShowNewCollectionForm && $editVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
+              <div class="alert alert-danger" v-if="submitted && shouldShowNewCollectionForm && $editVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
+              <h4 v-if="!errorMsg && !warningMsg && !successMsg" class="col-sm-12">Edit this video</h4>
             </div>
 
             <div class="modal-body" v-show="isFormVisible">
@@ -38,7 +38,7 @@
                       <option v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
                     </optgroup>
                     <optgroup>
-                      <option >{{createNewLabel}}</option>
+                      <option >{{labelCreateNewCollection}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -49,7 +49,7 @@
                     type="text"
                     class="form-control"
                     v-model="payload.new_collection_name"
-                    v-show="showNewCollectionForm"
+                    v-show="shouldShowNewCollectionForm"
                     placeholder="My new collection name"
                     v-validate:ncid="{validNewCollection: true}"
                   >
@@ -57,15 +57,15 @@
               </div>
             </div>
 
-            <div class="modal-footer" v-show="!success">
+            <div class="modal-footer" v-show="!successMsg">
               <span v-show="!isDeleting">
                 <button name="delete" type="button" class="btn btn-danger" @click.stop="confirmDelete(payload)">Delete video</button>
-                <button name="edit" type="button" class="btn btn-primary" @click.prevent="editVideo(payload, $editVideoValidation)">Save changes</button>
+                <button name="edit" type="button" class="btn btn-primary" @click.prevent="onEditVideo(payload, $editVideoValidation)">Save changes</button>
               </span>
 
-              <span v-show="isDeleting" v-show="!success">
-                <button name="cancel" type="button" class="btn btn-secondary" @click.stop="cancelDelete">No, go back</button>
-                <button name="confirm" type="button" class="btn btn-danger" @click.stop="applyDelete(payload)">Yes, delete video</button>
+              <span v-show="isDeleting" v-show="!successMsg">
+                <button name="cancel" type="button" class="btn btn-secondary" @click.stop="onCancelDelete">No, go back</button>
+                <button name="confirm" type="button" class="btn btn-danger" @click.stop="onApplyDelete(payload)">Yes, delete video</button>
               </span>
             </div>
           </form>
@@ -81,9 +81,9 @@
     name: 'ModalEditVideo',
 
     props: [
-      'hideModal', 'success', 'error', 'warning', 'isFormVisible',
-      'payload', 'collections', 'showNewCollectionForm', 'createNewLabel',
-      'editVideo', 'cancelDelete', 'applyDelete'
+      'onHideModal', 'successMsg', 'errorMsg', 'warningMsg', 'isFormVisible',
+      'payload', 'collections', 'shouldShowNewCollectionForm', 'labelCreateNewCollection',
+      'onEditVideo', 'onCancelDelete', 'onApplyDelete'
     ]
   }
 </script>

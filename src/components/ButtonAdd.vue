@@ -1,12 +1,18 @@
 <template>
-  <button class="add-btn" @click="addHandler(video)">&hearts;</button>
+  <button class="add-btn" @click.stop="dispatch">&hearts;</button>
 </template>
 
 <script>
   export default {
     name: 'ButtonAdd',
 
-    props: ['addHandler', 'video']
+    props: ['video'],
+
+    methods: {
+      dispatch () {
+        this.$dispatch('video:curate', this.video)
+      }
+    }
   }
 </script>
 

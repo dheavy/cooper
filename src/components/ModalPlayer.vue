@@ -30,6 +30,10 @@
       return {store}
     },
 
+    ready () {
+      this.$on('video:curate', (video) => true)
+    },
+
     methods: {
       hideModal (e) {
         if (e.target.getAttribute('rel')) {

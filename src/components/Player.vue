@@ -1,9 +1,5 @@
 <template>
   <div class="player {{tvMode ? 'fullscreen' : ''}}" id="player">
-    <clip-loader
-      :loading="loading"
-    ></clip-loader>
-
     <iframe
       class="player-iframe"
       v-el:player
@@ -33,7 +29,6 @@
 
       <div class="commands">
         <button-add
-          :add-handler="showAddModal"
           :video="video"
         ></button-add>
 
@@ -43,31 +38,14 @@
         ></button-tv>
       </div>
     </div>
-
   </div>
 
-  <!-- add video modal -->
-  <modal-add-video
-    v-el:add-modal
-    :hide-modal='hideModal'
-    :success='success'
-    :error='error'
-    :warning='warning'
-    :is-form-visible='isFormVisible'
-    :payload.sync='payload'
-    :collections='collections'
-    :show-new-collection-form='showNewCollectionForm'
-    :add-video='addVideo'
-    :create-new-label='createNewLabel'
-  ></modal-add-video>
-  <!-- /add video modal -->
+  <acquisition :enable-add="true"></acquisition>
 </template>
 
 <script>
-  import {checkIfUserHasVideo, curateVideo} from '../services/api'
-  import ClipLoader from 'vue-spinner/src/ClipLoader'
   import PlaylistThumbnail from './PlaylistThumbnail'
-  import ModalAddVideo from './ModalAddVideo'
+  import Acquisition from './Acquisition'
   import ButtonAdd from './ButtonAdd'
   import ButtonTv from './ButtonTv'
   import store from '../store'
@@ -76,38 +54,18 @@
     name: 'Player',
 
     components: {
-      ClipLoader,
       PlaylistThumbnail,
+      Acquisition,
       ButtonAdd,
-      ButtonTv,
-      ModalAddVideo
+      ButtonTv
     },
 
     props: ['exit', 'tvMode'],
 
-    // TODO: Refactor AddVideoModal
-
     data () {
       return {
         store,
-        loading: false,
         currentVideoIndex: 0,
-        createNewLabel: '...or create a new one',
-        error: null,
-        warning: null,
-        success: null,
-        isFormVisible: true,
-        areFormButtonsVisible: true,
-        payload: {
-          id: '',
-          original_url: '',
-          scale: '',
-          title: '',
-          hash: '',
-          collection_id: -1,
-          new_collection_name: ''
-        },
-        collections: store.getCollections(),
         commandsHideInterval: null
       }
     },
@@ -123,10 +81,6 @@
 
       maxVideoIndex () {
         return store.player.playlist.length - 1
-      },
-
-      showNewCollectionForm () {
-        return this.payload.collection_id === this.createNewLabel
       }
     },
 
@@ -152,6 +106,9 @@
 
     ready () {
       window.addEventListener('keyup', this.keyupHandler)
+      this.$on('video:curate', (video) => {
+        this.$broadcast('video:curate', video)
+      })
     },
 
     methods: {
@@ -224,7 +181,6 @@
         if (this.video && this.video.embed_url) {
           this.$els.player.setAttribute('src', this.video.embed_url)
           // this.$router.go(`?v=${this.video.id}`)
-          this.loading = false
         }
       },
 
@@ -251,70 +207,6 @@
       playVideoByIndex (i) {
         const filtered = this.filterPlaylistByViewMode(this.playlist, this.store.state.isNaughtyMode)
         this.store.player.video = filtered[i]
-      },
-
-      showAddModal (video) {
-        this.payload.title = video.title
-        this.payload.hash = video.hash
-        this.payload.id = video.id
-        this.payload.scale = video.scale
-        this.$els.addModal.style.display = 'block'
-
-        checkIfUserHasVideo(this.store.getUser().id, video.hash, this.store.getToken())
-          .then(res => {
-            if (+res.status === 206) {
-              this.warning = `Pssst... You have already curated this video <a href="/feed/${res.payload.id}">here</a>.`
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            this.error = 'Oops... there was an error. Please close and try again.'
-          })
-      },
-
-      addVideo (payload, $validator) {
-        this.submitted = true
-
-        if (!$validator.cid.validExistingCollection || !$validator.ncid.validNewCollection) {
-          this.error = null
-          this.payload = this.chooseNameOrId(this.payload)
-
-          curateVideo(
-            this.store.getUser().id,
-            payload.id,
-            payload.hash,
-            payload.original_url,
-            payload.title,
-            payload.scale,
-            +payload.collection_id,
-            payload.new_collection_name,
-            this.store.getToken()
-          )
-            .then(res => {
-              this.success = 'Video added successfully!'
-              this.hideForm()
-              this.store.markCollectionsDirty(true)
-            })
-            .catch(err => {
-              this.parseError(err)
-            })
-
-          this.resetValidation()
-        }
-      },
-
-      hideModal (e) {
-        if (e.target.getAttribute('rel') !== 'close') return
-
-        this.showForm()
-
-        this.payload = {hash: '', collection_id: -1, title: ''}
-
-        this.warning = null
-        this.error = null
-        this.success = null
-        this.isDeleting = false
-        this.$els.addModal.style.display = 'none'
       }
     }
   }

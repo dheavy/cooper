@@ -1,20 +1,20 @@
 <template>
-  <div rel="close" class="modal" @click.stop="hideModal">
+  <div rel="close" class="modal" @click.stop="onHideModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <validator name="addVideoValidation">
           <form novalidate>
             <div class="modal-header">
-              <button type="button" class="close" @click.stop="hideModal">
+              <button type="button" class="close" @click.stop="onHideModal">
                 <span rel="close" aria-hidden="true">&times;</span>
               </button>
-              <div class="alert alert-success" v-if="success">{{success}}</div>
-              <div class="alert alert-danger" v-if="error">{{error}}</div>
-              <div class="alert alert-warning" v-if="warning" rel="close">{{{warning}}}</div>
-              <div class="alert alert-danger" v-if="submitted && !showNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
-              <div class="alert alert-danger" v-if="submitted && showNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
-              <h4 v-if="!error && !warning && !success" class="col-sm-12">Add this video</h4>
+              <div class="alert alert-success" v-if="successMsg">{{successMsg}}</div>
+              <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
+              <div class="alert alert-warning" v-if="warningMsg" rel="close">{{{warningMsg}}}</div>
+              <div class="alert alert-danger" v-if="submitted && !shouldShowNewCollectionForm && $addVideoValidation.cid.validExistingCollection">Please choose a collection.</div>
+              <div class="alert alert-danger" v-if="submitted && shouldShowNewCollectionForm && $addVideoValidation.ncid.validNewCollection">Please choose a collection name.</div>
+              <h4 v-if="!errorMsg && !warningMsg && !successMsg" class="col-sm-12">Add this video</h4>
             </div>
 
             <div class="modal-body" v-show="isFormVisible">
@@ -41,7 +41,7 @@
                       <option v-for="collection in collections" value="{{collection.id}}">{{collection.name}}</option>
                     </optgroup>
                     <optgroup>
-                      <option >{{createNewLabel}}</option>
+                      <option >{{labelCreateNewCollection}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -52,7 +52,7 @@
                     type="text"
                     class="form-control"
                     v-model="payload.new_collection_name"
-                    v-show="showNewCollectionForm"
+                    v-show="shouldShowNewCollectionForm"
                     placeholder="My new collection name"
                     v-validate:ncid="{validNewCollection: true}"
                   >
@@ -60,9 +60,9 @@
               </div>
             </div>
 
-            <div class="modal-footer" v-show="!success">
-              <button rel="close" type="button" class="btn btn-secondary" @click.stop="hideModal">Close</button>
-              <button type="button" class="btn btn-primary" @click.prevent="addVideo(payload, $addVideoValidation)">Save changes</button>
+            <div class="modal-footer" v-show="!successMsg">
+              <button rel="close" type="button" class="btn btn-secondary" @click.stop="onHideModal">Close</button>
+              <button type="button" class="btn btn-primary" @click.prevent="onAddVideo(payload, $addVideoValidation)">Save changes</button>
             </div>
           </form>
         </validator>
@@ -77,9 +77,9 @@
     name: 'ModalAddVideo',
 
     props: [
-      'hideModal', 'success', 'error', 'warning', 'isFormVisible',
-      'payload', 'collections', 'showNewCollectionForm', 'createNewLabel',
-      'addVideo'
+      'onHideModal', 'successMsg', 'errorMsg', 'warningMsg', 'isFormVisible',
+      'payload', 'collections', 'shouldShowNewCollectionForm', 'labelCreateNewCollection',
+      'onAddVideo'
     ]
   }
 </script>
