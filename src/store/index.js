@@ -14,6 +14,23 @@ const store = new Vue({
         'playlist': [],
         'isTVMode': false
       },
+      curation: {
+        payload: {
+          id: '',
+          original_url: '',
+          scale: '',
+          title: '',
+          hash: '',
+          collection_id: -1,
+          new_collection_name: ''
+        },
+        messages: {
+          success: null,
+          warning: null,
+          error: null
+        },
+        labelCreateNewCollection: ''
+      },
       state: {
         isAuthenticated: false,
         isNaughtyMode: !!JSON.parse(String(localStorage.getItem('naughty')).toLowerCase()) || false,
@@ -42,6 +59,14 @@ const store = new Vue({
       if (this.state.isAuthenticated !== auth) {
         this.state.isAuthenticated = auth
       }
+    },
+
+    setCuratedPayload (payload) {
+      this.curation.payload = payload
+    },
+
+    resetCuratedPayload () {
+      this.curation.payload = {hash: '', collection_id: -1, title: ''}
     },
 
     /**
