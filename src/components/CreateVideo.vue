@@ -1,7 +1,7 @@
 <template>
   <section class="create-video">
     <validator name="createVideoValidation">
-      <form novalidate class="col-sm-6 col-sm-offset-3">
+      <form novalidate class="col-sm-6 offset-sm-3">
         <div class="form-group row">
           <button type="button" class="close" aria-label="Close">
             <span aria-hidden="true" @click.prevent="exit">&times;</span>
@@ -58,7 +58,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-sm-6 col-sm-offset-6">
+            <div class="col-sm-6 offset-sm-6">
               <button class="btn btn-primary col-sm-12 col-md-12" @click.prevent="create">Create</button>
             </div>
           </div>

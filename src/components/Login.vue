@@ -1,6 +1,6 @@
 <template>
   <validator name="loginValidation">
-    <form novalidate class="col-sm-4 col-sm-offset-4">
+    <form novalidate class="col-sm-4 offset-md-4">
       <h2>Log In</h2>
 
       <div class="alert alert-danger" v-if="error">{{error}}</div>
@@ -40,7 +40,7 @@
       </div>
     </form>
   </validator>
-  <div class="form-group col-sm-4 col-sm-offset-4">
+  <div class="form-group col-sm-4 offset-md-4">
     <hr/>
     <button class="btn btn-secondary" @click.prevent="fbAuth">
       Sign in with Facebook

@@ -7,7 +7,7 @@
   <div v-else>
     <div v-if="facebook">
       <validator name="registerValidation">
-        <form novalidate class="col-sm-6 col-sm-offset-2">
+        <form novalidate class="col-sm-6 offset-sm-2">
           <h2>Almost there...</h2>
           <p>Choose a username and you're good to go.</p>
 
@@ -34,7 +34,7 @@
 
     <div v-else>
       <validator name="registerValidation">
-        <form novalidate class="col-sm-4 col-sm-offset-4">
+        <form novalidate class="col-sm-4 offset-sm-4">
           <h2>Register</h2>
 
           <div class="alert alert-danger" v-if="error">{{{error}}}</div>
