@@ -4,7 +4,6 @@
     <div v-if="error"><p>{{error}}</p></div>
     <collection-rack
       v-else
-      v-if="collections"
       v-for="collection in collections | orderBy 'created_at' -1"
       :collection="collection"
       :other-collections="getOtherCollectionThanThis(collection)"
