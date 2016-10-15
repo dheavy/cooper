@@ -41,6 +41,7 @@
   import ModalEditVideo from './ModalEditVideo'
   import {
     checkIfUserHasVideo,
+    fetchCollections,
     curateVideo,
     editVideo,
     deleteVideo
@@ -75,14 +76,31 @@
         successMsg: null,
         warningMsg: null,
         errorMsg: null,
-        submitted: false,
-        collections: store.getCollections()
+        submitted: false
       }
     },
 
     ready () {
-      this.$on('video:curate', (video) => {
+      if (!this.store.getCollections() && !this.store.state.isFetchingData) {
+        this.store.state.isFetchingData = true
+        fetchCollections(this.store.getUser().id, this.store.getToken(), this.store.areCollectionsDirty())
+          .then(res => {
+            this.store.setCollections(res.payload)
+            this.store.markCollectionsDirty(false)
+            this.store.state.isFetchingData = false
+          })
+          .catch(err => {
+            console.log(err)
+            this.store.state.isFetchingData = false
+          })
+      }
+
+      this.$on('video:curate', video => {
         this.showAddModal(video)
+      })
+
+      this.$on('video:edit', video => {
+        this.showEditModal(video)
       })
     },
 

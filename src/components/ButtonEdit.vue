@@ -1,12 +1,12 @@
 <template>
-  <button class="edit-btn" @click="editHandler(video)">&hearts;</button>
+  <button class="edit-btn" @click.stop="$dispatch('video:edit', video)">&hearts;</button>
 </template>
 
 <script>
   export default {
     name: 'ButtonEdit',
 
-    props: ['editHandler', 'video']
+    props: ['video']
   }
 </script>
 

@@ -37,7 +37,8 @@ const store = new Vue({
         isPlayerOn: false,
         user: null,
         token: null,
-        collections: null
+        collections: null,
+        isFetchingData: false
       },
       dirty: {
         collections: null

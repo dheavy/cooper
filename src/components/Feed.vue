@@ -38,7 +38,6 @@
       :playlist="playlist"
       :scale="video.scale"
       :feed-type="type"
-      :edit-handler="$options.components.Acquisition.showEditModal"
     ></media>
   </section>
 
@@ -87,6 +86,9 @@
 
     ready () {
       this.fetchData(this.store.state.isNaughtyMode)
+      this.$on('video:edit', video => {
+        this.$broadcast('video:edit', video)
+      })
     },
 
     methods: {

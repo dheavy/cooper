@@ -11,13 +11,12 @@
     </div>
     <div class="ui">
       <button-edit
-        v-if="addHandler && feedType === 'feed-collection'"
-        :edit-handler='editHandler'
+        v-if="feedType === 'feed-collection' || feedType === 'feed-mine'"
         :video='video'
       ></button-edit>
 
       <button-add
-        v-if="editHandler && feedType !== 'feed-collection'"
+        v-if="editHandler && feedType !== ('feed-collection' || 'feed-mine')"
         :add-handler='addHandler'
         :video='video'
       ></button-add>
@@ -42,7 +41,7 @@
     name: 'Media',
 
     props: [
-      'video', 'playlist', 'scale', 'feedType', 'addHandler', 'editHandler'
+      'video', 'playlist', 'scale', 'feedType', 'addHandler'
     ],
 
     components: {ButtonAdd, ButtonEdit},
@@ -63,6 +62,8 @@
       this.width = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_WIDTH : MEDIA_LARGE_WIDTH
       this.height = this.scale === MEDIA_SCALE_NORMAL ? MEDIA_NORMAL_HEIGHT : MEDIA_LARGE_HEIGHT
       this.styles.backgroundImage = `url(${this.video.poster})`
+
+      this.$on('video:edit', video => true)
     },
 
     methods: {
