@@ -8,7 +8,6 @@
         <input type="text" name="search" class="search col-xs-12" placeholder="Search" v-el:input>
       </header>
       <main class="results container">
-        <clip-loader :loading="loading"></clip-loader>
         <div class="alert alert-danger" v-if="error">{{error}}</div>
         <h6 v-show="message" class="col-xs-12">{{message}}</h6>
 
@@ -30,7 +29,6 @@
 </template>
 
 <script>
-  import ClipLoader from 'vue-spinner/src/ClipLoader'
   import {search} from '../services/api'
   import {parseError} from '../mixins'
   import store from '../store'
@@ -41,7 +39,7 @@
 
     mixins: [parseError],
 
-    components: {ClipLoader, Media},
+    components: {Media},
 
     data () {
       return {
