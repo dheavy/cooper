@@ -70,7 +70,7 @@
   import {parseError} from '../mixins'
 
   export default {
-    name: 'PasswordReset',
+    name: 'PasswordResetConfirm',
 
     components: {Validator},
 

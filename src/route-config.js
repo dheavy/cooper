@@ -10,8 +10,8 @@ import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
 import CreateVideo from './components/CreateVideo'
-import PasswordReset from './components/PasswordReset'
 import CreateCollection from './components/CreateCollection'
+import PasswordResetConfirm from './components/PasswordResetConfirm'
 
 const routeConfig = router => {
   router.map({
@@ -30,8 +30,8 @@ const routeConfig = router => {
       auth: true,
       name: 'logout'
     },
-    '/password/reset/:tokenUid': {
-      component: PasswordReset,
+    '/password/reset/confirm/:tokenUid': {
+      component: PasswordResetConfirm,
       redirectIfAuth: true,
       name: 'password-reset'
     },
