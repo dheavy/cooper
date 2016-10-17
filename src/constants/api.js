@@ -17,3 +17,5 @@ export const CURATION_ACQUIRE_URL = API_URL + 'curate/acquire'
 export const FEED_URL = API_URL + 'feed'
 
 export const SEARCH_URL = API_URL + 'search'
+
+export const PASSWORD_RESET_URL = API_URL + 'password/reset/confirm'

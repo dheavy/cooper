@@ -11,7 +11,8 @@ import {
   EMAIL_EDIT_URL,
   CURATION_ACQUIRE_URL,
   FEED_URL,
-  SEARCH_URL
+  SEARCH_URL,
+  PASSWORD_RESET_URL
 } from '../constants/api'
 
 import {
@@ -270,4 +271,8 @@ export const deleteVideo = (video, token) => {
 
 export const search = (query, token) => {
   return http(SEARCH_URL, postData(query, token))
+}
+
+export const resetPassword = payload => {
+  return http(`${PASSWORD_RESET_URL}/${payload.token}-${payload.uid}`, postData(payload))
 }
