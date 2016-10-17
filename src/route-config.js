@@ -10,7 +10,7 @@ import Register from './components/Register'
 import Settings from './components/Settings'
 import Dashboard from './components/Dashboard'
 import CreateVideo from './components/CreateVideo'
-// import PasswordReset from './components/PasswordReset'
+import PasswordReset from './components/PasswordReset'
 import CreateCollection from './components/CreateCollection'
 
 const routeConfig = router => {
@@ -29,6 +29,11 @@ const routeConfig = router => {
       component: Logout,
       auth: true,
       name: 'logout'
+    },
+    '/password/reset/:tokenUid': {
+      component: PasswordReset,
+      redirectIfAuth: true,
+      name: 'password-reset'
     },
     '/register': {
       component: Register,
