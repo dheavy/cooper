@@ -37,6 +37,7 @@
 
 <script>
   import store from '../store'
+  import auth from '../services/auth'
   import ModalAddVideo from './ModalAddVideo'
   import ModalEditVideo from './ModalEditVideo'
   import {
@@ -81,6 +82,8 @@
     },
 
     ready () {
+      if (!auth.isAuthenticated()) return
+
       if (!this.store.getCollections() && !this.store.state.isFetchingData) {
         this.store.state.isFetchingData = true
         fetchCollections(this.store.getUser().id, this.store.getToken(), this.store.areCollectionsDirty())
