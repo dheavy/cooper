@@ -65,8 +65,8 @@
           username: '',
           password: ''
         },
-        submitted: '',
-        error: ''
+        submitted: false,
+        error: null
       }
     },
 
@@ -91,14 +91,10 @@
       submit () {
         this.submitted = true
         if (this.$loginValidation.valid) {
-          this.error = ''
-          const credentials = {
-            username: this.credentials.username,
-            password: this.credentials.password
-          }
+          this.error = null
 
           auth
-            .login(credentials, '/my')
+            .login(this.credentials, '/my')
             .catch(err => this.parseError(err))
 
           this.resetValidation()
