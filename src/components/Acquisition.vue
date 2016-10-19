@@ -75,6 +75,7 @@
 
     data () {
       return {
+        auth,
         store,
         isDeleting: false,
         isFormVisible: true,

@@ -4,7 +4,6 @@ import store from '../store'
 export const parseError = {
   methods: {
     parseError (err) {
-      // console.log(err)
       if (errors[err.message]) {
         this.error = errors[err.message]
       } else {

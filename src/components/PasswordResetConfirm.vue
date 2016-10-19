@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import {resetPassword} from '../services/api'
+  import {resetPasswordConfirm} from '../services/api'
   import Validator from 'vue-validator'
   import {parseError} from '../mixins'
 
@@ -112,7 +112,7 @@
           this.error = null
         }
 
-        resetPassword({
+        resetPasswordConfirm({
           token: this.payload.token,
           uid: this.payload.uid,
           password: this.payload.password,
@@ -129,7 +129,13 @@
 
     route: {
       data () {
-        const snippet = this.$route.params.tokenUid.split('-')
+        let snippet = this.$route.params.tokenUid.split('-')
+
+        if (snippet.length > 2) {
+          const head = snippet.shift()
+          const tail = snippet
+          snippet = [head, tail.join('-')]
+        }
 
         if (snippet.length === 2) {
           this.payload.token = snippet[0]

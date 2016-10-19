@@ -1,6 +1,7 @@
 import {
   EMAIL_IN_USE,
   EMAIL_INVALID,
+  EMAIL_NOT_IN_DB,
   CONFIRM_PASSWORD_MISSING,
   PASSWORD_MISMATCH,
   PASSWORD_INVALID,
@@ -21,6 +22,7 @@ const messages = {}
 
 messages[EMAIL_IN_USE] = 'Email is already in use by another user.'
 messages[EMAIL_INVALID] = 'Email address is invalid.'
+messages[EMAIL_NOT_IN_DB] = "Sorry... But it looks like you didn't leave your email address... <br>Send us an <a href='mailto:contact@mypleasu.re'>email</a> directly to see how you can reset your password."
 messages[CONFIRM_PASSWORD_MISSING] = 'Password confirmation is missing.'
 messages[PASSWORD_INVALID] = 'Your password is invalid, please try again.'
 messages[PASSWORD_MISMATCH] = 'Passwords mismatch.'

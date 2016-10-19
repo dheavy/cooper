@@ -12,7 +12,8 @@ import {
   CURATION_ACQUIRE_URL,
   FEED_URL,
   SEARCH_URL,
-  PASSWORD_RESET_URL
+  PASSWORD_RESET_URL,
+  PASSWORD_RESET_CONFIRM_URL
 } from '../constants/api'
 
 import {
@@ -274,5 +275,9 @@ export const search = (query, token) => {
 }
 
 export const resetPassword = payload => {
-  return http(`${PASSWORD_RESET_URL}/${payload.token}-${payload.uid}`, postData(payload))
+  return http(`${PASSWORD_RESET_URL}`, postData(payload))
+}
+
+export const resetPasswordConfirm = payload => {
+  return http(`${PASSWORD_RESET_CONFIRM_URL}/${payload.token}-${payload.uid}`, postData(payload))
 }

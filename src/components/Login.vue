@@ -36,7 +36,7 @@
       </div>
 
       <div class="form-group">
-        <a class="small" v-link="{path: '/password/reset'}">I forgot my username or password</a>
+        <a class="small" v-link="{name: 'password-reset'}">I forgot my username or password</a>
       </div>
     </form>
   </validator>
