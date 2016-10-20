@@ -26,7 +26,7 @@
           class="form-control"
           placeholder="Password"
           v-model="credentials.password"
-          v-validate:password="{required: true, minlength: 6}"
+          v-validate:password="{required: true, minlength: 8}"
           v-on:keyup="resetValidation()"
         >
       </div>

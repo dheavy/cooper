@@ -30,6 +30,7 @@
               <button
                 class="btn btn-primary {{isEmailValid ? '' : 'disabled'}}"
                 @click.prevent="submit()"
+                :disabled="isEmailValid ? false : true"
               >
                 Reset my password
               </button>

@@ -16,7 +16,13 @@
 
   </div>
   <div class="col-sm-10" style="margin-top: 10px" v-if="hasStartedDeletion">
-    <button class="btn btn-danger col-xs-10 col-sm-6 col-md-5 col-lg-4 {{enableFinalizeBtn ? '' : 'disabled'}}" @click="finalizeDeletion">Proceed with deletion</button>
+    <button
+      class="btn btn-danger col-xs-10 col-sm-6 col-md-5 col-lg-4 {{enableFinalizeBtn ? '' : 'disabled'}}"
+      @click="finalizeDeletion"
+      :disabled="enableFinalizeBtn ? false : true"
+    >
+      Proceed with deletion
+    </button>
     <button class="btn btn-secondary col-xs-10 col-sm-6 col-md-5 col-lg-4 cancel" @click="onCancel">I've changed my mind</button>
   </div>
 </template>

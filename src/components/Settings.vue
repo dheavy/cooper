@@ -15,7 +15,7 @@
                 class="form-control"
                 placeholder="Email"
                 v-model="editEmail.email"
-                v-validate:password="{email: true}"
+                v-validate:email="{email: true}"
                 v-on:keyup="resetEditEmailValidation()"
                 :class="[isEmailValid !== null ? (isEmailValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
@@ -53,7 +53,7 @@
                 class="form-control"
                 placeholder="Password"
                 v-model="editPassword.password"
-                v-validate:password="{required: true, minlength: 6}"
+                v-validate:password="{required: true, minlength: 8}"
                 v-on:keyup="resetEditPasswordValidation()"
                 :class="[isPasswordValid !== null ? (isPasswordValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
@@ -65,7 +65,7 @@
                 class="form-control"
                 placeholder="Confirm password"
                 v-model="editPassword.passwordConfirm"
-                v-validate:password-confirm="{required: true, minlength: 6}"
+                v-validate:password-confirm="{required: true, minlength: 8}"
                 v-on:keyup="resetEditPasswordValidation()"
                 :class="[isPasswordConfirmValid !== null ? (isPasswordConfirmValid ? classFormControlSuccess : classFormControlWarning) : '']"
               >
