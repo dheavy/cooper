@@ -4,7 +4,9 @@
       &#9776;
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-      <a class="navbar-brand" v-link="{name: 'home'}">MyPleasu.re</a>
+      <a class="navbar-brand" v-link="{name: 'home'}">
+        <logo></logo>
+      </a>
       <ul v-if="store.state.isAuthenticated" class="nav navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="toggleSearch">Search</a>
@@ -50,11 +52,12 @@
 <script>
   import ToggleSwitch from './ToggleSwitch'
   import store from '../store'
+  import Logo from './Logo'
 
   export default {
     name: 'Navigation',
 
-    components: {ToggleSwitch},
+    components: {ToggleSwitch, Logo},
 
     data () {
       return {store}
