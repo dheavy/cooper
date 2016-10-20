@@ -36,13 +36,7 @@
       </ul>
       <ul v-else class="nav navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'home'}">Home</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" v-link="{name: 'register'}" href="#">Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'login'}" href="#">Log In</a>
         </li>
       </ul>
     </div>

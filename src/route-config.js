@@ -2,7 +2,6 @@ import store from './store'
 import auth from './services/auth'
 import Home from './components/Home'
 import Feed from './components/Feed'
-import Login from './components/Login'
 import Logout from './components/Logout'
 import Follow from './components/Follow'
 import Blocked from './components/Blocked'
@@ -20,11 +19,6 @@ const routeConfig = router => {
       component: Home,
       redirectIfAuth: true,
       name: 'home'
-    },
-    '/login': {
-      component: Login,
-      redirectIfAuth: true,
-      name: 'login'
     },
     '/logout': {
       component: Logout,
@@ -114,7 +108,8 @@ const routeConfig = router => {
   })
 
   router.redirect({
-    '*': '/'
+    '*': '/',
+    '/login': '/'
   })
 
   router.beforeEach(transition => {
@@ -122,7 +117,7 @@ const routeConfig = router => {
     store.setAuthentication(auth.isAuthenticated())
 
     if (transition.to.auth && !auth.isAuthenticated()) {
-      return transition.redirect('/login')
+      return transition.redirect('/home')
     }
 
     if (transition.to.redirectIfAuth && auth.isAuthenticated()) {

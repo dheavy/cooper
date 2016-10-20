@@ -5,6 +5,6 @@
 body {
   margin-top: 70px;
   @include font-asap()
-  @include font-size(12px)
+  @include font-size(14px)
   color: $color-dark-blue;
 }
