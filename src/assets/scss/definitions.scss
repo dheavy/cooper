@@ -1,0 +1,93 @@
+/**
+ *  Main colors
+ */
+$color-mp-blue: #648be3;
+$color-mp-blue-hover: #253961;
+$color-light-lavender: #ededfe;
+$color-light-blue: #8cb7ff;
+$color-dark-blue: #3a5083;
+
+/**
+ *  Typography
+ */
+@mixin font-montserrat() {
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+@mixin font-asap() {
+  font-family: 'Asap', sans-serif;
+}
+
+@mixin font-size($size, $base: 16) {
+  font-size: $size; // fallback for old browsers
+  font-size: ($size / $base) * 1rem;
+}
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+/**
+ *  Browser and display
+ */
+@mixin prefix($property, $value, $vendors: webkit moz ms o, $default: true) {
+  @if $vendors {
+    @each $vendor in $vendors {
+      #{"-" + $vendor + "-" + $property}: #{$value};
+    }
+  }
+  @if $default {
+    #{$property}: #{$value};
+  }
+}
+
+/**
+ *  Images
+ */
+$image-path: '../../dist/images' !default;
+$fallback-extension: 'png' !default;
+$retina-suffix: '@2x';
+@mixin background-image($name, $size:false){
+  background-image: url(#{$image-path}/#{$name}.svg);
+  @if($size){
+    background-size: $size;
+  }
+  .no-svg &{
+    background-image: url(#{$image-path}/#{$name}.#{$fallback-extension});
+
+    @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+      background-image: url(#{$image-path}/#{$name}#{$retina-suffix}.#{$fallback-extension});
+    }
+  }
+}
+
+/**
+ * Centering
+ */
+@mixin center($width: null, $height: null) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  @if not $width and not $height {
+    transform: translate(-50%, -50%);
+  } @else if $width and $height {
+    width: $width;
+    height: $height;
+    margin: -($width / 2) #{0 0} -($height / 2);
+  } @else if not $height {
+    width: $width;
+    margin-left: -($width / 2);
+    transform: translateY(-50%);
+  } @else {
+    height: $height;
+    margin-top: -($height / 2);
+    transform: translateX(-50%);
+  }
+}
