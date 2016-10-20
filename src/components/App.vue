@@ -30,9 +30,5 @@
 </script>
 
 <style lang="scss">
-  @import '../../node_modules/bootstrap/scss/bootstrap.scss';
-
-  body {
-    margin-top: 70px;
-  }
+  @import '../assets/scss/app.scss';
 </style>
