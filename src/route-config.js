@@ -1,6 +1,5 @@
 import store from './store'
 import auth from './services/auth'
-import Home from './components/Home'
 import Feed from './components/Feed'
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -16,11 +15,6 @@ import PasswordResetConfirm from './components/PasswordResetConfirm'
 
 const routeConfig = router => {
   router.map({
-    '/': {
-      component: Home,
-      redirectIfAuth: true,
-      name: 'home'
-    },
     '/login': {
       component: Login,
       redirectIfAuth: true,
@@ -114,7 +108,8 @@ const routeConfig = router => {
   })
 
   router.redirect({
-    '*': '/'
+    '*': '/',
+    '/': '/login'
   })
 
   router.beforeEach(transition => {

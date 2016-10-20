@@ -4,7 +4,7 @@
       &#9776;
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-      <a class="navbar-brand" v-link="{name: 'home'}">
+      <a class="navbar-brand" v-link="{path: '/'}">
         <logo></logo>
       </a>
       <ul v-if="store.state.isAuthenticated" class="nav navbar-nav">
@@ -18,7 +18,7 @@
           <a class="nav-link" v-link="{name: 'feed-public'}">Feed</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'home'}">My collections</a>
+          <a class="nav-link" v-link="{path: '/'}">My collections</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'settings'}">Settings</a>
@@ -35,9 +35,6 @@
         </li>
       </ul>
       <ul v-else class="nav navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'home'}">Home</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'register'}" href="#">Register</a>
         </li>
