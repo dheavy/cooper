@@ -1,5 +1,10 @@
 <template>
   <validator name="passwordResetValidation">
+    <div v-show="success" class="col-sm-4 offset-sm-4">
+      <h2>Password successfully reset!</h2>
+      <p>You may now <a v-link="{name: 'login'}">log in</a> using your new password.</p>
+    </div>
+
     <form
       novalidate
       class="col-sm-4 offset-sm-4"
@@ -32,7 +37,7 @@
           class="form-control"
           placeholder="New password"
           v-model="payload.password"
-          v-validate:password="{required: true, minlength: 6}"
+          v-validate:password="{required: true, minlength: 8}"
           v-on:keyup="resetValidation()"
         >
       </div>
@@ -43,13 +48,19 @@
           class="form-control"
           placeholder="New password"
           v-model="payload.confirmPassword"
-          v-validate:confirm-password="{required: true, minlength: 6}"
+          v-validate:confirm-password="{required: true, minlength: 8}"
           v-on:keyup="resetValidation()"
         >
       </div>
 
       <div class="form-group">
-        <button class="btn btn-primary" @click.prevent="submit()">Change my password</button>
+        <button
+          class="btn btn-primary {{canSubmit ? '' : 'disabled'}}"
+          @click.prevent="submit()"
+          :disabled="canSubmit ? false : true"
+        >
+          Change my password
+        </button>
       </div>
     </form>
   </validator>
@@ -85,6 +96,7 @@
           confirmPassword: ''
         },
         submitted: false,
+        success: false,
         error: null,
         showForm: false,
         showMessage: false
@@ -96,6 +108,7 @@
         this.submitted = false
         this.showForm = true
         this.showMessage = false
+        this.success = false
         this.error = null
         this.$resetValidation()
       },
@@ -110,20 +123,27 @@
 
         if (this.$passwordResetValidation.valid) {
           this.error = null
+          resetPasswordConfirm({
+            token: this.payload.token,
+            uid: this.payload.uid,
+            password: this.payload.password,
+            confirm_password: this.payload.confirmPassword
+          })
+          .then(res => {
+            this.showForm = false
+            this.success = true
+          })
+          .catch(err => {
+            this.parseError(err)
+          })
         }
+      }
+    },
 
-        resetPasswordConfirm({
-          token: this.payload.token,
-          uid: this.payload.uid,
-          password: this.payload.password,
-          confirm_password: this.payload.confirmPassword
-        })
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => {
-          this.parseError(err)
-        })
+    computed: {
+      canSubmit () {
+        return this.$passwordResetValidation.valid &&
+               this.payload.password === this.payload.confirmPassword
       }
     },
 
