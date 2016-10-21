@@ -1,13 +1,21 @@
 <template>
-  <nav class="navbar navbar-fixed-top navbar-light bg-faded">
-    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapsing-navbar">
+  <nav
+    class="navbar navbar-fixed-top navbar-light bg-faded"
+     v-if="store.state.isAuthenticated"
+  >
+    <button
+      class="navbar-toggler hidden-sm-up"
+      type="button"
+      data-toggle="collapse"
+      data-target="#collapsing-navbar"
+    >
       &#9776;
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
       <a class="navbar-brand" v-link="{name: 'home'}">
         <logo></logo>
       </a>
-      <ul v-if="store.state.isAuthenticated" class="nav navbar-nav">
+      <ul class="nav navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="toggleSearch">Search</a>
         </li>
@@ -32,11 +40,6 @@
 
         <li class="nav-item pull-xs-right">
           <toggle-switch :checked.sync="store.state.isNaughtyMode"></toggle-switch>
-        </li>
-      </ul>
-      <ul v-else class="nav navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'register'}" href="#">Register</a>
         </li>
       </ul>
     </div>

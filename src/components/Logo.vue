@@ -1,5 +1,5 @@
 <template>
-    <svg width="152px" height="20px" viewBox="14 7 152 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg class="logo" width="152px" height="20px" viewBox="14 7 152 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
         <desc>Created with Sketch.</desc>
         <defs>

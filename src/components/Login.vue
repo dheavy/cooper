@@ -1,51 +1,57 @@
 <template>
-  <validator name="loginValidation">
-    <form novalidate class="col-sm-4 offset-md-4">
-      <h2>Log In</h2>
+  <section class="login-component">
+    <validator name="loginValidation">
+      <form novalidate class="col-sm-6 col-md-4 col-lg-4 offset-sm-3 offset-md-4">
+        <div class="alert alert-danger" v-if="error">{{error}}</div>
+        <div class="alert alert-danger" v-if="submitted && $loginValidation.username.required">Username is required.</div>
+        <div class="alert alert-danger" v-if="submitted && $loginValidation.username.minlength">Username is too short.</div>
+        <div class="alert alert-danger" v-if="submitted && $loginValidation.password.required">Password is required.</div>
+        <div class="alert alert-danger" v-if="submitted && $loginValidation.password.minlength">Password is too short.</div>
 
-      <div class="alert alert-danger" v-if="error">{{error}}</div>
-      <div class="alert alert-danger" v-if="submitted && $loginValidation.username.required">Username is required.</div>
-      <div class="alert alert-danger" v-if="submitted && $loginValidation.username.minlength">Username is too short.</div>
-      <div class="alert alert-danger" v-if="submitted && $loginValidation.password.required">Password is required.</div>
-      <div class="alert alert-danger" v-if="submitted && $loginValidation.password.minlength">Password is too short.</div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            v-model="credentials.username"
+            v-validate:username="{required: true, minlength: 3}"
+            v-on:keyup="resetValidation()"
+          >
+        </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          v-model="credentials.username"
-          v-validate:username="{required: true, minlength: 3}"
-          v-on:keyup="resetValidation()"
-        >
-      </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            v-model="credentials.password"
+            v-validate:password="{required: true, minlength: 8}"
+            v-on:keyup="resetValidation()"
+          >
+        </div>
 
-      <div class="form-group">
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="credentials.password"
-          v-validate:password="{required: true, minlength: 8}"
-          v-on:keyup="resetValidation()"
-        >
-      </div>
+        <div class="form-group">
+          <button
+            class="btn btn-primary col-sm-12 btn-login {{canLogin ? '' : 'disabled'}}"
+            @click.prevent="submit()"
+            :disabled="canLogin ? false : true"
+          >
+            Sign In
+          </button>
+        </div>
 
-      <div class="form-group">
-        <button class="btn btn-primary" @click.prevent="submit()">Log In</button>
-      </div>
-
-      <div class="form-group">
-        <a class="small" v-link="{name: 'password-reset'}">I forgot my username or password</a>
-      </div>
-    </form>
-  </validator>
-  <div class="form-group col-sm-4 offset-md-4">
-    <hr/>
-    <button class="btn btn-secondary" @click.prevent="fbAuth">
-      Sign in with Facebook
-    </button>
-  </div>
+        <div class="form-group">
+          <a class="small link-forgot col-sm-12" v-link="{name: 'password-reset'}">I forgot my username or password</a>
+        </div>
+      </form>
+    </validator>
+    <div class="form-group col-sm-6 col-md-4 col-lg-4 offset-sm-3 offset-md-4">
+      <hr/>
+      <button class="btn btn-secondary col-sm-12" @click.prevent="fbAuth">
+        Sign in with Facebook
+      </button>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -95,19 +101,43 @@
 
           auth
             .login(this.credentials, '/my')
-            .catch(err => this.parseError(err))
+            .catch(err => this.displayError(err))
 
           this.resetValidation()
         }
       },
 
-      parseError (err) {
+      displayError (err) {
         if (+err.status === 404 || +err.status === 400) {
           this.error = 'Incorrect username or password.'
         } else {
           this.error = 'Oops... something went wrong, please try again.'
         }
       }
+    },
+
+    computed: {
+      canLogin () {
+        return this.$loginValidation.valid
+      }
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .login-component {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .btn-login {
+    margin-top: 1px;
+  }
+
+  .link-forgot {
+    text-align: center;
+    margin-top: 1rem;
+  }
+</style>

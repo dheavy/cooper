@@ -2,12 +2,9 @@
   <modal-player
     v-show="store.player.isVisible"
   ></modal-player>
-
   <navigation></navigation>
-
   <search></search>
-
-  <div id="app" class="container">
+  <div id="app" class="container app-component">
     <router-view></router-view>
   </div>
 </template>
@@ -31,4 +28,9 @@
 
 <style lang="scss">
   @import '../assets/scss/app.scss';
+
+  .app-component {
+    height: 100%;
+    position: relative;
+  }
 </style>
