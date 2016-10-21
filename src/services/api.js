@@ -82,7 +82,7 @@ export const checkUsername = (username, fb = false) => {
 }
 
 export const login = credentials => {
-  return http(LOGIN_URL, postData(credentials))
+  return fetch(LOGIN_URL, postData(credentials))
 }
 
 export const fbAuth = token => {

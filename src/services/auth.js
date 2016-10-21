@@ -9,6 +9,11 @@ export default {
   login (credentials, redirect) {
     return login(credentials)
       .then(res => {
+        if (res.status === 400 || res.status === 404) {
+          const err = new Error()
+          err.status = res.status
+          throw err
+        }
         this.loginViaTokenAndUser(res.token, res.user, '/my')
         this.getCollections(res.user, res.token)
       })
