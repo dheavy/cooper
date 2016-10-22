@@ -44,7 +44,7 @@
   import FollowButton from './FollowButton'
   import {fetchUser} from '../services/api'
   import Collections from './collections'
-  import BlockButton from './BlockButton'
+  import ButtonBlock from './ButtonBlock'
   import Navigation from './Navigation'
   import Member from './Member'
   import store from '../store'
@@ -57,7 +57,7 @@
     name: 'Dashboard',
 
     components: {
-      Navigation, Member, Collections, FollowButton, BlockButton
+      Navigation, Member, Collections, FollowButton, ButtonBlock
     },
 
     data () {

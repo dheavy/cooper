@@ -59,7 +59,7 @@
   import DeleteCollection from './DeleteCollection'
   import {launchPlayer} from '../services/mediae'
   import FollowButton from './FollowButton'
-  import BlockButton from './BlockButton'
+  import ButtonBlock from './ButtonBlock'
   import store from '../store'
 
   export default {
@@ -68,7 +68,7 @@
     props: ['collection', 'areMyOwn', 'otherCollections'],
 
     components: {
-      DeleteCollection, FollowButton, BlockButton
+      DeleteCollection, FollowButton, ButtonBlock
     },
 
     data () {
