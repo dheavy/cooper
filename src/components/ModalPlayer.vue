@@ -1,5 +1,9 @@
 <template>
-  <section class="modal-player-component" v-if="auth.isAuthenticated()">
+  <section
+    class="modal-player-component"
+    v-if="auth.isAuthenticated()"
+    v-show="store.player.isVisible"
+  >
     <div name="player-modal" class="modal player-modal {{store.player.isTVMode ? 'fullscreen' : ''}}" rel="close"  @click.stop="hideModal">
       <div class="modal-dialog">
         <div class="modal-content">

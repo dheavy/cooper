@@ -52,9 +52,9 @@
       </button>
     </div>
     <div class="form-group col-sm-6 col-md-4 col-lg-4 offset-sm-3 offset-md-4">
-      <button class="btn btn-secondary col-sm-12" @click.prevent="fbAuth">
+      <a class="btn btn-secondary col-sm-12" v-link="{name: 'register'}">
         Register
-      </button>
+      </a>
     </div>
   </section>
 </template>

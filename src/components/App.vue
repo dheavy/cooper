@@ -1,7 +1,5 @@
 <template>
-  <modal-player
-    v-show="store.player.isVisible"
-  ></modal-player>
+  <modal-player></modal-player>
   <navigation></navigation>
   <search></search>
   <div id="app" class="container app-component">
