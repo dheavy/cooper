@@ -46,9 +46,14 @@
       </form>
     </validator>
     <div class="form-group col-sm-6 col-md-4 col-lg-4 offset-sm-3 offset-md-4">
-      <hr/>
+      <hr>
       <button class="btn btn-secondary col-sm-12" @click.prevent="fbAuth">
         Sign in with Facebook
+      </button>
+    </div>
+    <div class="form-group col-sm-6 col-md-4 col-lg-4 offset-sm-3 offset-md-4">
+      <button class="btn btn-secondary col-sm-12" @click.prevent="fbAuth">
+        Register
       </button>
     </div>
   </section>
@@ -139,5 +144,9 @@
   .link-forgot {
     text-align: center;
     margin-top: 1rem;
+  }
+
+  hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
   }
 </style>

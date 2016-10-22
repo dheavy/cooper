@@ -1,5 +1,9 @@
 <template>
-  <div class="overlay" v-show="store.search.isOpened">
+  <div
+    class="search-component"
+    v-if="auth.isAuthenticated()"
+    v-show="store.search.isOpened"
+  >
     <div class="container">
       <header class="header container">
         <button type="button" class="close" @click.stop="closeSearchPanel">
@@ -31,6 +35,7 @@
 <script>
   import {search} from '../services/api'
   import {parseError} from '../mixins'
+  import auth from '../services/auth'
   import store from '../store'
   import Media from './media'
 
@@ -43,6 +48,7 @@
 
     data () {
       return {
+        auth,
         store,
         error: null,
         message: null,
@@ -108,7 +114,7 @@
 </script>
 
 <style type="scss" scoped>
-  .overlay {
+  .search-component {
     background: rgba(0, 0, 0, 0.8);
     width: 100vw;
     height: 100vh;

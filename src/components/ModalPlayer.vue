@@ -1,23 +1,26 @@
 <template>
-  <div name="player-modal" class="modal player-modal {{store.player.isTVMode ? 'fullscreen' : ''}}" rel="close"  @click.stop="hideModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button" class="close" @click.stop="exitPlayer">
-            <span rel="close">&times;</span>
-          </button>
-          <player
-            :tv-mode="store.player.isTVMode"
-            :exit="exitPlayer"
-          ></player>
+  <section class="modal-player-component" v-if="auth.isAuthenticated()">
+    <div name="player-modal" class="modal player-modal {{store.player.isTVMode ? 'fullscreen' : ''}}" rel="close"  @click.stop="hideModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="close" @click.stop="exitPlayer">
+              <span rel="close">&times;</span>
+            </button>
+            <player
+              :tv-mode="store.player.isTVMode"
+              :exit="exitPlayer"
+            ></player>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
   import {exitPlayer} from '../services/mediae'
+  import auth from '../services/auth'
   import Player from './Player'
   import store from '../store'
 
@@ -27,7 +30,7 @@
     components: {Player},
 
     data () {
-      return {store}
+      return {store, auth}
     },
 
     ready () {

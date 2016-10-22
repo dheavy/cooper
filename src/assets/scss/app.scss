@@ -23,6 +23,7 @@ body {
 .form-control {
   border-radius: 1.5rem;
   padding: 0.7rem 1rem;
+  box-shadow: 0px 0px 0px 1px $color-light-lavender inset;
 
   &:focus {
     color: #55595c;
@@ -35,4 +36,13 @@ body {
 .btn {
   border-radius: 1.5rem;
   padding: 0.7rem 1rem;
+  border: none;
+}
+
+.btn-primary {
+  @include btn-primary();
+}
+
+.btn-secondary {
+  @include btn-secondary()
 }

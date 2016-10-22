@@ -1,31 +1,35 @@
 <template>
-  <div class="site-wrapper">
-    <div class="site-wrapper-inner">
+  <fullscreen-video-background></fullscreen-video-background>
+  <section class="home-component">
+    <div class="wrapper">
       <div class="cover-container">
-        <logo></logo>
+        <logo size="large"></logo>
+        <p>Binge watching made easy</p>
+        <hr class="spacer">
         <login></login>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
+  import FullscreenVideoBackground from './FullscreenVideoBackground'
   import Login from './Login'
   import Logo from './Logo'
 
   export default {
     name: 'Home',
 
-    components: {Login, Logo}
+    components: {
+      FullscreenVideoBackground,
+      Login,
+      Logo
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-  .logo {
-    margin-bottom: 1rem;
-  }
-
-  .site-wrapper {
+  .home-component {
     margin-top: -70px;
     display: table;
     width: 100%;
@@ -34,7 +38,7 @@
     text-align: center;
   }
 
-  .site-wrapper-inner {
+  .wrapper {
     display: table-cell;
     vertical-align: middle;
     height: auto;
@@ -47,4 +51,12 @@
     height: auto;
   }
 
+  .spacer {
+    visibility: hidden;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #8fa3d2;
+  }
 </style>

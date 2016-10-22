@@ -4,6 +4,7 @@
 $color-mp-blue: #648be3;
 $color-mp-blue-hover: #253961;
 $color-light-lavender: #DBE1FF;
+$color-light-lavender-hover: #adb2cc;
 $color-light-blue: #8cb7ff;
 $color-dark-blue: #3a5083;
 
@@ -89,5 +90,44 @@ $retina-suffix: '@2x';
     height: $height;
     margin-top: -($height / 2);
     transform: translateX(-50%);
+  }
+}
+
+/**
+ * Elements
+ */
+@mixin transition($prop) {
+  transition: $prop 0.25s ease-out;
+}
+
+@mixin btn-lavender() {
+  background-color: $color-mp-blue;
+}
+
+@mixin btn-lavender-hover() {
+  background-color: $color-mp-blue-hover;
+}
+
+@mixin btn-light-lavender() {
+  background-color: $color-light-lavender;
+}
+
+@mixin btn-light-lavender-hover() {
+  background-color: $color-light-lavender-hover;
+}
+
+@mixin btn-primary() {
+  @include transition(background-color)
+  @include btn-lavender()
+  &:hover {
+    @include btn-lavender-hover()
+  }
+}
+
+@mixin btn-secondary() {
+  @include transition(background-color)
+  @include btn-light-lavender()
+  &:hover {
+    @include btn-light-lavender-hover()
   }
 }

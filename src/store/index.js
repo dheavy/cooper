@@ -5,6 +5,9 @@ const store = new Vue({
 
   data () {
     return {
+      device: {
+        isMobile: false
+      },
       search: {
         isOpened: false
       },
