@@ -14,8 +14,12 @@ export default {
           err.status = res.status
           throw err
         }
-        this.loginViaTokenAndUser(res.token, res.user, '/my')
-        this.getCollections(res.user, res.token)
+
+        res.json().then(res => {
+          console.log(res)
+          this.loginViaTokenAndUser(res.token, res.user, redirect)
+          this.getCollections(res.user, res.token)
+        })
       })
   },
 
