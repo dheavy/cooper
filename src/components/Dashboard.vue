@@ -16,19 +16,19 @@
       >
       </member>
 
-      <follow-button
+      <button-follow
         css-classes="btn btn-secondary"
         :store="store"
         :other-user="shownUser"
       >
-      </follow-button>
+      </button-follow>
 
-      <block-button
+      <button-block
         css-classes="btn btn-secondary"
         :store="store"
         :other-user="shownUser"
       >
-      </block-button>
+      </button-block>
 
       <collections
         :user-id="shownUser.id"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import FollowButton from './FollowButton'
+  import ButtonFollow from './ButtonFollow'
   import {fetchUser} from '../services/api'
   import Collections from './collections'
   import ButtonBlock from './ButtonBlock'
@@ -57,7 +57,7 @@
     name: 'Dashboard',
 
     components: {
-      Navigation, Member, Collections, FollowButton, ButtonBlock
+      Navigation, Member, Collections, ButtonFollow, ButtonBlock
     },
 
     data () {

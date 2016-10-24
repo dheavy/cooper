@@ -18,8 +18,8 @@
       <button @click="setDeletion">!</button>
     </div>
     <div class="tools" v-else>
-      <follow-button :store="store" :collection="collection"></follow-button>
-      <block-button :store="store" :collection="collection"></block-button>
+      <button-follow :store="store" :collection="collection"></button-follow>
+      <button-block :store="store" :collection="collection"></button-block>
     </div>
 
     <div class="name">
@@ -58,7 +58,7 @@
     deleteCollection as deleteCollectionCommand} from '../services/api'
   import DeleteCollection from './DeleteCollection'
   import {launchPlayer} from '../services/mediae'
-  import FollowButton from './FollowButton'
+  import ButtonFollow from './ButtonFollow'
   import ButtonBlock from './ButtonBlock'
   import store from '../store'
 
@@ -68,7 +68,7 @@
     props: ['collection', 'areMyOwn', 'otherCollections'],
 
     components: {
-      DeleteCollection, FollowButton, ButtonBlock
+      DeleteCollection, ButtonFollow, ButtonBlock
     },
 
     data () {

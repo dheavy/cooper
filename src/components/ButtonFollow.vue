@@ -13,6 +13,8 @@
   import {follow, unfollow} from '../services/api'
 
   export default {
+    name: 'ButtonFollow',
+
     props: ['cssClasses', 'otherUser', 'collection', 'store'],
 
     computed: {

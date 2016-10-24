@@ -14,7 +14,7 @@
             <tr v-for="user in usersList">
               <td><a v-link="{name: 'users', params: {uid: user.id}}">{{user.username}}</a></td>
               <td>
-                <follow-button css-classes="btn btn-sm btn-secondary" :store="store" :other-user="user"></block-button>
+                <button-follow css-classes="btn btn-sm btn-secondary" :store="store" :other-user="user"></button-block>
               </td>
             </tr>
           </tbody>
@@ -26,14 +26,14 @@
 
 <script>
   import {userToUserRelationships} from '../services/api'
-  import FollowButton from './FollowButton'
+  import ButtonFollow from './ButtonFollow'
   import store from '../store'
 
   export default {
     name: 'Follow',
 
     components: {
-      FollowButton
+      ButtonFollow
     },
 
     data () {
