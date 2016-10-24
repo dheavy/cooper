@@ -22,7 +22,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'create-video'}">Add video</a>
+          <a class="nav-link" v-link="{name: 'create-video'}">
+            <button-add-new-media></button-add-new-media>
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'feed-public'}">Feed</a>
@@ -49,6 +51,7 @@
 </template>
 
 <script>
+  import ButtonAddNewMedia from './ButtonAddNewMedia'
   import ButtonSearch from './ButtonSearch'
   import ToggleSwitch from './ToggleSwitch'
   import store from '../store'
@@ -57,7 +60,12 @@
   export default {
     name: 'Navigation',
 
-    components: {ButtonSearch, ToggleSwitch, Logo},
+    components: {
+      ButtonSearch,
+      ButtonAddNewMedia,
+      ToggleSwitch,
+      Logo
+    },
 
     data () {
       return {store}
@@ -79,5 +87,13 @@
     @include border-color-light-lavender();
     border-bottom-width: 1px;
     border-bottom-style: solid;
+  }
+
+  .nav-link {
+    padding: 0;
+  }
+
+  .navbar-brand {
+    margin-top: 8px;
   }
 </style>
