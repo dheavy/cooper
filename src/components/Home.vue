@@ -4,16 +4,18 @@
     <div class="wrapper">
       <div class="cover-container">
         <logo size="large"></logo>
-        <p>Binge watching made easy</p>
+        <p>Bookmark your favorite videos on the web,<br>watch everyone else's.</p>
         <hr class="spacer">
         <login></login>
       </div>
     </div>
   </section>
+  <footer-component></footer-component>
 </template>
 
 <script>
   import FullscreenVideoBackground from './FullscreenVideoBackground'
+  import FooterComponent from './FooterComponent'
   import Login from './Login'
   import Logo from './Logo'
 
@@ -22,6 +24,7 @@
 
     components: {
       FullscreenVideoBackground,
+      FooterComponent,
       Login,
       Logo
     }
