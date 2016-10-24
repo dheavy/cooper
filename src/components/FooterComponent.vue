@@ -1,7 +1,10 @@
 <template>
   <section class="footer-component">
     <footer class="small col-sm-4 offset-sm-4">
-      <a href="#">About</a> • <a href="#">Legal notice</a> • <a href="#">Contact</a>
+      <a href="#">About MyPleasure</a> •
+      <a href="#">Blog</a> • 
+      <a href="#">Terms of services</a> •
+      <a href="#">Contact</a>
     </footer>
   </section>
 </template>
@@ -21,7 +24,7 @@
       text-decoration: none;
       color: white;
 
-      margin: 0 1rem;
+      margin: 0 0.5rem;
     }
   }
 </style>
