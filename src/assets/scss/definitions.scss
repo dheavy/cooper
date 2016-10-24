@@ -7,6 +7,19 @@ $color-light-lavender: #DBE1FF;
 $color-light-lavender-hover: #adb2cc;
 $color-light-blue: #8cb7ff;
 $color-dark-blue: #3a5083;
+$color-background: #F8F8FC;
+
+@mixin color-dark-blue() {
+  color: $color-dark-blue;
+}
+
+@mixin background-color-light() {
+  background-color: $color-background;
+}
+
+@mixin border-color-light-lavender() {
+  border-color: $color-light-lavender;
+}
 
 /**
  *  Typography

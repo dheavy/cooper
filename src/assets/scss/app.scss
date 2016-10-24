@@ -13,7 +13,8 @@ body {
   height: calc(100% - 70px);
   @include font-asap()
   @include font-size(14px)
-  color: $color-dark-blue;
+  @include color-dark-blue();
+  @include background-color-light();
 }
 
 .form-group {

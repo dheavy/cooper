@@ -1,5 +1,5 @@
 <template>
-  <div
+  <section
     class="search-component"
     v-if="auth.isAuthenticated()"
     v-show="store.search.isOpened"
@@ -29,7 +29,7 @@
         </div>
       </main>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

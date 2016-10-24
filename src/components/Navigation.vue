@@ -13,11 +13,13 @@
     </button>
     <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
       <a class="navbar-brand" v-link="{name: 'home'}">
-        <logo></logo>
+        <logo size="small"></logo>
       </a>
       <ul class="nav navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#" @click.prevent="toggleSearch">Search</a>
+          <a class="nav-link" href="#" @click.prevent="toggleSearch">
+            <button-search></button-search>
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'create-video'}">Add video</a>
@@ -47,6 +49,7 @@
 </template>
 
 <script>
+  import ButtonSearch from './ButtonSearch'
   import ToggleSwitch from './ToggleSwitch'
   import store from '../store'
   import Logo from './Logo'
@@ -54,7 +57,7 @@
   export default {
     name: 'Navigation',
 
-    components: {ToggleSwitch, Logo},
+    components: {ButtonSearch, ToggleSwitch, Logo},
 
     data () {
       return {store}
@@ -67,3 +70,14 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  @import '../assets/scss/definitions';
+
+  nav {
+    @include background-color-light();
+    @include border-color-light-lavender();
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+</style>

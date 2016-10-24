@@ -1,10 +1,10 @@
 <template>
-  <modal-player></modal-player>
   <navigation></navigation>
+  <modal-player></modal-player>
   <search></search>
-  <div id="app" class="container app-component">
+  <section id="app" class="container app-component">
     <router-view></router-view>
-  </div>
+  </section>
 </template>
 
 <script>
