@@ -26,25 +26,15 @@
             <button-add-new-media></button-add-new-media>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'feed-public'}">Feed</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'home'}">My collections</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'settings'}">Settings</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'blocked'}">Blocked</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" v-link="{name: 'logout'}">Log out</a>
+
+        <li class="nav-item naughty-switch pull-xs-right">
+          <toggle-switch
+            :checked.sync="store.state.isNaughtyMode"
+            naughty-toggle="true"
+          ></toggle-switch>
         </li>
 
-        <li class="nav-item pull-xs-right">
-          <toggle-switch :checked.sync="store.state.isNaughtyMode"></toggle-switch>
-        </li>
+        <user-menu></user-menu>
       </ul>
     </div>
   </nav>
@@ -54,6 +44,7 @@
   import ButtonAddNewMedia from './ButtonAddNewMedia'
   import ButtonSearch from './ButtonSearch'
   import ToggleSwitch from './ToggleSwitch'
+  import UserMenu from './UserMenu'
   import store from '../store'
   import Logo from './Logo'
 
@@ -64,6 +55,7 @@
       ButtonSearch,
       ButtonAddNewMedia,
       ToggleSwitch,
+      UserMenu,
       Logo
     },
 
@@ -95,5 +87,9 @@
 
   .navbar-brand {
     margin-top: 8px;
+  }
+
+  .naughty-switch {
+    margin-top: 7px;
   }
 </style>

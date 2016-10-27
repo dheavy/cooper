@@ -8,9 +8,14 @@ $color-light-lavender-hover: #adb2cc;
 $color-light-blue: #8cb7ff;
 $color-dark-blue: #3a5083;
 $color-background: #F8F8FC;
+$color-naughty-red: #CD265C;
 
 @mixin color-dark-blue() {
   color: $color-dark-blue;
+}
+
+@mixin color-light-lavender() {
+  color: $color-light-lavender;
 }
 
 @mixin background-color-light() {

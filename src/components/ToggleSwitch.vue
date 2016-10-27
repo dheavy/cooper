@@ -1,6 +1,11 @@
 <template>
   <div class="switch" @click="toggleCheck">
-    <input name="toggle" class="toggle toggle-round-flat" type="checkbox" :checked="checked">
+    <input
+      name="toggle"
+      class="toggle toggle-round-flat {{naughtyToggle ? 'naughty-toggle' : ''}}"
+      type="checkbox"
+      :checked="checked"
+    >
     <label for="toggle"></label>
   </div>
 </template>
@@ -9,7 +14,7 @@
   export default {
     name: 'ToggleSwitch',
 
-    props: ['checked'],
+    props: ['checked', 'naughtyToggle'],
 
     methods: {
       toggleCheck () {
@@ -20,12 +25,14 @@
 </script>
 
 <style lang="scss" scoped>
-  $width: 60px;
-  $height: 30px;
+  @import '../assets/scss/app.scss';
+
+  $width: 66px;
+  $height: 33px;
   $padding: 1px;
-  $radius: 30px;
+  $radius: 33px;
   $transition-timing: 0.4s;
-  $smaller-radius: 26px;
+  $smaller-radius: 28px;
 
   .toggle {
     position: absolute;
@@ -43,7 +50,7 @@
     padding: $padding;
     width: $width;
     height: $height;
-    background-color: #dddddd;
+    background-color: #DDDDDD;
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;
     -ms-border-radius: $radius;
@@ -53,6 +60,10 @@
     -moz-transition: background $transition-timing;
     -o-transition: background $transition-timing;
     transition: background $transition-timing;
+  }
+
+  input.toggle-round-flat + label {
+    background-color: $color-mp-blue;
   }
 
   input.toggle-round-flat + label:before, input.toggle-round-flat + label:after {
@@ -83,7 +94,7 @@
     left: $padding * 2;
     bottom: $padding * 2;
     width: $smaller-radius;
-    background-color: #dddddd;
+    background-color: #DDDDDD;
     -webkit-border-radius: $smaller-radius;
     -moz-border-radius: $smaller-radius;
     -ms-border-radius: $smaller-radius;
@@ -95,12 +106,25 @@
     transition: margin $transition-timing, background $transition-timing;
   }
 
+  input.naughty-toggle.toggle-round-flat + label:after {
+    background-color: $color-mp-blue;
+  }
+
   input.toggle-round-flat:checked + label {
-    background-color: #639bb5;
+    background-color: $color-mp-blue;
   }
 
   input.toggle-round-flat:checked + label:after {
     margin-left: $radius;
-    background-color: #639bb5;
+    background-color: $color-mp-blue;
+  }
+
+  input.naughty-toggle.toggle-round-flat:checked + label {
+    background-color: $color-naughty-red;
+  }
+
+  input.naughty-toggle.toggle-round-flat:checked + label:after {
+    margin-left: $radius;
+    background-color: $color-naughty-red;
   }
 </style>
