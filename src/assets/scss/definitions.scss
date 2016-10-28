@@ -7,6 +7,7 @@ $color-light-lavender: #DBE1FF;
 $color-light-lavender-hover: #adb2cc;
 $color-light-blue: #8cb7ff;
 $color-dark-blue: #3a5083;
+$color-dark-blue-hover: #111111;
 $color-background: #F8F8FC;
 $color-naughty-red: #CD265C;
 
@@ -24,6 +25,14 @@ $color-naughty-red: #CD265C;
 
 @mixin border-color-light-lavender() {
   border-color: $color-light-lavender;
+}
+
+@mixin hyperlink() {
+  color: $color-dark-blue;
+
+  &:visited, &:active, &:hover {
+    color: $color-dark-blue-hover;
+  }
 }
 
 /**

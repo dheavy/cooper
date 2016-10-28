@@ -6,27 +6,40 @@
         <small>member since {{dateJoined}}</small>
       </div>
       <div class="col-sm-4">
-        <p><a v-if="+id === currentUserId" v-link="{path: '/users/' + id + '/followed'}">{{following}} followed</a></p>
+        <p class="follow-data">
+          <a
+            v-if="+id === currentUserId"
+            v-link="{path: '/users/' + id + '/followed'}"
+          >
+            <span class="link-number">{{following}}</span><br>
+            <span>followed</span>
+          </a>
+        </p>
       </div>
       <div class="col-sm-4">
-        <p><a v-link="{path: '/users/' + id + '/followers'}">{{followers}} followers</a></p>
+        <p class="follow-data">
+          <a
+            v-link="{path: '/users/' + id + '/followers'}"
+          >
+            <span class="link-number">{{followers}}</span><br>
+            <span>followers</span>
+          </a>
+        </p>
       </div>
     </header>
   </section>
-  <button
-    class="btn btn-primary"
-    @click.prevent="createNewCollectionHandler"
-    v-if="canCreateCollection"
-  >
-    Create a new collection
-  </button>
+  <button-create-new-collection
+    can-create-collection="canCreateCollection"
+  ></button-create-new-collection>
 </template>
 
 <script>
-  import {router} from '../main'
+  import ButtonCreateNewCollection from './ButtonCreateNewCollection'
 
   export default {
     name: 'Member',
+
+    components: {ButtonCreateNewCollection},
 
     props: [
       'id',
@@ -36,18 +49,36 @@
       'following',
       'followers',
       'canCreateCollection'
-    ],
-
-    methods: {
-      createNewCollectionHandler () {
-        router.go({name: 'create-collection'})
-      }
-    }
+    ]
   }
 </script>
 
 <style lang="scss" scoped>
+  @import '../assets/scss/app.scss';
+
+  h1 {
+    font-weight: bold;
+  }
+
+  small {
+    font-size: 14px;
+  }
+
   .member {
     margin-bottom: 2em;
+  }
+
+  .follow-data {
+    margin-top: 17px;
+  }
+
+  .link-number {
+    @include font-size(24px);
+    font-weight: bold;
+  }
+
+  a, a:visited, a:active, a:hover {
+    color: $color-dark-blue-hover;
+    text-decoration: none;
   }
 </style>

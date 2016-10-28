@@ -17,6 +17,10 @@ body {
   @include background-color-light();
 }
 
+a, a:visited, a:active, a:hover {
+  @include hyperlink();
+}
+
 .navbar {
   height: 60px;
 }
