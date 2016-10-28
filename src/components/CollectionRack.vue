@@ -35,7 +35,10 @@
           <div class="message">There's nothing here.<br> Yet.</div><br>
           <a v-if="areMyOwn" v-link="{name: 'create-video'}">Add a video</a></p>
         </div>
-        <a @click.prevent="openPlayer(collection.videos[$index], collection.videos, matchViewMode(collection, $index))">
+        <a
+          @click.prevent="openPlayer(collection.videos[$index], collection.videos, matchViewMode(collection, $index))"
+          class="{{matchViewMode(collection, $index) ? 'clickable' : ''}}"
+        >
           <img
             v-if="matchViewMode(collection, $index)"
             :src="collection.videos[$index].poster"
@@ -159,6 +162,10 @@
     width: 100%;
     height: 100%;
     display: block;
+  }
+
+  .clickable {
+    cursor: pointer;
   }
 
   .delete-collection {

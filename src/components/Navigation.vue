@@ -52,9 +52,9 @@
     name: 'Navigation',
 
     components: {
-      ButtonSearch,
       ButtonAddNewMedia,
       ToggleSwitch,
+      ButtonSearch,
       UserMenu,
       Logo
     },
