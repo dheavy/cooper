@@ -1,19 +1,20 @@
 import {
-  LOGIN_URL,
-  REGISTER_URL,
-  CHECK_USERNAME_URL,
-  FACEBOOK_URL,
+  PASSWORD_RESET_CONFIRM_URL,
   FACEBOOK_REGISTER_URL,
-  USERS_URL,
-  COLLECTIONS_URL,
-  VIDEOS_URL,
-  PASSWORD_EDIT_URL,
-  EMAIL_EDIT_URL,
   CURATION_ACQUIRE_URL,
-  FEED_URL,
-  SEARCH_URL,
   PASSWORD_RESET_URL,
-  PASSWORD_RESET_CONFIRM_URL
+  CHECK_USERNAME_URL,
+  PASSWORD_EDIT_URL,
+  NOTIFICATIONS_URL,
+  COLLECTIONS_URL,
+  EMAIL_EDIT_URL,
+  FACEBOOK_URL,
+  REGISTER_URL,
+  SEARCH_URL,
+  VIDEOS_URL,
+  USERS_URL,
+  LOGIN_URL,
+  FEED_URL
 } from '../constants/api'
 
 import {
@@ -123,6 +124,10 @@ export const fetchCollections = (uid, token, bustCache = false) => {
   } else {
     return Promise.resolve({payload: cached})
   }
+}
+
+export const fetchNotifications = (uid, token) => {
+  return http(`${NOTIFICATIONS_URL}/${uid}`, getData(token))
 }
 
 export const createCollection = (payload, token) => {

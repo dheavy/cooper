@@ -1,32 +1,42 @@
 <template>
-  <li class="usermenu-component nav-item pull-xs-right btn-group {{isUserMenuOpen || isNotificationsOpen ? 'open' : ''}}">
-    <button
-      class="btn btn-notifications"
-      type="button"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="{{isNotificationsOpen}}"
-      @click="toggleNotificationsMenu"
-    >
-      <img src="http://lorempixel.com/34/34/people/" width="34" height="34">
-      {{username}} <span class="separator">|</span>
-    </button>
+  <li class="usermenu-component nav-item pull-xs-right">
+    <div class="btn-group btn-group-notifications {{isNotificationsOpen ? 'open' : ''}}">
+      <button
+        class="btn btn-notifications"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="{{isNotificationsOpen}}"
+      >
+        <img src="http://lorempixel.com/34/34/people/" width="34" height="34">
+        {{username}} <span class="separator">|</span>
+      </button>
+      <div class="dropdown-menu">
+        <div class="dropdown-item">Feed</div>
+        <div class="dropdown-item">My collections</div>
+        <div class="dropdown-item">Settings</div>
+        <div class="dropdown-item">Blocked</div>
+        <div class="dropdown-item">Log out</div>
+      </div>
+    </div>
 
-    <button
-      class="btn btn-user-menu dropdown-toggle"
-      type="button"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="{{isUserMenuOpen}}"
-      @click="toggleUserMenu"
-    >
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" v-link="{name: 'feed-public'}">Feed</a>
-      <a class="dropdown-item" v-link="{name: 'home'}">My collections</a>
-      <a class="dropdown-item" v-link="{name: 'settings'}">Settings</a>
-      <a class="dropdown-item" v-link="{name: 'blocked'}">Blocked</a>
-      <a class="dropdown-item" v-link="{name: 'logout'}">Log out</a>
+    <div class="btn-group btn-group-user-menu {{isUserMenuOpen ? 'open' : ''}}">
+      <button
+        class="btn btn-user-menu dropdown-toggle"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="{{isUserMenuOpen}}"
+        @click="toggleUserMenu"
+      >
+      </button>
+      <ul class="dropdown-menu">
+        <a class="dropdown-item" v-link="{name: 'feed-public'}">Feed</a>
+        <a class="dropdown-item" v-link="{name: 'home'}">My collections</a>
+        <a class="dropdown-item" v-link="{name: 'settings'}">Settings</a>
+        <a class="dropdown-item" v-link="{name: 'blocked'}">Blocked</a>
+        <a class="dropdown-item" v-link="{name: 'logout'}">Log out</a>
+      </div>
     </div>
   </li>
 </template>
@@ -48,10 +58,13 @@
     methods: {
       toggleUserMenu () {
         this.isUserMenuOpen = !this.isUserMenuOpen
+        this.isNotificationsOpen = false
       },
 
+      // TODO: Implement notifications
       toggleNotificationsMenu () {
-
+        this.isNotificationsOpen = !this.isNotificationsOpen
+        this.isUserMenuOpen = false
       }
     },
 
@@ -92,12 +105,29 @@
     }
 
     .btn-user-menu {
-      top: 6px;
+      top: -3px;
+    }
+
+    .btn-group-user-menu {
+      .dropdown-menu {
+        left: -67px;
+        top: 25px;
+      }
+    }
+
+    .btn-notifications {
+      outline: none;
+      outline-offset: 0;
+    }
+
+    .btn-group-notifications {
+      .dropdown-menu {
+        left: -30px;
+      }
     }
 
     .dropdown-menu {
       border: none;
-      left: 22px;
       margin-top: 10px;
       @include font-size(13px);
       @include prefix(box-shadow, 0px 0px 10px 0px rgba(0, 0, 0, 0.1));

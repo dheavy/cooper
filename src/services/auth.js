@@ -1,4 +1,4 @@
-import {login, fetchCollections} from './api'
+import {login, fetchCollections, fetchNotifications} from './api'
 import {router} from '../main'
 import store from '../store'
 import Vue from 'vue'
@@ -16,9 +16,9 @@ export default {
         }
 
         res.json().then(res => {
-          console.log(res)
           this.loginViaTokenAndUser(res.token, res.user, redirect)
           this.getCollections(res.user, res.token)
+          this.getNotifications(res.user, res.token)
         })
       })
   },
@@ -30,9 +30,17 @@ export default {
     redirect ? router.go(redirect) : void (0)
   },
 
-  // Fetch and cache user's collections
+  // Fetch and cache user's collections.
   getCollections (user, token) {
     fetchCollections(user.id, token)
+      .catch(err => {
+        console.log(err)
+      })
+  },
+
+  // Fetch and cache user's notifications.
+  getNotifications (user, token) {
+    fetchNotifications(user.id, token)
       .catch(err => {
         console.log(err)
       })
