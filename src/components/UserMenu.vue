@@ -1,5 +1,5 @@
 <template>
-  <li class="usermenu-component nav-item pull-xs-right">
+  <li name="usermenu-component" class="usermenu-component nav-item pull-xs-right">
     <div class="btn-group btn-group-notifications {{isNotificationsOpen ? 'open' : ''}}">
       <button
         class="btn btn-notifications"
@@ -59,12 +59,38 @@
       toggleUserMenu () {
         this.isUserMenuOpen = !this.isUserMenuOpen
         this.isNotificationsOpen = false
+
+        setTimeout(() => {
+          this.isUserMenuOpen
+          ? this.addListenersForClosing(this.monitorToggleUserMenu)
+          : this.removeListenersForClosing(this.monitorToggleUserMenu)
+        }, 500)
       },
 
       // TODO: Implement notifications
       toggleNotificationsMenu () {
         this.isNotificationsOpen = !this.isNotificationsOpen
         this.isUserMenuOpen = false
+
+        this.isNotificationsOpen
+        ? this.addListenersForClosing(this.monitorToggleNotificationsMenu)
+        : this.removeListenersForClosing(this.monitorToggleNotificationsMenu)
+      },
+
+      monitorToggleUserMenu (e) {
+        if (e.target.getAttribute('name') !== 'usermenu-component') {
+          this.toggleUserMenu()
+        }
+      },
+
+      addListenersForClosing (fn) {
+        window.addEventListener('click', fn)
+        window.addEventListener('touchstart', fn)
+      },
+
+      removeListenersForClosing (fn) {
+        window.removeEventListener('click', fn)
+        window.removeEventListener('touchstart', fn)
       }
     },
 
