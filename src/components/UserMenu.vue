@@ -1,15 +1,25 @@
 <template>
-  <li class="usermenu-component nav-item pull-xs-right btn-group {{isOpen ? 'open' : ''}}">
+  <li class="usermenu-component nav-item pull-xs-right btn-group {{isUserMenuOpen || isNotificationsOpen ? 'open' : ''}}">
+    <button
+      class="btn btn-notifications"
+      type="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="{{isNotificationsOpen}}"
+      @click="toggleNotificationsMenu"
+    >
+      <img src="http://lorempixel.com/34/34/people/" width="34" height="34">
+      {{username}} <span class="separator">|</span>
+    </button>
+
     <button
       class="btn btn-user-menu dropdown-toggle"
       type="button"
       data-toggle="dropdown"
       aria-haspopup="true"
-      aria-expanded="{{isOpen}}"
-      @click="toggleOpen"
+      aria-expanded="{{isUserMenuOpen}}"
+      @click="toggleUserMenu"
     >
-      <img src="http://lorempixel.com/34/34/people/" width="34" height="34">
-      {{username}} <span class="separator">|</span>
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" v-link="{name: 'feed-public'}">Feed</a>
@@ -30,13 +40,18 @@
     data () {
       return {
         store,
-        isOpen: false
+        isUserMenuOpen: false,
+        isNotificationsOpen: false
       }
     },
 
     methods: {
-      toggleOpen () {
-        this.isOpen = !this.isOpen
+      toggleUserMenu () {
+        this.isUserMenuOpen = !this.isUserMenuOpen
+      },
+
+      toggleNotificationsMenu () {
+
       }
     },
 
@@ -69,15 +84,20 @@
       @include color-light-lavender();
     }
 
-    .btn-user-menu {
+    .btn-user-menu, .btn-notifications {
       padding: 0;
       background: transparent;
       @include font-size(14px)
       @include color-dark-blue();
     }
 
+    .btn-user-menu {
+      top: 6px;
+    }
+
     .dropdown-menu {
       border: none;
+      left: 22px;
       margin-top: 10px;
       @include font-size(13px);
       @include prefix(box-shadow, 0px 0px 10px 0px rgba(0, 0, 0, 0.1));
