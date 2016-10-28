@@ -27,14 +27,6 @@ $color-naughty-red: #CD265C;
   border-color: $color-light-lavender;
 }
 
-@mixin hyperlink() {
-  color: $color-dark-blue;
-
-  &:visited, &:active, &:hover {
-    color: $color-dark-blue-hover;
-  }
-}
-
 /**
  *  Typography
  */

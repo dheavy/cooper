@@ -65,11 +65,11 @@
   }
 
   .member {
-    margin-bottom: 2em;
+    margin-bottom: 0.5em;
   }
 
   .follow-data {
-    margin-top: 17px;
+    margin-top: 15px;
   }
 
   .link-number {
@@ -77,8 +77,12 @@
     font-weight: bold;
   }
 
-  a, a:visited, a:active, a:hover {
-    color: $color-dark-blue-hover;
+  a, a:visited, a:active {
+    color: $color-dark-blue;
+  }
+
+  a:hover {
+    color: $color-dark-blue;
     text-decoration: none;
   }
 </style>

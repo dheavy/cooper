@@ -17,8 +17,12 @@ body {
   @include background-color-light();
 }
 
-a, a:visited, a:active, a:hover {
-  @include hyperlink();
+a, a:visited, a:active {
+  color: $color-dark-blue;
+}
+
+a:hover {
+  color: $color-dark-blue-hover;
 }
 
 .navbar {

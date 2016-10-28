@@ -30,14 +30,14 @@
     </div>
 
     <article class="rack" v-for="n in 10 | orderBy 'created_at' -1">
-      <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode ? '' : 'empty'}}">
+      <div class="{{$index === 0 ? 'cover' : 'thumb thumb-' + $index}} {{matchViewMode(collection, $index) ? '' : 'empty'}}">
         <div v-if="collection.videos.length === 0 && $index === 0" class="nothing">
-          <p>There's nothing here... yet.<br>
-          <a v-if="areMyOwn" v-link="{name: 'create-video'}" href="#">Add a video</a></p>
+          <div class="message">There's nothing here.<br> Yet.</div><br>
+          <a v-if="areMyOwn" v-link="{name: 'create-video'}">Add a video</a></p>
         </div>
-        <a @click.prevent="openPlayer(collection.videos[$index], collection.videos)" href="#">
+        <a @click.prevent="openPlayer(collection.videos[$index], collection.videos, matchViewMode(collection, $index))">
           <img
-            v-if="collection.videos[$index] && collection.videos[$index].is_naughty === store.state.isNaughtyMode"
+            v-if="matchViewMode(collection, $index)"
             :src="collection.videos[$index].poster"
             width="auto"
             height="100%"
@@ -46,7 +46,7 @@
       </div>
     </article>
     <article>
-      <a v-link="{name: 'feed-collection', params: {cid: collection.id}}" class="thumb thumb-more">more...</a>
+      <a v-link="{name: 'feed-collection', params: {cid: collection.id}}" class="thumb thumb-more" rel="more">• • •</a>
     </article>
   </section>
 </template>
@@ -55,7 +55,8 @@
   import {
     toggleCollectionVisibility,
     editCollectionName,
-    deleteCollection as deleteCollectionCommand} from '../services/api'
+    deleteCollection as deleteCollectionService
+  } from '../services/api'
   import DeleteCollection from './DeleteCollection'
   import {launchPlayer} from '../services/mediae'
   import ButtonFollow from './ButtonFollow'
@@ -74,9 +75,6 @@
     data () {
       return {
         store,
-        openPlayer: (video, playlist) => {
-          launchPlayer(video, playlist)
-        },
         isDeleteMode: false,
         isEditMode: false,
         error: null
@@ -84,6 +82,17 @@
     },
 
     methods: {
+      openPlayer (video, playlist, canPlay) {
+        if (canPlay) {
+          launchPlayer(video, playlist)
+        }
+      },
+
+      matchViewMode (collection, index) {
+        return collection.videos[index] &&
+               collection.videos[index].is_naughty === this.store.state.isNaughtyMode
+      },
+
       toggleVisibility () {
         const currentVisibility = this.collection.is_private
 
@@ -127,7 +136,7 @@
       finalizeDeletion (cid, vm, reqBody) {
         this.error = null
 
-        deleteCollectionCommand(cid, store.getToken())
+        deleteCollectionService(cid, store.getToken())
           .then(res => {
             vm.$destroy(true)
             this.$els.rack.remove()
@@ -143,6 +152,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../assets/scss/app.scss';
+
   a {
     position: relative;
     width: 100%;
@@ -157,6 +168,16 @@
     z-index: 2;
     margin-top: 20px;
     margin-left: 40px;
+  }
+
+  .nothing {
+    margin: 1rem;
+
+    .message {
+      @include font-size(15px);
+      line-height: 15px;
+      font-weight: bold;
+    }
   }
 
   .tools {
@@ -175,7 +196,9 @@
     position: relative;
     display: block;
     margin-left: 60px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    @include font-size(18px);
   }
 
   .rack {
@@ -186,8 +209,11 @@
     width: 100%;
     height: 230px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #CCCCCC;
     overflow: hidden;
+
+    &:after {
+      border-bottom: 1px solid #CCCCCC;
+    }
   }
 
   .cover {
@@ -197,6 +223,7 @@
     height: 180px;
     float: left;
     background-color: black;
+    @include border-radius(4px);
   }
 
   .thumb {
@@ -208,14 +235,26 @@
     margin-bottom: 10px;
     margin-left: 10px;
     display: none;
+    @include border-radius(4px);
   }
 
-  .thumb-more {
-    background-color: #CCCCCC;
+  a.thumb-more {
+    background-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    color: $color-mp-blue;
+    @include font-size(42px);
+    border: 1px solid $color-light-lavender;
+    line-height: 80px;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   .empty {
-    background-color: #CCCCCC;
+    background-color: transparent;
+    border: 1px solid $color-light-lavender;
   }
 
   @media screen and (min-width: 1200px) {
