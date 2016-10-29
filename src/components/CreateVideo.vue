@@ -31,7 +31,7 @@
               <select
                 v-model="payload.collection_id"
                 v-validate:cid="{validExistingCollection: true}"
-                class="c-select col-sm-12 col-md-12"
+                class="form-control col-sm-12 col-md-12"
               >
                 <optgroup>
                   <option selected>Choose a collection</option>
