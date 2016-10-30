@@ -150,3 +150,21 @@ $retina-suffix: '@2x';
     @include btn-light-lavender-hover()
   }
 }
+
+@mixin btn-collection-rack() {
+  display: table;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  svg {
+    pointer-events: none;
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0 auto;
+  }
+}

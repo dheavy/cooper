@@ -13,9 +13,16 @@
     </section>
 
     <div class="tools" v-if="areMyOwn">
-      <button @click="toggleVisibility">{{collection.is_private ? 'x' : 'o'}}</button>
-      <button @click="toggleEditMode">*</button>
-      <button @click="setDeletion">!</button>
+      <button-collection-visibility
+        @click="toggleVisibility"
+        :is-private.sync="collection.is_private"
+      ></button-collection-visibility>
+      <button-edit-collection
+        @click="toggleEditMode"
+      ></button-edit-collection>
+      <button-delete-collection
+        @click="setDeletion"
+      ></button>
     </div>
     <div class="tools" v-else>
       <button-follow :store="store" :collection="collection"></button-follow>
@@ -25,7 +32,15 @@
     <div class="name">
       <span class="display {{isEditMode ? 'hidden-xs-up' : ''}}">{{collection.name}}</span>
       <span class="edit {{isEditMode ? '' : 'hidden-xs-up'}}">
-        <input type="text" value="{{collection.name}}" v-on:keyup.enter="editName">
+        <input
+          autofocus
+          v-el:edit-name
+          type="text"
+          value="{{collection.name}}"
+          class="input-edit-collection-name"
+          @keyup.enter="editName"
+          onfocus="this.value = this.value"
+        >
       </span>
     </div>
 
@@ -60,6 +75,9 @@
     editCollectionName,
     deleteCollection as deleteCollectionService
   } from '../services/api'
+  import ButtonCollectionVisibility from './ButtonCollectionVisibility'
+  import ButtonDeleteCollection from './ButtonDeleteCollection'
+  import ButtonEditCollection from './ButtonEditCollection'
   import DeleteCollection from './DeleteCollection'
   import {launchPlayer} from '../services/mediae'
   import ButtonFollow from './ButtonFollow'
@@ -72,7 +90,12 @@
     props: ['collection', 'areMyOwn', 'otherCollections'],
 
     components: {
-      DeleteCollection, ButtonFollow, ButtonBlock
+      ButtonCollectionVisibility,
+      ButtonDeleteCollection,
+      ButtonEditCollection,
+      DeleteCollection,
+      ButtonFollow,
+      ButtonBlock
     },
 
     data () {
@@ -119,9 +142,6 @@
           this.isEditMode = false
 
           editCollectionName(this.collection.id, name, store.getToken())
-            .then(res => {
-              console.log(res)
-            })
             .catch(err => {
               console.log(err)
             })
@@ -175,6 +195,17 @@
     z-index: 2;
     margin-top: 20px;
     margin-left: 40px;
+  }
+
+  .input-edit-collection-name {
+    margin-top: -3px;
+    width: 300px;
+    border: none;
+    color: $color-light-blue;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .nothing {

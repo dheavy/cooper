@@ -17,9 +17,9 @@
       </a>
       <ul class="nav navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#" @click.prevent="toggleSearch">
-            <button-search></button-search>
-          </a>
+          <span class="nav-link">
+            <search-input></search-input>
+          </span>
         </li>
         <li class="nav-item">
           <a class="nav-link" v-link="{name: 'create-video'}">
@@ -42,8 +42,8 @@
 
 <script>
   import ButtonAddNewMedia from './ButtonAddNewMedia'
-  import ButtonSearch from './ButtonSearch'
   import ToggleSwitch from './ToggleSwitch'
+  import SearchInput from './SearchInput'
   import UserMenu from './UserMenu'
   import store from '../store'
   import Logo from './Logo'
@@ -54,7 +54,7 @@
     components: {
       ButtonAddNewMedia,
       ToggleSwitch,
-      ButtonSearch,
+      SearchInput,
       UserMenu,
       Logo
     },

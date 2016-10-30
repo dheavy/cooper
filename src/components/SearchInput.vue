@@ -1,6 +1,6 @@
 <template>
-  <nav class="btn-search">
-    <div class="field"></div>
+  <section class="search-component">
+    <input type="text" placeholder="search" class="search-input">
     <div class="misc">
       <svg width="17px" height="13px" viewBox="221 11 17 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <g id="cta_filter" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(221.000000, 11.000000)">
@@ -10,20 +10,19 @@
           </g>
       </svg>
     </div>
-    <p>Search</p>
-  </nav>
+  </section>
 </template>
 
 <script>
   export default {
-    name: 'ButtonSearch'
+    name: 'SearchInput'
   }
 </script>
 
 <style lang="scss" scoped>
   @import '../assets/scss/definitions';
 
-  nav.btn-search {
+  .search-component {
     margin-top: 0;
     width: 250px;
     height: 34px;
@@ -33,9 +32,14 @@
     border-style: solid;
     border-width: 1px;
 
-    p {
-      margin-left: 1rem;
+    .search-input {
+      position: absolute;
+      background: transparent;
+      border: none;
+      margin-left: 15px;
       margin-top: 4px;
+      width: 196px;
+      outline: none;
     }
 
     .misc {
