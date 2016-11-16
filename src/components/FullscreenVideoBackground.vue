@@ -77,7 +77,7 @@
   }
 
   video {
-    opacity: .25;
+    opacity: 0.5;
   }
 
   a.link-forgot,
