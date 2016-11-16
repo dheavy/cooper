@@ -1,36 +1,32 @@
 <template>
-  <section class="member">
+  <section class="member-component">
     <header class="row">
       <div class="col-sm-4">
         <h1>{{username}}</h1>
         <small>member since {{dateJoined}}</small>
       </div>
-      <div class="col-sm-4">
-        <p class="follow-data">
-          <a
-            v-if="+id === currentUserId"
-            v-link="{path: '/users/' + id + '/followed'}"
-          >
-            <span class="link-number">{{following}}</span><br>
-            <span>followed</span>
-          </a>
-        </p>
+      <div class="col-sm-4 follow-data">
+        <a
+          v-if="+id === currentUserId"
+          v-link="{path: '/users/' + id + '/followed'}"
+        >
+          <span class="link-number">{{following}}</span><br>
+          <span>followed</span>
+        </a>
       </div>
-      <div class="col-sm-4">
-        <p class="follow-data">
-          <a
-            v-link="{path: '/users/' + id + '/followers'}"
-          >
-            <span class="link-number">{{followers}}</span><br>
-            <span>followers</span>
-          </a>
-        </p>
+      <div class="col-sm-4 follow-data">
+        <a
+          v-link="{path: '/users/' + id + '/followers'}"
+        >
+          <span class="link-number">{{followers}}</span><br>
+          <span>followers</span>
+        </a>
       </div>
     </header>
+    <button-create-new-collection
+      can-create-collection="canCreateCollection"
+    ></button-create-new-collection>
   </section>
-  <button-create-new-collection
-    can-create-collection="canCreateCollection"
-  ></button-create-new-collection>
 </template>
 
 <script>
@@ -62,6 +58,10 @@
 
   small {
     font-size: 14px;
+  }
+
+  header {
+    margin-bottom: 1rem;
   }
 
   .member {
