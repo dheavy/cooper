@@ -1,7 +1,7 @@
 <template>
   <section class="footer-component">
     <footer class="small col-sm-4 offset-sm-4">
-      <a href="#">About MyPleasure</a> •
+      <a href="#">About</a> •
       <a href="#">Blog</a> • 
       <a href="#">Terms of services</a> •
       <a href="#">Contact</a>
